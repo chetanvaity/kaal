@@ -1,0 +1,14 @@
+%h2 Create new event
+
+= form_tag events_path, :method => :post do
+
+  = label :event, :title, 'Title'
+  = text_field :event, :title
+
+  = label :event, :date, 'Date'
+  = date_select :event, :date
+ 
+  = label :event, :tags, 'Tags'
+  = text_field :event, :tags
+
+  = submit_tag 'Save Changes'

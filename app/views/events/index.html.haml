@@ -1,0 +1,18 @@
+%h2 All Events
+
+%table#events
+  %thead
+    %tr
+      %th Title
+      %th Date
+      %th Tags
+      %th More
+  %tbody
+    - @events.each do |event|
+      %tr
+        %td= event.title
+        %td= event.date
+        %td= event.tags
+        %th= link_to 'More...', event_path(event)
+
+= link_to 'Add a new event...', new_event_path

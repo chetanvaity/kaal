@@ -1,0 +1,11 @@
+%h2 Details about #{@event.title}
+
+%ul#details
+  %li
+    Date:
+    = @event.date.strftime("%B %d, %Y")
+  %li
+    Tags:
+    = @event.tags
+
+= link_to 'Back to event list', events_path
