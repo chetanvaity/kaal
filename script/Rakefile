@@ -1,0 +1,3 @@
+task :install do
+     sh "cp *.rb *.sh /home/chetanv/bin"
+end
