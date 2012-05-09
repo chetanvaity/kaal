@@ -35,4 +35,10 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
+  def query
+    tags = params[:tags]
+    @events = Event.where("tags like '%#{tags}%'")
+    render 'index.html'
+  end
+
 end

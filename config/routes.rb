@@ -12,6 +12,10 @@ Kaal::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :events
+  
+  # Sample query:
+  # http://servername/events/q/v1?tags=india+pakistan
+  match 'events/q/v1' => 'events#query'
 
   # Sample resource route with options:
   #   resources :products do
