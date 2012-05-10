@@ -37,7 +37,24 @@ class EventsController < ApplicationController
 
   def query
     tags = params[:tags]
-    @events = Event.where("tags like '%#{tags}%'")
+    tags_arr = tags.split ','
+
+    e_ids = []
+    tags_arr.each do |tag_str|
+      t = Tag.find_by_name tag_str
+      if t.nil?
+        flash[:notice] = "No such tag: '#{tag_str}'"
+        break
+      end
+      e_ids_for_tag = Tagmap.select(:event_id).where(:tag_id => t.id).map { |o| o.event_id }
+      if e_ids == []
+        e_ids = e_ids_for_tag
+      else
+        e_ids = e_ids & e_ids_for_tag
+      end
+    end
+
+    @events = Event.where(:id => e_ids)
     render 'index.html'
   end
 
