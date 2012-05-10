@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120331093136) do
+ActiveRecord::Schema.define(:version => 20120510050715) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -19,6 +19,18 @@ ActiveRecord::Schema.define(:version => 20120331093136) do
     t.datetime "date"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "tagmap", :force => true do |t|
+    t.integer "event_id"
+    t.integer "tag_id"
+  end
+
+  add_index "tagmap", ["event_id"], :name => "index_tagmap_on_event_id"
+  add_index "tagmap", ["tag_id"], :name => "index_tagmap_on_tag_id"
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
   end
 
 end
