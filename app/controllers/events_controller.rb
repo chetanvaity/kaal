@@ -35,6 +35,7 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
+  # TBD: Handle tag upper/lower case
   def query
     tags = params[:tags]
     tags_arr = tags.split ','
