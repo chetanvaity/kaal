@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class EventsController < ApplicationController
   def index
     @events = Event.all
@@ -35,14 +36,13 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
-  # TBD: Handle tag upper/lower case
   def query
     tags = params[:tags]
     tags_arr = tags.split ','
 
     e_ids = []
     tags_arr.each do |tag_str|
-      t = Tag.find_by_name tag_str
+      t = Tag.find_by_name tag_str.downcase
       if t.nil?
         flash[:notice] = "No such tag: '#{tag_str}'"
         break
@@ -56,7 +56,11 @@ class EventsController < ApplicationController
     end
 
     @events = Event.where(:id => e_ids)
-    render 'index.html'
+
+    respond_to do |format|
+      format.html  { render 'index.html' }
+      format.json  { render :json => @events }
+    end
   end
 
 end

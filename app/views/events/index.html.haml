@@ -15,4 +15,8 @@
         %td= event.tags
         %th= link_to 'More...', event_path(event)
 
+%strong
+  = @events.size
+  events
+%br
 = link_to 'Add a new event...', new_event_path
