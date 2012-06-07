@@ -158,7 +158,7 @@ class Util
     nlp_response = get_NLP_response(wiki_para)
     #print "  NLP reponse = #{nlp_response}"
     nouns = get_nouns_from_NLP_response(nlp_response)
-    nouns_u = nouns.map! { |n| n.gsub /\ /, '_' } # replace spaces with underscores
+    nouns_u = nouns.map! { |n| n.gsub /\ /, '_' } # replace spaces with "_"
     expanded_nouns = []
     nouns_u.each do |n|
       ss = get_synset(n)
