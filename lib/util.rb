@@ -9,7 +9,7 @@ class Util
   include Singleton
 
   def initialize
-    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.txt'
+    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.head.txt'
     @babel_map = {}
     @babel_synsets = []
     init_babel(@babel_synsets_file)
@@ -73,6 +73,7 @@ class Util
   end
 
   # Return a list of tags by parsing the NLP response
+  # Also downcase all nouns
   def get_nouns_from_NLP_response(s)
     s = s.gsub /ORGANIZATION/, 'NOUN'
     s = s.gsub /LOCATION/, 'NOUN'
@@ -93,7 +94,7 @@ class Util
         noun = ""
       end
     end
-    return nouns
+    return nouns.map! { |n| n.downcase }
   end
 
   #----- Babelnet related functions -----

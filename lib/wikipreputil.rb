@@ -7,6 +7,27 @@ class WikiprepUtil
   include Singleton
 
   def initialize
+    @log = Logger.new("/home/chetanv/source/kaal/log/wikipreputil.log",
+                      "monthly") 
+    @log.level = Logger::INFO
+    @log.info "initialize(): -----"
+
+    @enwiki_dir = "/media/My Passport/timeline/en-wiki/articles"
+    @articles_map = {} # article name -> wikipedia id
+    
+    idmap_file = @enwiki_dir + "/idmap.txt"
+    open(idmap_file).each_line do |line|
+      terms = line.chomp.split("\t")
+      @articles_map[terms[0]] = terms[1]
+    end
+    @log.info "initialize(): done reading #{idmap_file}"
+  end
+
+  # from the articles map (idmap.txt), get id for this article
+  # The title is the human readable string
+  # return nil if not found
+  def get_article_id(title)
+    return @articles_map[title]
   end
 
   # Read the wikiprep hgw.xml file and seperate it into article files
@@ -100,4 +121,50 @@ class WikiprepUtil
     
     return [s[0,2], s[2,2]]
   end
+
+  # Get text from an article file
+  def get_tags_n_text_from_article(fname)
+    s = File.open(fname).read
+    s = "<article>" + s + "</article>"
+    reader = Nokogiri::XML::Reader(s)
+    text = ""
+    reader.each do |node|
+      if node.name == "text" &&
+          node.node_type == Nokogiri::XML::Reader::TYPE_ELEMENT
+        text = node.inner_xml
+      end
+    end
+
+    # Lets get only the stuff till the first subsection "=="
+    summary_text = text.gsub /^==.*/m, ''
+
+    # Remove everything between &lt; and &gt;
+    t2 = summary_text.gsub /&lt;.*?&gt;/, ''
+    # Remove everything in  {{ }}
+    t3 = t2.gsub /{{.*?}}/m, ''
+    # Convert [[Alps|Alpine]] to [[Alpine]]
+    t4 = t3.gsub /\[\[[^\[]*?\|(.*?)\]\]/, '[[\1]]'
+    # Get tags - all stuff which is in [[ ]]
+    link_tags = t4.scan /\[\[(.*?)\]\]/
+    # get the strings out of the arrays
+    link_tags.map! { |e| e[0] }
+    # Remove tags which have "|" or "[" or "]"
+    link_tags.reject! { |e| e =~ /\||\[|\]/}
+    # Convert all tags to lowercase
+    link_tags.map! { |e| e.downcase }
+    
+    # Convert [[Alpine]] to Alpine
+    t5 = t4.gsub /\[\[(.*?)\]\]/, '\1'
+    # Remove '''  '''
+    t6 = t5.gsub /\'\'\'(.*?)\'\'\'/, '\1'
+    # Remove ''  ''
+    t7 = t6.gsub /\'\'(.*?)\'\'/, '\1'
+    
+    return link_tags, t7
+    
+    rescue Exception => e
+    print "  !!! get_tags_n_text_from_article(): #{e}\n"
+    return []
+  end
+
 end
