@@ -68,6 +68,7 @@ class Util
     para.gsub! /\n/, '.' # Remove newlines
     para += "\n" # add one at the end
     socket = TCPSocket.open('localhost', 1111)
+    socket.set_encoding("UTF-8")
     socket.print(para)
     return socket.read
   end

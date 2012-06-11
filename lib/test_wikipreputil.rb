@@ -35,4 +35,9 @@ class TestWikiprepUtil < Test::Unit::TestCase
     assert_equal("09", b)
   end
 
+  def test_resolve_redirects_n_read
+    wu = WikiprepUtil.instance
+    print wu.resolve_redirects_n_read("10")
+  end
+
 end
