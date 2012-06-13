@@ -35,3 +35,5 @@ gem 'nokogiri'
 group :development, :test do
   gem 'ruby-debug19'
 end
+
+gem 'mysql2', '0.3.11'

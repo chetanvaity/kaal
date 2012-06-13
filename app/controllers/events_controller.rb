@@ -1,7 +1,15 @@
 # encoding: UTF-8
+
+require 'util.rb'
+
 class EventsController < ApplicationController
+  # Constructor
+  def initialize
+    @util = Util.instance
+  end
+  
   def index
-    @events = Event.all
+    @events = Event.limit(10)
   end
 
   def show
@@ -42,12 +50,18 @@ class EventsController < ApplicationController
 
     e_ids = []
     tags_arr.each do |tag_str|
-      t = Tag.find_by_name tag_str.downcase
-      if t.nil?
+      # Get the normalized version of the tags
+      tag_str.downcase!
+      tag_str.gsub!(/ /, '_')
+      norm_tag = @util.get_synset(tag_str)[0]
+      norm_tag.gsub!(/_/, ' ')
+
+      tlist = Tag.find_all_by_name(norm_tag)
+      if tlist.nil? || tlist.empty?
         flash[:notice] = "No such tag: '#{tag_str}'"
         break
       end
-      e_ids_for_tag = Tagmap.select(:event_id).where(:tag_id => t.id).map { |o| o.event_id }
+      e_ids_for_tag = tlist.map { |t| t.event_id } 
       if e_ids == []
         e_ids = e_ids_for_tag
       else
@@ -55,7 +69,7 @@ class EventsController < ApplicationController
       end
     end
 
-    @events = Event.where(:id => e_ids)
+    @events = Event.where(:id => e_ids).order(:jd)
 
     respond_to do |format|
       format.html  { render 'index.html' }
