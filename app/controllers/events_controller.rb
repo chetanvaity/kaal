@@ -15,6 +15,7 @@ class EventsController < ApplicationController
   def show
     id = params[:id]
     @event = Event.find(id)
+    @taglist = Tag.find_all_by_event_id(id).map {|t| t.name}
   end
 
   def new

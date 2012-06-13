@@ -5,6 +5,10 @@
     Date:
     = Date.jd(@event.jd).strftime("%B %d, %Y")
 
+  %li
+    Tags:
+    = @taglist
+    
 = link_to 'Edit event', edit_event_path(@event)
 = link_to 'Back to event list', events_path
 = button_to 'Delete', event_path(@event), :method=> :delete, :confirm => 'Are you sure?'
