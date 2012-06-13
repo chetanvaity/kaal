@@ -93,6 +93,26 @@ namespace :data do
     Event.connection.execute("update events set source=\'#{source_str}\' where id >= #{start_event_id} and id <= #{end_event_id}")
   end
 
+  desc "Normalize tags in a text file using Babelnet"
+  task :normalize_tags, [:tags_file, :out_file] do |t, args|
+    util = Util.instance
+    i = 0
+    File.open(args.out_file, "w:UTF-8:UTF-8") do |outf|
+      open(args.tags_file, "r:UTF-8:UTF-8").each_line do |line|
+        arr = line.chomp.split(/\t/)
+        next if arr.length != 2
+        tag_str = arr[1]
+        next if tag_str.nil?
+        tag_str.gsub!(/ /, '_')
+        norm_tag = util.get_synset(tag_str)[0]
+        norm_tag.gsub!(/_/, ' ')
+        outf.puts "#{arr[0]}\t#{norm_tag}"
+        i=i+1
+        print "#{i} tags done\n" if i%1000 == 0
+      end
+    end
+  end
+
 end # data namespace
 
 
