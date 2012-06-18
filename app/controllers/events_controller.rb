@@ -4,7 +4,8 @@ require 'util.rb'
 
 class EventsController < ApplicationController
   # Constructor
-  def initialize
+  def initialize(*params)
+    super(*params)
     @util = Util.instance
   end
   
@@ -46,6 +47,24 @@ class EventsController < ApplicationController
   end
 
   def query
+    @events = get_events(params)
+
+    respond_to do |format|
+      format.html  { render 'index.html' }
+      format.json  { render :json => @events }
+    end
+  end
+
+  def query2
+    @events = get_events(params)
+
+    respond_to do |format|
+      format.html { render 'tl.html' }
+    end
+  end
+
+  # Util function
+  def get_events(params)
     tags = params[:tags]
     tags_arr = tags.split ','
 
@@ -69,13 +88,7 @@ class EventsController < ApplicationController
         e_ids = e_ids & e_ids_for_tag
       end
     end
-
-    @events = Event.where(:id => e_ids).order(:jd)
-
-    respond_to do |format|
-      format.html  { render 'index.html' }
-      format.json  { render :json => @events }
-    end
+    
+    return Event.where(:id => e_ids).order(:jd)
   end
-
 end

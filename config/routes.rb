@@ -16,6 +16,7 @@ Kaal::Application.routes.draw do
   # Sample query:
   # http://servername/events/q/v1?tags=india+pakistan
   match 'events/q/v1' => 'events#query'
+  match 'events/q/v2' => 'events#query2'
 
   # Sample resource route with options:
   #   resources :products do
