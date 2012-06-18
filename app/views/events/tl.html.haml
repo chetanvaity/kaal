@@ -3,12 +3,14 @@
 %div#timeline-embed
   
   
-:javascript
+%script{:type => "text/javascript"}
   :plain
     var timeline_config = {
     width:  "100%",
     height: "100%",
-    source: "/tmp/data.json",
+    source: '/tmp/data.json',
+    css: '/assets/timeline.css',
+    js: '/js/timeline-min.js'
     }
 
 

@@ -1,0 +1,34 @@
+
+{
+    "timeline":
+    {
+        "headline":"The Kitchen Sink",
+        "type":"default",
+		"startDate":"2011,9,1",
+		"text":"An example of the different kinds of stuff you can do.",
+        "date": [
+            {
+                "startDate":"2012,1,26",
+                "headline":"Sh*t Politicians Say",
+                "text":"Sh*t Politicians Say landed just hours before Thursday night’s Republican presidential debate and stars actor Joe Leon. In true political fashion, his character rattles off common jargon heard from people running for office.</p><p>Do these ring a bell? Moral fiber, family values, trust me, three-point plan, earmarks, tough question, children are our future, Washington outsider, jobs, my opponent — all sound familiar.",
+                "asset":
+                {
+                    "media":"",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2012,1,10",
+                "headline":"Sh*t Nobody Says",
+                "text":"<p>Have you ever heard someone say “can I burn a copy of your Nickelback CD?” or “my Bazooka gum still has flavor!” Nobody says that.</p>",
+                "asset":
+                {
+                    "media":"",
+                    "credit":"",
+                    "caption":""
+                }
+            }
+        ]
+    }
+}
