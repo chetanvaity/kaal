@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'iconv'
 require 'socket'
 require 'singleton'
+require 'digest'
 
 class Util
   include Singleton
@@ -176,5 +177,15 @@ class Util
     print "  !!! get_more_tags(): #{e}\n"
     return []
   end
-  
+
+  # Get a unique key string from the array of parameters
+  # This array is the params which includes tags and from, to etc.
+  # The query_key is used to create a unique JSON file
+  # May also be used latter for cacheing query results
+  def get_query_key(params)
+    tags = params[:tags]
+    return Digest::MD5.hexdigest(tags)
+    # TBD: use "from", "to" also
+  end
+
 end
