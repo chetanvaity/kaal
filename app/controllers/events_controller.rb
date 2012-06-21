@@ -1,8 +1,11 @@
 # encoding: UTF-8
 
+require 'hashery'
 require 'util.rb'
 
 class EventsController < ApplicationController
+  @@q_keys = Hashery::LRUHash.new(100)
+
   # Constructor
   def initialize(*params)
     super(*params)
@@ -61,23 +64,31 @@ class EventsController < ApplicationController
   # Get events
   # Make JSON for use with Verite Timeline
   # and then render tl.html
+  # Variables passed to view - @tags, @events_size, @json_resource_path
   def query2
     logger.info("EventsController.query2() started")
     @tags = params[:tags]
     @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
     query_key = @util.get_query_key(@tags)
     @json_resource_path = "/tmpjson/#{query_key}.json"
-    tags_arr = @tags.split ','
-    norm_tags_arr = get_norm_tags(tags_arr)
-    events = get_events(norm_tags_arr)
-    events_size = events.size
-    json_fname = "#{Rails.root}/public/#{@json_resource_path}" 
-    make_json(events, json_fname, norm_tags_arr)
-    logger.info("EventsController.query2() - json made: #{json_fname}")
-    
-    respond_to do |format|
-      format.html { render 'tl.html' }
+
+    val = @@q_keys[query_key]
+    if not val.nil?
+      logger.info("Cache hit!")
+      @events_size = val
+    else
+      # Get events and create the json
+      tags_arr = @tags.split ','
+      norm_tags_arr = get_norm_tags(tags_arr)
+      events = get_events(norm_tags_arr)
+      @events_size = events.size
+      json_fname = "#{Rails.root}/public/#{@json_resource_path}" 
+      make_json(events, json_fname, norm_tags_arr)
+      @@q_keys.store(query_key, @events_size)
+      logger.info("EventsController.query2() - json made: #{json_fname}")
     end
+
+    render :template => "events/tl", :formats => [:html], :handlers => :haml
   end
 
   # ----- Util functions -----
