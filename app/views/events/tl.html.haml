@@ -1,5 +1,13 @@
+%div#query-form
+  = form_tag events_q_v2_path, :method => :post do
+    = label_tag :tags, 'Tags'
+    = text_field_tag :tags, nil, {:class => "sharp", :placeholder => "eg: shivaji,mughal"}
+    = submit_tag 'Search', {:class => "sharp button"}
+
 %div#timeline-embed
-  
+
+%div#status-line
+  &nbsp; #{@events_size} events for tags: #{@tags}
   
 %script{:type => "text/javascript"}
   :plain

@@ -3,3 +3,4 @@ db/test.sqlite3
 db/dumps/
 log/
 tmp/
+tmpjson/

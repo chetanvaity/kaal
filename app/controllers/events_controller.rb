@@ -1,7 +1,6 @@
 # encoding: UTF-8
 
 require 'util.rb'
-require 'wikipreputil.rb'
 
 class EventsController < ApplicationController
   # Constructor
@@ -64,17 +63,18 @@ class EventsController < ApplicationController
   # and then render tl.html
   def query2
     logger.info("EventsController.query2() started")
-    tags = params[:tags]
-    tags_arr = tags.split ','
-    norm_tags_arr = get_norm_tags(tags_arr)
-
-    @events = get_events(norm_tags_arr)
-    query_key = @util.get_query_key(params)
+    @tags = params[:tags]
+    @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
+    query_key = @util.get_query_key(@tags)
     @json_resource_path = "/tmpjson/#{query_key}.json"
+    tags_arr = @tags.split ','
+    norm_tags_arr = get_norm_tags(tags_arr)
+    events = get_events(norm_tags_arr)
+    events_size = events.size
     json_fname = "#{Rails.root}/public/#{@json_resource_path}" 
-    make_json(@events, json_fname, norm_tags_arr)
+    make_json(events, json_fname, norm_tags_arr)
     logger.info("EventsController.query2() - json made: #{json_fname}")
-
+    
     respond_to do |format|
       format.html { render 'tl.html' }
     end

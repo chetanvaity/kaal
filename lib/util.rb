@@ -10,7 +10,7 @@ class Util
   include Singleton
 
   def initialize
-    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.txt'
+    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.head.txt'
     @babel_map = {}
     @babel_synsets = []
     init_babel(@babel_synsets_file)
@@ -182,8 +182,9 @@ class Util
   # This array is the params which includes tags and from, to etc.
   # The query_key is used to create a unique JSON file
   # May also be used latter for cacheing query results
-  def get_query_key(params)
-    tags = params[:tags]
+  def get_query_key(tags)
+    print "get_query_key - init\n"
+    print "get_query_key(): tags=#{tags}\n"
     return Digest::MD5.hexdigest(tags)
     # TBD: use "from", "to" also
   end
