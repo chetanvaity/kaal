@@ -10,7 +10,7 @@ class Util
   include Singleton
 
   def initialize
-    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.head.txt'
+    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.txt'
     @babel_map = {}
     @babel_synsets = []
     init_babel(@babel_synsets_file)
