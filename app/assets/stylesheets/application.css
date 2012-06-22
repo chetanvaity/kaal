@@ -33,19 +33,24 @@ html, body {
 #query-form {
     font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size:small;
-    float:right;
-    margin-right: 2px;
+    <!-- float:right; -->
+    <!-- margin-right: 2px; -->
+    padding-left : 50px;
+    display : block;
+    margin-top : 80px;
+    margin-left : 170px;
 }
 
 input.sharp {
     border: 1px solid #ccc;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
-    border-radius: 0px;
+    border-radius: 10px;
     font-size: 12px;
-    padding: 4px 7px;
+    padding: 0px 7px;
     outline: 0;
     -webkit-appearance: none;
+    
 }
 
 input.sharp:focus {
