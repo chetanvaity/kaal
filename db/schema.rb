@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20120622054849) do
+
+  create_table "babels", :force => true do |t|
+    t.string  "term",         :null => false
+    t.integer "norm_term_id", :null => false
+  end
+
+  add_index "babels", ["term"], :name => "index_babels_on_term"
 
   create_table "events", :force => true do |t|
     t.text    "title",                :null => false
