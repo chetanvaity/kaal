@@ -32,5 +32,9 @@
       %p= flash[:notice]
     - elsif flash[:warning]
       %p= flash[:warning]
-	    
-    = yield
+      
+    <!-- This is standard header added to the page -->
+    = render 'layouts/header'
+    %div{:class => "container"}
+      = yield
+      = render 'layouts/footer'

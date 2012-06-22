@@ -174,5 +174,16 @@ END
       f.puts(footer_json)
     end
   end
+  
+  #===================================================
+  # New home page function added by Amol ...test purpose for timebeing
+  # Get events
+  # Make JSON for use with Verite Timeline
+  # and then render tl.html
+  def myhome
+    logger.info("EventsController.myhome() started")
+    render :template => "events/myhome", :formats => [:html], :handlers => :haml
+  end
+
 
 end

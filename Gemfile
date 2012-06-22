@@ -32,9 +32,12 @@ gem 'haml'
 
 gem 'nokogiri'
 
-group :development, :test do
-  gem 'ruby-debug19'
-end
+#group :development, :test do
+#  gem 'ruby-debug19'
+#end
 
 gem 'mysql2', '0.3.11'
 gem 'hashery', '2.0.0'
+
+gem 'debugger'
+gem 'bootstrap-sass', '2.0.0'
