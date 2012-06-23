@@ -113,6 +113,22 @@ namespace :data do
     end
   end
 
+  desc "Read the Babelnet file and dump terms into babels DB table"
+  task :populate_babels, [:babelnet_file] => :environment do |t, args|
+    i=1
+    File.open(args.babelnet_file, "r:UTF-8:UTF-8").each_line do |line|
+      arr = line.chomp.split(/\s/)
+      next if arr.length < 1
+      norm_term = arr[0]
+      norm_id = i
+      arr.each do |term|
+        term.gsub!(/_/, ' ')
+        Babel.create!(:id => i, :term => term, :norm_term_id => norm_id)
+        i=i+1
+      end
+    end
+  end
+
 end # data namespace
 
 
