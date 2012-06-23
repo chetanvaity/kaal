@@ -98,10 +98,12 @@ class EventsController < ApplicationController
     tags_arr.each do |tag_str|
       # Get the normalized version of the tags
       tag_str.downcase!
-      tag_str.gsub!(/ /, '_')
-      norm_tag = @util.get_synset(tag_str)[0]
-      norm_tag.gsub!(/_/, ' ')
-      norm_tags_arr.push(norm_tag)
+      term = Babel.find_by_term(tag_str)
+      if term.nil?
+        norm_tags_arr.push(tag_str)
+      else
+        norm_tags_arr.push(term.norm_term.term)
+      end
     end
     return norm_tags_arr
   end

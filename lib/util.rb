@@ -10,10 +10,6 @@ class Util
   include Singleton
 
   def initialize
-    @babel_synsets_file = '/usr/local/share/mod-babel-synsets.txt'
-    @babel_map = {}
-    @babel_synsets = []
-    init_babel(@babel_synsets_file)
   end
   
   # Fire a Google query on the first sentence of title and check if there is
@@ -118,32 +114,7 @@ class Util
       end
     end
   end
-  
-  # Read the modified babel synsets file
-  # and initialise a Map and an Array
-  #   Map: term -> synset number
-  #   Array: synsets[]
-  def init_babel(mod_fname)
-    i = 0
-    open(mod_fname).each_line do |line|
-      terms = line.split
-      @babel_synsets.push terms
-      terms.each { |t| @babel_map[t] = i }
-      i = i+1
-    end
-  end
 
-
-  # Return the array of synonymous terms for a given term
-  def get_synset(term)
-    i = @babel_map[term.downcase]
-    if i.nil?
-      return [term]
-    else
-      return @babel_synsets[i]
-    end
-  end
- 
   #----- End Babelnet related functions -----
 
   # Get tags for an event title
