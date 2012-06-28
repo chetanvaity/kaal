@@ -39,7 +39,7 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find params[:id]
-    @event.update_attributes!(params[:event])
+    @event.update_attributes(params[:event])
     flash[:notice] = "#{@event.title} was successfully updated."
     redirect_to event_path(@event)
   end
@@ -53,10 +53,13 @@ class EventsController < ApplicationController
 
   def query
     logger.info("EventsController.query() started")
-    @events = get_events(params)
+    @tags = params[:tags]
+    tags_arr = @tags.split ','
+    norm_tags_arr = get_norm_tags(tags_arr)
+    @events = get_events(norm_tags_arr)
 
     respond_to do |format|
-      format.html  { render 'index.html' }
+      format.html { render :template => "events/index", :formats => [:html], :handlers => :haml }
       format.json  { render :json => @events }
     end
   end

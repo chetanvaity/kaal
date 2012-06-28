@@ -3,7 +3,8 @@
     = label_tag :tags, 'Filter:', {:id => "tag_label"}
     = text_field_tag :tags, nil, {:class => "sharp", :placeholder => "eg: shivaji,mughal"}
     = submit_tag 'Search', {:class => "sharp button"}
-
+  = link_to "Edit", events_q_v1_path(:tags => "shivaji")
+    
 %div#timeline-embed
 
 %div#status-line

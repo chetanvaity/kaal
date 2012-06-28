@@ -5,13 +5,13 @@
     %tr
       %th Title
       %th Date
-      %th More
+      %th Edit
   %tbody
     - @events.each do |event|
       %tr
         %td= event.title
         %td= Date.jd(event.jd).strftime("%B %d, %Y")
-        %th= link_to 'More...', event_path(event)
+        %th= link_to 'Edit...', edit_event_path(event)
 
 %strong
   = @events.size

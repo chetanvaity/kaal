@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120622054849) do
+ActiveRecord::Schema.define(:version => 20120627111637) do
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20120622054849) do
     t.string  "source", :limit => 10
   end
 
-  create_table "tags", :id => false, :force => true do |t|
+  create_table "tags", :force => true do |t|
     t.integer "event_id",               :null => false
     t.string  "name",     :limit => 80, :null => false
     t.integer "source"

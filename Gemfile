@@ -41,3 +41,4 @@ gem 'hashery', '2.0.0'
 
 gem 'debugger'
 gem 'bootstrap-sass', '2.0.0'
+gem 'awesome_nested_fields'
