@@ -8,16 +8,24 @@
   = label :event, :date, 'Date'
   = text_field :event, :date_str
 
-  %h4 Tags
-  %div.items
-    = f.nested_fields_for :tags do |f|
-      %fieldset.item{:style => "float:left"}
-        = f.text_field :name
-        %a.remove{:href => "#"} x      
-        = f.hidden_field :id
-        = f.hidden_field :_destroy
-      
-      
-  %a.add{:href => "#"} Add tag
- 
-  = submit_tag 'Save Changes'
+  %fieldset
+    %legend Tags
+    %div.items
+      = f.nested_fields_for :tags do |tagf|
+        %fieldset.item{:style => "float:left"}
+          %span.label.label-info
+            = tagf.object.name
+            %a.remove{:href => "#"}
+              %i.icon-remove.icon-white
+          = tagf.hidden_field :id
+          = tagf.hidden_field :_destroy
+          &nbsp;
+    %div
+      %a.add.btn.btn-small.btn-success{:href => "#"}
+        %i.icon-plus
+
+  %br
+  = button_tag(:type => "submit", :class => "btn btn-primary") do
+    %i.icon-ok.icon-white
+    = p " Save"
+
