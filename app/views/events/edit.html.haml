@@ -13,16 +13,22 @@
     %div.items
       = f.nested_fields_for :tags do |tagf|
         %fieldset.item{:style => "float:left"}
-          %span.label.label-info
-            = tagf.object.name
+          %span.label
+            %span.tagtext
+              = tagf.object.name
             %a.remove{:href => "#"}
               %i.icon-remove.icon-white
+          = tagf.hidden_field(:name, :class => "tagname")
           = tagf.hidden_field :id
           = tagf.hidden_field :_destroy
           &nbsp;
-    %div
-      %a.add.btn.btn-small.btn-success{:href => "#"}
-        %i.icon-plus
+
+  %br
+  %div.input-append
+    %input#newtag.span2{:type => "text"}
+    %span.add.add-on.btn
+      %i.icon-plus
+      = p " Add tag"
 
   %br
   = button_tag(:type => "submit", :class => "btn btn-primary") do
