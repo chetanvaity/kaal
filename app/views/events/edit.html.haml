@@ -1,34 +1,38 @@
 %h2 Edit Event
 
-= form_for(@event) do |f|
+= form_for(@event, :html => {:class => "well"}) do |f|
+  = f.error_messages
 
   = label :event, :title, 'Title'
-  = text_field :event, :title
+  = text_field :event, :title, :class => "span4"
 
   = label :event, :date, 'Date'
-  = text_field :event, :date_str
+  = text_field :event, :date_str, :class => "span2"
 
-  %fieldset
-    %legend Tags
-    %div.items
-      = f.nested_fields_for :tags do |tagf|
-        %fieldset.item{:style => "float:left"}
-          %span.label
-            %span.tagtext
-              = tagf.object.name
-            %a.remove{:href => "#"}
-              %i.icon-remove.icon-white
-          = tagf.hidden_field(:name, :class => "tagname")
-          = tagf.hidden_field :id
-          = tagf.hidden_field :_destroy
-          &nbsp;
+  %div.well
+    %fieldset
+      %label Tags
+      %div.items
+        = f.nested_fields_for :tags do |tagf|
+          %fieldset.item{:style => "float:left"}
+            %span.label
+              %span.tagtext
+                = tagf.object.name
+              %a.remove{:href => "#"}
+                %i.icon-remove.icon-white
+            = tagf.hidden_field(:name, :class => "tagname")
+            = tagf.hidden_field :id
+            = tagf.hidden_field :_destroy
+            &nbsp;
 
-  %br
-  %div.input-append
-    %input#newtag.span2{:type => "text"}
-    %span.add.add-on.btn
-      %i.icon-plus
-      = p " Add tag"
+    %br
+    %div.input-append
+      %input#newtag.span2{:type => "text"}
+      %span.add.add-on.btn
+        %i.icon-plus
+        = p " Add tag"
+      &nbsp;    
+      %span.help-block Normalized version of the tag will be saved. eg: "Shivaji" will be saved if you add "chattrapati shivaji"
 
   %br
   = button_tag(:type => "submit", :class => "btn btn-primary") do

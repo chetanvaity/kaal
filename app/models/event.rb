@@ -7,6 +7,19 @@ class Event < ActiveRecord::Base
   # Look at http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html
   accepts_nested_attributes_for :tags, :allow_destroy => true
 
+  validates :title, :length => {
+    :maximum => 256,
+    :minimum => 3
+  }
+  validates :title, :format => {
+    :with => /[a-zA-Z]/,
+    :message => "must contain some letters"
+  }
+  validates :title, :presence => true
+
+  validates_associated :tags
+  
+
   # Virtual attribute - date_str for user-friendly date display and entry
   # See http://railscasts.com/episodes/32-time-in-text-field?view=asciicast
   # Getter for date_str virtual attribute

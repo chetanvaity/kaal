@@ -39,9 +39,11 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find params[:id]
-    @event.update_attributes(params[:event])
-    flash[:notice] = "#{@event.title} was successfully updated."
-    redirect_to event_path(@event)
+    if @event.update_attributes(params[:event])
+      redirect_to event_path(@event)
+    else
+      render :action => "edit"
+    end
   end
 
   def destroy
@@ -139,7 +141,7 @@ class EventsController < ApplicationController
   "headline":"Events related to #{tags_str}",
   "type":"default",
   "startDate":"2011,9,1",
-  "text":"Blah Blah about these tags/query",
+  "text":" ",
   "date": [
 END
 
@@ -154,7 +156,7 @@ END
         {
         "startDate":"#{d}",
         "headline":"#{e.title}",
-        "text":"Something more about #{e.title}. Blah Blah Blah",
+        "text":" ",
         "id":"#{e.id}",
         "asset":
           {

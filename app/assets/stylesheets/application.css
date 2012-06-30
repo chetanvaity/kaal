@@ -49,8 +49,7 @@ input.sharp {
     font-size: 12px;
     padding: 0px 7px;
     outline: 0;
-    -webkit-appearance: none;
-    
+    -webkit-appearance: none;    
 }
 
 input.sharp:focus {
@@ -60,3 +59,4 @@ input.sharp:focus {
 input.button:hover {
     border-color: #333399;
 }
+
