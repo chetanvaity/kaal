@@ -1,4 +1,6 @@
 Kaal::Application.routes.draw do
+  get "static/credits"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -18,6 +20,7 @@ Kaal::Application.routes.draw do
   match 'events/q/v1' => 'events#query'
   match 'events/q/v2' => 'events#query2'
   match 'events/myhome/myhome' => 'events#myhome'
+  match 'credits' => 'static#credits'
 
   # Sample resource route with options:
   #   resources :products do

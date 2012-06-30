@@ -1,12 +1,16 @@
-%footer{:class => "footer"}
-  %small
-    Copyright @ 2012-12
-  %nav
+%footer.footer
+  %p.pull-right
     %ul
       %li 
         = link_to "About",   '#'
       %li 
         = link_to "Contact", '#'
-      %li 
-        %a{:href => "http://news.railstutorial.org/"} News
-    
+
+  %p.pull-left
+    %div
+      Built using 
+      %a{:href => "http://www.rubyonrails.com"} Rails,
+      %a{:href => "http://timeline.verite.co"} Verite Timeline JS,
+      %a{:href => "http://twitter.github.com/bootstrap/"} Twitter Bootstrap,
+      and
+      %a{:href => "/credits"} lots more
