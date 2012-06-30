@@ -1,9 +1,7 @@
 %div#query-form
   = form_tag events_q_v2_path, :method => :post do
-    = label_tag :tags, 'Filter:', {:id => "tag_label"}
     = text_field_tag :tags, nil, {:class => "sharp", :placeholder => "eg: shivaji,mughal"}
     = submit_tag 'Search', {:class => "sharp button"}
-  = link_to "Edit", events_q_v1_path(:tags => "shivaji")
     
 %div#timeline-embed
 
@@ -17,7 +15,7 @@
     height: "80%",
     source: "#{@json_resource_path}",
     css: '/assets/timeline.css',
-    js: '/js/timeline-min.js'
+    js: '/js/timeline-min-2.js'
     }
 
 

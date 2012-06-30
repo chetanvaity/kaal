@@ -5190,7 +5190,13 @@ if (typeof VMM.Slider != 'undefined') {
 			trace("BUILDSLIDE");
 			$wrap	=	VMM.appendAndGetElement(element, "<div>", "content");
 			$slide	=	VMM.appendAndGetElement($wrap, "<div>");
-			
+
+		    /* Chetan */
+		    if (data.id != null && data.id != "") {
+			c.text += '<span class="btn btn-small" style="float:right"><a href="/events/' + data.id + '/edit/">Edit</a></span>';
+		    }
+		    /* End Chetan */
+
 			/* DATE
 			================================================== */
 			if (data.startdate != null && data.startdate != "") {
@@ -6839,7 +6845,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 						_date.tag				= data.date[i].tag;
 						_date.slug				= data.date[i].slug;
 						_date.uniqueid			= VMM.Util.unique_ID(7);
-						
+					    /* Chetan  - Add our own id as well */
+					    _date.id = data.date[i].id;
+					    /* End Chetan */
 						_dates.push(_date);
 					} 
 					
@@ -8270,7 +8278,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.DataObj == 'undefined') {
 	
 	VMM.Timeline.DataObj = {
-		
+
 		data_obj: {},
 		
 		model_array: [],
@@ -8279,7 +8287,6 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.DataObj == 'undefin
 			VMM.Timeline.DataObj.data_obj = {};
 			data = VMM.Timeline.DataObj.data_obj;
 			VMM.fireEvent(global, VMM.Timeline.Config.events.messege, VMM.Timeline.Config.language.messages.loading_timeline);
-			
 			if (type.of(raw_data) == "object") {
 				trace("DATA SOURCE: JSON OBJECT");
 				VMM.Timeline.DataObj.parseJSON(raw_data);
@@ -8344,7 +8351,6 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.DataObj == 'undefin
 			/*	Timeline Date Slides
 			================================================== */
 			VMM.Lib.each("#timeline li", function(i, elem){
-				
 				var valid_date = false;
 				
 				var _date = {

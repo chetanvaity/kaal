@@ -155,6 +155,7 @@ END
         "startDate":"#{d}",
         "headline":"#{e.title}",
         "text":"Something more about #{e.title}. Blah Blah Blah",
+        "id":"#{e.id}",
         "asset":
           {
           "media":"#{wiki_link}",
