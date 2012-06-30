@@ -91,7 +91,7 @@ class EventsController < ApplicationController
       logger.info("EventsController.query2() - json made: #{json_fname}")
     end
 
-    render :template => "events/tl", :formats => [:html], :handlers => :haml
+    render :template => "events/tl", :formats => [:html], :handlers => :haml, :layout => "tl"
   end
 
   # ----- Util functions -----
