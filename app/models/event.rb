@@ -7,6 +7,8 @@ class Event < ActiveRecord::Base
   # Look at http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html
   accepts_nested_attributes_for :tags, :allow_destroy => true
 
+  # Validation for title
+  validates :title, :presence => true
   validates :title, :length => {
     :maximum => 256,
     :minimum => 3
@@ -15,26 +17,33 @@ class Event < ActiveRecord::Base
     :with => /[a-zA-Z]/,
     :message => "must contain some letters"
   }
-  validates :title, :presence => true
 
+  # Validation for date
+  validate :date_str_validate
+
+  # Validation for tags
   validates_associated :tags
-  
-
-  # Virtual attribute - date_str for user-friendly date display and entry
+    
+  ### Virtual attribute - date_str for user-friendly date display and entry
   # See http://railscasts.com/episodes/32-time-in-text-field?view=asciicast
   # Getter for date_str virtual attribute
   def date_str
     Date.jd(self.jd).strftime("%B %d, %Y")
   end
 
-  # Setter for date_str virtual attribute
   def date_str=(s)
     self.jd = Date.parse(s).jd
   rescue ArgumentError
     @date_str_invalid = true
+    @bad_date_str = s
   end
 
-  def validate
-    errors.add(:jd, "is invalid") if @date_str_invalid
+  def date_str_validate
+    logger.info("validate(): for virtual attribute date_str")
+    errors.add(:date_str, "^Date (" + @bad_date_str + ") is invalid") if @date_str_invalid
   end
+  ### end virtual attribute - date_str
+
+
+
 end
