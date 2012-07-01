@@ -39,7 +39,6 @@ class Event < ActiveRecord::Base
   end
 
   def date_str_validate
-    logger.info("validate(): for virtual attribute date_str")
     errors.add(:date_str, "^Date (" + @bad_date_str + ") is invalid") if @date_str_invalid
   end
   ### end virtual attribute - date_str

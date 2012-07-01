@@ -84,7 +84,7 @@ class EventsController < ApplicationController
     else
       # Get events and create the json
       tags_arr = @tags.split ','
-      norm_tags_arr = get_norm_tags(tags_arr)
+      norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
       events = get_events(norm_tags_arr)
       @events_size = events.size
       json_fname = "#{Rails.root}/public/#{@json_resource_path}" 
@@ -97,22 +97,6 @@ class EventsController < ApplicationController
   end
 
   # ----- Util functions -----
-
-  def get_norm_tags(tags_arr)
-    norm_tags_arr = []
-    tags_arr.each do |tag_str|
-      # Get the normalized version of the tags
-      tag_str.downcase!
-      term = Babel.find_by_term(tag_str)
-      if term.nil?
-        norm_tags_arr.push(tag_str)
-      else
-        norm_tags_arr.push(term.norm_term.term)
-      end
-    end
-    return norm_tags_arr
-  end
-
   def get_events(tags_arr)
     e_ids = []
     tags_arr.each do |norm_tag|
