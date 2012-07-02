@@ -4,27 +4,31 @@
   = f.error_messages
 
   = label :event, :title, 'Title'
-  = text_field :event, :title, :class => "span4"
+  = text_field :event, :title, :class => "span4", :placeholder => "Be short (eg: Shivaji born)"
 
   = label :event, :date, 'Date'
-  = text_field :event, :date_str, :class => "span2"
+  = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
+  %span.help-block Be natural. 19 Feb 1630, February 1630, etc
   
   %div.well
     %fieldset
       %label Tags
       %div.items
-        = f.nested_fields_for :tags do |tagf|
-          %fieldset.item{:style => "float:left"}
-            %span.label
-              %span.tagtext
-                = tagf.object.name
-              %a.remove{:href => "#"}
-                %i.icon-remove.icon-white
-            = tagf.hidden_field(:name, :class => "tagname")
-            = tagf.hidden_field :id
-            = tagf.hidden_field :_destroy
-            &nbsp;
-
+        = f.nested_fields_for :tags, :show_empty => true do |tagf|
+          - if tagf
+            %fieldset.item{:style => "float:left"}
+              %span.label
+                %span.tagtext
+                  = tagf.object.name
+                %a.remove{:href => "#"}
+                  %i.icon-remove.icon-white
+              = tagf.hidden_field(:name, :class => "tagname")
+              = tagf.hidden_field :id
+              = tagf.hidden_field :_destroy
+              &nbsp;
+          - else
+            %div.empty.help-block No tags for this event (yet)
+                         
     %br
     %div.input-append
       %input#newtag.span2{:type => "text"}
