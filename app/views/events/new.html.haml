@@ -1,14 +1,42 @@
 %h2 Create new event
 
-= form_tag events_path, :method => :post do
+= form_for(@event, :url => events_path, :method => :post, :html => {:class => "well"}) do |f|
+  = f.error_messages
 
   = label :event, :title, 'Title'
-  = text_field :event, :title
+  = text_field :event, :title, :class => "span4"
 
   = label :event, :date, 'Date'
-  = date_select :event, :date
- 
-  = label :event, :tags, 'Tags'
-  = text_field :event, :tags
+  = text_field :event, :date_str, :class => "span2"
+  
+  %div.well
+    %fieldset
+      %label Tags
+      %div.items
+        = f.nested_fields_for :tags do |tagf|
+          %fieldset.item{:style => "float:left"}
+            %span.label
+              %span.tagtext
+                = tagf.object.name
+              %a.remove{:href => "#"}
+                %i.icon-remove.icon-white
+            = tagf.hidden_field(:name, :class => "tagname")
+            = tagf.hidden_field :id
+            = tagf.hidden_field :_destroy
+            &nbsp;
 
-  = submit_tag 'Save Changes'
+    %br
+    %div.input-append
+      %input#newtag.span2{:type => "text"}
+      %span.add.add-on.btn
+        %i.icon-plus
+        = p " Add tag"
+      &nbsp;    
+      %span.help-block Normalized version of the tag will be saved. eg: "Shivaji" will be saved if you add "chattrapati shivaji"
+
+  %br
+  = button_tag(:type => "submit", :class => "btn btn-primary") do
+    %i.icon-ok.icon-white
+    = p " Save"
+  %a.btn{:href => events_path}
+    = p "Cancel"

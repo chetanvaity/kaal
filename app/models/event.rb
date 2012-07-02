@@ -28,7 +28,11 @@ class Event < ActiveRecord::Base
   # See http://railscasts.com/episodes/32-time-in-text-field?view=asciicast
   # Getter for date_str virtual attribute
   def date_str
-    Date.jd(self.jd).strftime("%B %d, %Y")
+    if self.jd.nil?
+      return ""
+    else
+      Date.jd(self.jd).strftime("%B %d, %Y")
+    end
   end
 
   def date_str=(s)

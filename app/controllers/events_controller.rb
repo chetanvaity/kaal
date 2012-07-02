@@ -9,9 +9,7 @@ class EventsController < ApplicationController
   # Constructor
   def initialize(*params)
     super(*params)
-    logger.info("EventsController.initialize() started")
     @util = Util.instance
-    logger.info("EventsController.initialize() done")
   end
   
   def index
@@ -25,14 +23,20 @@ class EventsController < ApplicationController
   end
 
   def new
+    @event = Event.new
+    render :template => "events/new", :formats => [:html], :handlers => :haml
   end
 
   # The <strong> markup in flash message is breaking strict MVC
   def create
-    @event = Event.create!(params[:event])
-    flash[:notice] =
-      "<strong>#{@event.title}</strong> was successfully created".html_safe
-    redirect_to events_path
+    @event = Event.new(params[:event])
+    if @event.save
+      flash[:notice] =
+        "<strong>#{@event.title}</strong> was successfully created".html_safe
+      redirect_to event_path(@event)
+    else
+      render :action => "new"
+    end
   end
 
   def edit
