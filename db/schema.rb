@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120627111637) do
+ActiveRecord::Schema.define(:version => 20120702070238) do
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20120627111637) do
     t.integer "source"
   end
 
+  add_index "tags", ["event_id"], :name => "index_tags_on_event_id"
   add_index "tags", ["name"], :name => "name_of_tags"
 
 end

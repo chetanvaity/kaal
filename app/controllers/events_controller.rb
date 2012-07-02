@@ -27,9 +27,11 @@ class EventsController < ApplicationController
   def new
   end
 
+  # The <strong> markup in flash message is breaking strict MVC
   def create
     @event = Event.create!(params[:event])
-    flash[:notice] = "#{@event.title} was successfully created"
+    flash[:notice] =
+      "<strong>#{@event.title}</strong> was successfully created".html_safe
     redirect_to events_path
   end
 
@@ -40,6 +42,8 @@ class EventsController < ApplicationController
   def update
     @event = Event.find params[:id]
     if @event.update_attributes(params[:event])
+      flash[:notice] =
+        "<strong>#{@event.title}</strong> was successfully updated".html_safe
       redirect_to event_path(@event)
     else
       render :action => "edit"
@@ -49,7 +53,7 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find params[:id]
     @event.destroy
-    flash[:notice] = "#{@event.title} deleted"
+    flash[:notice] = "<strong>#{@event.title}</strong> deleted".html_safe
     redirect_to events_path
   end
 

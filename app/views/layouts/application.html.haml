@@ -9,9 +9,12 @@
 
   %body
     - if flash[:notice]
-      %p= flash[:notice]
+      %div.alert.alert-success
+        %i.icon-ok-sign
+        = flash[:notice]
     - elsif flash[:warning]
-      %p= flash[:warning]
+      %div.alert.alert-error
+        = flash[:warning]
       
     <!-- This is standard header added to the page -->
     = render 'layouts/header'
