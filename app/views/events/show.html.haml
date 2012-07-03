@@ -11,6 +11,14 @@
   %strong
     = Date.jd(@event.jd).strftime("%B %d, %Y")
 
+  %label URL
+  %strong
+    = @event.url
+
+  %label Description
+  %div.well
+    = @event.desc
+
   %div.well
     %label Tags
     %div

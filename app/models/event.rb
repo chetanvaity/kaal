@@ -21,6 +21,17 @@ class Event < ActiveRecord::Base
   # Validation for date
   validate :date_str_validate
 
+  # Validation for desc
+  validates :desc, :length => {
+    :maximum => 2048
+  }
+
+  # Validation for url
+  validates :url, :format => {
+    :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
+    :message => '^URL (%{value}) is invalid'
+ }, :allow_nil => true
+
   # Validation for tags
   validates_associated :tags
     

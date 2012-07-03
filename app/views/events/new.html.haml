@@ -9,7 +9,15 @@
   = label :event, :date, 'Date'
   = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
   %span.help-block Be natural. 19 Feb 1630, February 1630, etc
+
+  = label :event, :url, 'URL'
+  = text_field :event, :url, :class => "span4", :default => "http://", :placeholder => "http://en.wikipedia.org/wiki/Shivaji"
+  %span.help-block (Optional) A webpage which gives more information about this event
   
+  = label :event, :desc, 'Description'
+  = text_area :event, :desc, :class => "span4", :size => "80x4", :placeholder => "Describe the event here."
+  %span.help-block (Optional) Brief description about the event in your own words
+
   %div.well
     %fieldset
       %label Tags
