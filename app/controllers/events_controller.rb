@@ -65,7 +65,7 @@ class EventsController < ApplicationController
     logger.info("EventsController.query() started")
     @tags = params[:tags]
     tags_arr = @tags.split ','
-    norm_tags_arr = get_norm_tags(tags_arr)
+    norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
     @events = get_events(norm_tags_arr)
 
     respond_to do |format|
@@ -125,6 +125,7 @@ class EventsController < ApplicationController
   end
 
   # Make JSON file as needed by Verite Timeline
+  # TBD: JSON should be created using some JSON library to avoid escaping issues
   def make_json(events, json_fname, tags_arr)
     tags_str = tags_arr.map {|t| t.capitalize }.join(" and ")
     header_json = <<END
@@ -140,24 +141,27 @@ END
     date_json_array = []
     events.each do |e|
       d = Date.jd(e.jd).strftime("%Y,%m,%d")
-      e.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
-      t = $&.nil? ? e.title : $2
 
       text = e.desc.blank? ? " " : e.desc
+      text = ActiveSupport::JSON.encode(text)
+
+      title = ActiveSupport::JSON.encode(e.title)
 
       media_url = e.url
       media_caption = e.url
       if e.url.blank?
+        e.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
+        t = $&.nil? ? e.title : $2
         wiki_t = t.gsub(/ /, '_')
         media_url = "http://en.wikipedia.org/wiki/#{wiki_t}"
         media_caption = "Excerpt from the Wikipedia article for #{t}"
       end
-
-        date_json = <<END
+      
+      date_json = <<END
         {
         "startDate":"#{d}",
-        "headline":"#{e.title}",
-        "text":"#{text}",
+        "headline":#{title},
+        "text":#{text},
         "id":"#{e.id}",
         "asset":
           {
@@ -176,7 +180,7 @@ END
     }
 }
 END
-
+    
     File.open(json_fname, "w") do |f|
       f.puts(header_json)
       f.puts(all_date_json)
