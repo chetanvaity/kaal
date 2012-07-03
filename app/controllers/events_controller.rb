@@ -142,9 +142,16 @@ END
       d = Date.jd(e.jd).strftime("%Y,%m,%d")
       e.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
       t = $&.nil? ? e.title : $2
-      wiki_t = t.gsub(/ /, '_')
-      wiki_link = "http://en.wikipedia.org/wiki/#{wiki_t}"
-      date_json = <<END
+
+      media_url = e.url
+      media_caption = "User provided URL"
+      if e.url.blank?
+        wiki_t = t.gsub(/ /, '_')
+        media_url = "http://en.wikipedia.org/wiki/#{wiki_t}"
+        media_caption = "Excerpt from the Wikipedia article for #{t}"
+      end
+
+        date_json = <<END
         {
         "startDate":"#{d}",
         "headline":"#{e.title}",
@@ -152,9 +159,9 @@ END
         "id":"#{e.id}",
         "asset":
           {
-          "media":"#{wiki_link}",
+          "media":"#{media_url}",
           "credit":"",
-          "caption":"Excerpt from the Wikipedia article for #{t}"
+          "caption":"#{media_caption}"
           }
         }
 END

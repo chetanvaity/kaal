@@ -30,7 +30,7 @@ class Event < ActiveRecord::Base
   validates :url, :format => {
     :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
     :message => '^URL (%{value}) is invalid'
- }, :allow_nil => true
+ }, :allow_blank => true
 
   # Validation for tags
   validates_associated :tags
