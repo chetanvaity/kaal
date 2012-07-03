@@ -143,8 +143,10 @@ END
       e.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
       t = $&.nil? ? e.title : $2
 
+      text = e.desc.blank? ? " " : e.desc
+
       media_url = e.url
-      media_caption = "User provided URL"
+      media_caption = e.url
       if e.url.blank?
         wiki_t = t.gsub(/ /, '_')
         media_url = "http://en.wikipedia.org/wiki/#{wiki_t}"
@@ -155,7 +157,7 @@ END
         {
         "startDate":"#{d}",
         "headline":"#{e.title}",
-        "text":" ",
+        "text":"#{text}",
         "id":"#{e.id}",
         "asset":
           {
