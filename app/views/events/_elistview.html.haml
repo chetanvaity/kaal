@@ -1,0 +1,18 @@
+%table{:class => "table table-bordered"}
+  %thead
+    %tr
+      %th Title
+      %th Source
+      %th Description
+      %th URL
+  %tbody
+    = @fetchedevents.each do |eachevent| 
+      %tr
+        %td 
+          = eachevent.title
+        %td 
+          = eachevent.source
+        %td 
+          = eachevent.desc
+        %td 
+          = eachevent.url

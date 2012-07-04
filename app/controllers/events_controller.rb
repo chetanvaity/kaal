@@ -79,18 +79,19 @@ class EventsController < ApplicationController
   # and then render tl.html
   # Variables passed to view - @tags, @events_size, @json_resource_path
   def query2
-    from = params[:from]
-    to = params[:to]
+    @fromdate = params[:from]
+    @todate = params[:to]
     @tags = params[:tags]
     @tlid = params[:tlid]
+    @fetchedevents = nil
     @viewstyle = params[:view]
     if @viewstyle.nil?
       @viewstyle = "tl"
     end                                                                                                                                                                                                                                                                                                                                                           
-    logger.info("query2() entry - from=#{from}, to=#{to}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}")
+    logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}")
     
     begin
-      (from_jd, to_jd) = get_jds_from_params(from, to)
+      (from_jd, to_jd) = get_jds_from_params(@fromdatem, @todate)
     rescue ArgumentError => e
       flash[:warning] = e.to_s
       redirect_to root_url
@@ -102,24 +103,26 @@ class EventsController < ApplicationController
     @json_resource_path = "/tmpjson/#{query_key}.json"
 
     val = @@q_keys[query_key]
-    if not val.nil?
+    if (not val.nil?)  &&  (@viewstyle == "tl") 
       logger.info("Cache hit!")
       @events_size = val
     else
       # Get events and create the json
       tags_arr = @tags.split(',').map {|t| t.strip}
       norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
-      events = get_events(from_jd, to_jd, norm_tags_arr)
-      @events_size = events.size
+      @fetchedevents = get_events(from_jd, to_jd, norm_tags_arr)
+      @events_size = @fetchedevents.size
       
       if @viewstyle == "tl"
         #This is for timeline display
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-        make_json(events, json_fname, norm_tags_arr)
+        make_json(@fetchedevents, json_fname, norm_tags_arr)
         @@q_keys.store(query_key, @events_size)
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
         #This is for tabular display
+        #@fetchedevents should be used by the view for display purpose
+        logger.info("Size of @fetchedevents is #{@events_size}")
       end
     end
 

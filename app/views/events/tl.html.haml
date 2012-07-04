@@ -46,12 +46,8 @@
           %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"}
             %span.label.label-info List View
     -if @viewstyle == "list"
-      %table{:class => "table table-bordered"}
-        %thead
-          %tr
-            %th Col1
-            %th Col2
-            %th Col3  
+      = render 'elistview'
+      
 
 -if @events_size > 0
   -if @viewstyle == "tl"
