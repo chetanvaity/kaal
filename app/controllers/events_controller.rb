@@ -82,12 +82,17 @@ class EventsController < ApplicationController
     from = params[:from]
     to = params[:to]
     @tags = params[:tags]
-    logger.info("query2() entry - from=#{from}, to=#{to}, tags=#{@tags}")
+    @tlid = params[:tlid]
+    @viewstyle = params[:view]
+    if @viewstyle.nil?
+      @viewstyle = "tl"
+    end                                                                                                                                                                                                                                                                                                                                                           
+    logger.info("query2() entry - from=#{from}, to=#{to}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}")
     
     from_jd = to_jd = nil
     from_jd = Date.parse(from).jd unless from.nil? or from.empty?
     to_jd = Date.parse(to).jd unless to.nil? or to.empty?
-
+    
     @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
     query_key = @util.get_query_key(from_jd, to_jd, @tags)
     @json_resource_path = "/tmpjson/#{query_key}.json"
@@ -102,10 +107,16 @@ class EventsController < ApplicationController
       norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
       events = get_events(norm_tags_arr)
       @events_size = events.size
-      json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-      make_json(events, json_fname, norm_tags_arr)
-      @@q_keys.store(query_key, @events_size)
-      logger.info("EventsController.query2() - json made: #{json_fname}")
+      
+      if @viewstyle == "tl"
+        #This is for timeline display
+        json_fname = "#{Rails.root}/public/#{@json_resource_path}"
+        make_json(events, json_fname, norm_tags_arr)
+        @@q_keys.store(query_key, @events_size)
+        logger.info("EventsController.query2() - json made: #{json_fname}")
+      else
+        #This is for tabular display
+      end
     end
 
     render :template => "events/tl", :formats => [:html], :handlers => :haml, :layout => "tl"
