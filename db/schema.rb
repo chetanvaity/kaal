@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120702070238) do
+ActiveRecord::Schema.define(:version => 20120702190847) do
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20120702070238) do
     t.text    "title",                :null => false
     t.integer "jd",                   :null => false
     t.string  "source", :limit => 10
+    t.text    "desc"
+    t.string  "url"
   end
 
   create_table "tags", :force => true do |t|

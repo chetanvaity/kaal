@@ -2,6 +2,10 @@
 
 class Tag < ActiveRecord::Base
   validates :name, :presence => true
+  validates :name, :length => {
+    :maximum => 80,
+    :minimum => 2
+  }
 
   before_save :normalize_tag_name
 
