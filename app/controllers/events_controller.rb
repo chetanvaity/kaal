@@ -100,7 +100,7 @@ class EventsController < ApplicationController
       # Get events and create the json
       tags_arr = @tags.split(',').map {|t| t.strip}
       norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
-      events = get_events(norm_tags_arr)
+      events = get_events(from_jd, to_jd, norm_tags_arr)
       @events_size = events.size
       json_fname = "#{Rails.root}/public/#{@json_resource_path}"
       make_json(events, json_fname, norm_tags_arr)
@@ -112,7 +112,10 @@ class EventsController < ApplicationController
   end
 
   # ----- Util functions -----
-  def get_events(tags_arr)
+  
+  # Get events from DB
+  # Either from_jd and to_jd should both be nil or they should both be valid
+  def get_events(from_jd, to_jd, tags_arr)
     e_ids = []
     tags_arr.each do |norm_tag|
       tlist = Tag.find_all_by_name(norm_tag)
@@ -127,8 +130,13 @@ class EventsController < ApplicationController
         e_ids = e_ids & e_ids_for_tag
       end
     end
-    
-    return Event.where(:id => e_ids).order(:jd)
+
+    if from_jd.nil? or to_jd.nil?
+      # Forget date bracketing
+      return Event.where(:id => e_ids).order(:jd)
+    else
+      return Event.where(:id => e_ids, :jd => (from_jd..to_jd)).order(:jd)
+    end
   end
 
   # Make JSON file as needed by Verite Timeline
