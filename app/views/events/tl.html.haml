@@ -24,20 +24,23 @@
         %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
           %span.label.label-info Shivaji,Aurangzeb
 
+  %div#status-line
+    &nbsp; #{@events_size} events for tags: #{@tags}
+    
+  -if @events_size > 0
+    %div.row
+      %div.span3
+        %div.well
+          %a{:href => "#"}
+            %span.label.label-info Timeline View
+          &nbsp;
+          %a{:href => "#"}
+            %span.label.label-info List View
 
 -if @events_size > 0
-  %div.row
-    %div.span3
-      %div.well
-        %a{:href => "#"}
-          %span.label.label-info Timeline View
-        &nbsp;
-        %a{:href => "#"}
-          %span.label.label-info List View
   %div#timeline-embed
 
-%div#status-line
-  &nbsp; #{@events_size} events for tags: #{@tags}
+  
   
 %script{:type => "text/javascript"}
   :plain
