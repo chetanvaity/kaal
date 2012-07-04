@@ -47,7 +47,7 @@ class Event < ActiveRecord::Base
   end
 
   def date_str=(s)
-    self.jd = Date.parse(s).jd
+    self.jd = Event.parse_date(s).jd
   rescue ArgumentError
     @date_str_invalid = true
     @bad_date_str = s
@@ -58,6 +58,34 @@ class Event < ActiveRecord::Base
   end
   ### end virtual attribute - date_str
 
+  # A class method to parse a string into a date
+  # Raises exception if we cannot convert the given string
+  def self.parse_date(s)
+    dateformats = ['%d %b %Y', # 15 Aug 1947
+                   '%d %B %Y', # 15 August 1947
+                   '%b %d %Y', # Aug 15 1947
+                   '%B %d %Y', # August 15 1947
+                   '%b %Y', # Dec 1755
+                   '%B %Y', # December 1755
+                   '%Y', # 1005 (BC/AD handled with sign of year)
+                  ]
+    s.strip!
+    zero_date = Date.jd(0)
 
+    date = zero_date
+    dateformats.each do |f| 
+      begin
+        date = Date.strptime(s, f)
+        break
+      rescue ArgumentError => e
+        next
+      end
+    end
+
+    # We could not convert using any of the formats
+    raise ArgumentError, "Invalid date: #{s}" if date == zero_date
+
+    return date
+  end
 
 end

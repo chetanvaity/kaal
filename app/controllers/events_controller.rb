@@ -84,9 +84,13 @@ class EventsController < ApplicationController
     @tags = params[:tags]
     logger.info("query2() entry - from=#{from}, to=#{to}, tags=#{@tags}")
     
-    from_jd = to_jd = nil
-    from_jd = Date.parse(from).jd unless from.nil? or from.empty?
-    to_jd = Date.parse(to).jd unless to.nil? or to.empty?
+    begin
+      (from_jd, to_jd) = get_jds_from_params(from, to)
+    rescue ArgumentError => e
+      flash[:warning] = e.to_s
+      redirect_to root_url
+      return
+    end
 
     @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
     query_key = @util.get_query_key(from_jd, to_jd, @tags)
@@ -138,6 +142,31 @@ class EventsController < ApplicationController
       return Event.where(:id => e_ids, :jd => (from_jd..to_jd)).order(:jd)
     end
   end
+
+  # Convert the date parsms into Date objects and then their JDs
+  # If both are nil, return nils
+  # If from is nil, return JD = 0
+  # If to is nil, return current date JD
+  def get_jds_from_params(from, to)
+    if (from.nil? or from.empty?)
+      if (to.nil? or to.empty?)
+        from_jd = to_jd = nil
+      else
+        from_jd = 0
+        to_jd = Event.parse_date(to).jd
+      end
+    else
+      if (to.nil? or to.empty?)
+        from_jd = Event.parse_date(from).jd
+        to = Date.today.jd
+      else
+        from_jd = Event.parse_date(from).jd
+        to_jd = Event.parse_date(to).jd
+      end
+    end
+    return [from_jd, to_jd]
+  end
+  
 
   # Make JSON file as needed by Verite Timeline
   # TBD: JSON should be created using some JSON library to avoid escaping issues

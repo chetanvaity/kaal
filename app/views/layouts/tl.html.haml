@@ -28,12 +28,6 @@
 
 
   %body
-    - if flash[:notice]
-      %p= flash[:notice]
-    - elsif flash[:warning]
-      %p= flash[:warning]
-      
-    <!-- This is standard header added to the page -->
     = render 'layouts/header'
     = yield
     = render 'layouts/footer'
