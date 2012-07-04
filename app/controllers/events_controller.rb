@@ -89,10 +89,14 @@ class EventsController < ApplicationController
     end                                                                                                                                                                                                                                                                                                                                                           
     logger.info("query2() entry - from=#{from}, to=#{to}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}")
     
-    from_jd = to_jd = nil
-    from_jd = Date.parse(from).jd unless from.nil? or from.empty?
-    to_jd = Date.parse(to).jd unless to.nil? or to.empty?
-    
+    begin
+      (from_jd, to_jd) = get_jds_from_params(from, to)
+    rescue ArgumentError => e
+      flash[:warning] = e.to_s
+      redirect_to root_url
+      return
+    end
+
     @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
     query_key = @util.get_query_key(from_jd, to_jd, @tags)
     @json_resource_path = "/tmpjson/#{query_key}.json"
@@ -105,7 +109,7 @@ class EventsController < ApplicationController
       # Get events and create the json
       tags_arr = @tags.split(',').map {|t| t.strip}
       norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
-      events = get_events(norm_tags_arr)
+      events = get_events(from_jd, to_jd, norm_tags_arr)
       @events_size = events.size
       
       if @viewstyle == "tl"
@@ -123,7 +127,10 @@ class EventsController < ApplicationController
   end
 
   # ----- Util functions -----
-  def get_events(tags_arr)
+  
+  # Get events from DB
+  # Either from_jd and to_jd should both be nil or they should both be valid
+  def get_events(from_jd, to_jd, tags_arr)
     e_ids = []
     tags_arr.each do |norm_tag|
       tlist = Tag.find_all_by_name(norm_tag)
@@ -138,9 +145,39 @@ class EventsController < ApplicationController
         e_ids = e_ids & e_ids_for_tag
       end
     end
-    
-    return Event.where(:id => e_ids).order(:jd)
+
+    if from_jd.nil? or to_jd.nil?
+      # Forget date bracketing
+      return Event.where(:id => e_ids).order(:jd)
+    else
+      return Event.where(:id => e_ids, :jd => (from_jd..to_jd)).order(:jd)
+    end
   end
+
+  # Convert the date parsms into Date objects and then their JDs
+  # If both are nil, return nils
+  # If from is nil, return JD = 0
+  # If to is nil, return current date JD
+  def get_jds_from_params(from, to)
+    if (from.nil? or from.empty?)
+      if (to.nil? or to.empty?)
+        from_jd = to_jd = nil
+      else
+        from_jd = 0
+        to_jd = Event.parse_date(to).jd
+      end
+    else
+      if (to.nil? or to.empty?)
+        from_jd = Event.parse_date(from).jd
+        to = Date.today.jd
+      else
+        from_jd = Event.parse_date(from).jd
+        to_jd = Event.parse_date(to).jd
+      end
+    end
+    return [from_jd, to_jd]
+  end
+  
 
   # Make JSON file as needed by Verite Timeline
   # TBD: JSON should be created using some JSON library to avoid escaping issues

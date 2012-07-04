@@ -14,9 +14,9 @@
         = flash[:notice]
     - elsif flash[:warning]
       %div.alert.alert-error
+        %i.icon-exclamation-sign
         = flash[:warning]
-      
-    <!-- This is standard header added to the page -->
+
     = render 'layouts/header'
     %div{:class => "container"}
       = yield
