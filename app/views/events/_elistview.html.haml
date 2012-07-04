@@ -2,14 +2,17 @@
   %thead
     %tr
       %th Title
+      %th Date
       %th Source
       %th Description
       %th URL
   %tbody
-    = @fetchedevents.each do |eachevent| 
+    - @fetchedevents.each do |eachevent|
       %tr
         %td 
           = eachevent.title
+        %td
+          = Date.jd(eachevent.jd).strftime("%B %d, %Y")
         %td 
           = eachevent.source
         %td 
