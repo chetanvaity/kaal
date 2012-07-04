@@ -1,21 +1,29 @@
-%div.row
-  %div.span6
-    %div#query-form
-      = form_tag events_q_v2_path, :method => :post do
-        = text_field_tag :tags, nil, {:class => "sharp", :placeholder => "eg: shivaji,mughal"}
-        = submit_tag 'Search', {:class => "sharp button"}
-  %div.span6
-    %br
-    %br
-    %br
-    %br  
-    Check out:
-    %a{:href => "/events/q/v2?tags=demo,R+D+Burman"}
-      %span.label.label-info R D Burman
-    &nbsp;
-    %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
-      %span.label.label-info Shivaji,Aurangzeb
-  
+%div.container
+  %div.row
+    %div.span7
+      %br
+      %br
+      %br    
+      = form_tag events_q_v2_path, :method => :post, :class => "well form-horizontal form-search" do
+        = text_field_tag :from, nil, {:class => "input-small", :placeholder => "From: (eg: 1947)"}
+        = text_field_tag :to, nil, {:class => "input-small", :placeholder => "To: (eg: 1977)"}
+        = text_field_tag :tags, nil, {:class => "input-medium", :placeholder => "eg: india,prime minister"}
+        = button_tag(:type => "submit", :class => "btn btn-primary") do
+          %i.icon-search.icon-white
+          = p " Search"
+
+    %div.span4
+      %br
+      %br
+      %br
+      %div.well
+        Check out:
+        %a{:href => "/events/q/v2?tags=demo,R+D+Burman"}
+          %span.label.label-info R D Burman
+        &nbsp;
+        %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
+          %span.label.label-info Shivaji,Aurangzeb
+
 
 %div#timeline-embed
 

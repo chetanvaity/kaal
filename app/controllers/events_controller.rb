@@ -79,10 +79,17 @@ class EventsController < ApplicationController
   # and then render tl.html
   # Variables passed to view - @tags, @events_size, @json_resource_path
   def query2
-    logger.info("EventsController.query2() started")
+    from = params[:from]
+    to = params[:to]
     @tags = params[:tags]
+    logger.info("query2() entry - from=#{from}, to=#{to}, tags=#{@tags}")
+    
+    from_jd = to_jd = nil
+    from_jd = Date.parse(from).jd unless from.nil? or from.empty?
+    to_jd = Date.parse(to).jd unless to.nil? or to.empty?
+
     @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
-    query_key = @util.get_query_key(@tags)
+    query_key = @util.get_query_key(from_jd, to_jd, @tags)
     @json_resource_path = "/tmpjson/#{query_key}.json"
 
     val = @@q_keys[query_key]
@@ -91,11 +98,11 @@ class EventsController < ApplicationController
       @events_size = val
     else
       # Get events and create the json
-      tags_arr = @tags.split ','
+      tags_arr = @tags.split(',').map {|t| t.strip}
       norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
       events = get_events(norm_tags_arr)
       @events_size = events.size
-      json_fname = "#{Rails.root}/public/#{@json_resource_path}" 
+      json_fname = "#{Rails.root}/public/#{@json_resource_path}"
       make_json(events, json_fname, norm_tags_arr)
       @@q_keys.store(query_key, @events_size)
       logger.info("EventsController.query2() - json made: #{json_fname}")
@@ -128,10 +135,11 @@ class EventsController < ApplicationController
   # TBD: JSON should be created using some JSON library to avoid escaping issues
   def make_json(events, json_fname, tags_arr)
     tags_str = tags_arr.map {|t| t.capitalize }.join(" and ")
+    headline = tags_str.titlecase
     header_json = <<END
 {"timeline":
   {
-  "headline":"Events related to #{tags_str}",
+  "headline":"#{headline}",
   "type":"default",
   "startDate":"2011,9,1",
   "text":" ",

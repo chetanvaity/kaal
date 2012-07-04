@@ -153,9 +153,10 @@ class Util
   # This array is the params which includes tags and from, to etc.
   # The query_key is used to create a unique JSON file
   # Also used for cacheing query results
-  def get_query_key(tags)
-    return Digest::MD5.hexdigest(tags)
-    # TBD: use "from", "to" also
+  def get_query_key(from_jd, to_jd, tags)
+    f_jd_str = from_jd.nil? ? "nil" : from_jd.to_s
+    t_jd_str = to_jd.nil? ? "nil" : to_jd.to_s
+    return Digest::MD5.hexdigest("#{f_jd_str}-#{t_jd_str}-#{tags}")
   end
 
 end
