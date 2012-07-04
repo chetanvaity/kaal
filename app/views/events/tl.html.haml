@@ -32,9 +32,6 @@
         &nbsp;
         %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
           %span.label.label-info Shivaji,Aurangzeb
-
-  %div#status-line
-    &nbsp; #{@events_size} events for tags: #{@tags}
     
   -if @events_size > 0
     %div.row
@@ -48,19 +45,20 @@
     -if @viewstyle == "list"
       = render 'elistview'
       
+  -if @events_size > 0
+    -if @viewstyle == "tl"
+      %div.row
+        %div.span12.well
+          %div#timeline-embed
 
--if @events_size > 0
-  -if @viewstyle == "tl"
-    %div#timeline-embed
-
-
-  
-  
+  %div#status-line
+    &nbsp; #{@events_size} events for tags: #{@tags}
+ 
 %script{:type => "text/javascript"}
   :plain
     var timeline_config = {
     width:  "100%",
-    height: "70%",
+    height: "400",
     source: "#{@json_resource_path}",
     css: '/assets/timeline.css',
     js: '/js/timeline-min-2.js'
