@@ -1,6 +1,6 @@
 %div.container
   %div.row
-    %div.span7
+    %div.span12
       %br
       %br
       = form_tag events_q_v2_path, :method => :post, :class => "well form-horizontal form-search" do
@@ -19,23 +19,24 @@
         = button_tag(:type => "submit", :class => "btn btn-primary") do
           %i.icon-search.icon-white
           = p " Search"
-
-    %div.span4
-      %br
-      %br
-      %div.well
-        Check out:
-        %a{:href => "/events/q/v2?tags=demo,R+D+Burman"}
-          %span.label.label-info R D Burman
         &nbsp;
-        %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
-          %span.label.label-info Shivaji,Aurangzeb
+        %span.pull-right
+          Examples:
+          %a{:href => "/events/q/v2?tags=demo,R+D+Burman"}
+            %span.label.label-info R D Burman
+          &nbsp;
+          %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
+            %span.label.label-info Shivaji,Aurangzeb
+          &nbsp;
+          %a{:href => "/events/q/v2?tags=demo,India,Medicine"}
+            %span.label.label-info India,Medicine
   
-  
-  /%span.label #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
   %div#status-line
-    &nbsp; #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
-      
+    - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty)
+      &nbsp; #{@events_size} events for tags: #{@tags}
+    - else
+      &nbsp; #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
+
   -if @events_size > 0
     %ul{:class => "nav nav-tabs"}
       -if @viewstyle == "tl"
