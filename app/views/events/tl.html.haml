@@ -34,20 +34,17 @@
           %span.label.label-info Shivaji,Aurangzeb
     
   -if @events_size > 0
-    %div.row
-      %div.span5
-        %div.well
-          %ul{:class => "nav nav-tabs"}
-            -if @viewstyle == "tl"
-              %li.active
-                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
-              %li
-                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
-            -else
-              %li
-                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
-              %li.active
-                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
+    %ul{:class => "nav nav-tabs"}
+      -if @viewstyle == "tl"
+        %li.active
+          %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
+        %li
+          %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
+      -else
+        %li
+          %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
+        %li.active
+          %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
     -if @viewstyle == "list"
       = render 'elistview'
       
