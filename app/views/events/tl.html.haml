@@ -31,7 +31,7 @@
           %a{:href => "/events/q/v2?tags=demo,India,Medicine"}
             %span.label.label-info India,Medicine
   
-  %div#status-line
+  %div#status-line.pull-right
     - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty)
       &nbsp; #{@events_size} events for tags: #{@tags}
     - else
