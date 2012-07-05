@@ -69,7 +69,8 @@ class EventsController < ApplicationController
     @events = get_events(norm_tags_arr)
 
     respond_to do |format|
-      format.html { render :template => "events/index", :formats => [:html], :handlers => :haml }
+      format.html { render :template => "events/index", :formats => [:html],
+        :handlers => :haml }
       format.json  { render :json => @events }
     end
   end
@@ -87,11 +88,12 @@ class EventsController < ApplicationController
     @viewstyle = params[:view]
     if @viewstyle.nil?
       @viewstyle = "tl"
-    end                                                                                                                                                                                                                                                                                                                                                           
+    end
+
     logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}")
     
     begin
-      (from_jd, to_jd) = get_jds_from_params(@fromdatem, @todate)
+      (from_jd, to_jd) = get_jds_from_params(@fromdate, @todate)
     rescue ArgumentError => e
       flash[:warning] = e.to_s
       redirect_to root_url
@@ -116,12 +118,12 @@ class EventsController < ApplicationController
       if @viewstyle == "tl"
         #This is for timeline display
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-        make_json(@fetchedevents, json_fname, norm_tags_arr)
+        make_json(@fetchedevents, json_fname, norm_tags_arr, from_jd, to_jd)
         @@q_keys.store(query_key, @events_size)
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
         #This is for tabular display
-        #@fetchedevents should be used by the view for display purpose
+        # @fetchedevents should be used by the view for display purpose
         logger.info("Size of @fetchedevents is #{@events_size}")
       end
     end
@@ -184,16 +186,23 @@ class EventsController < ApplicationController
 
   # Make JSON file as needed by Verite Timeline
   # TBD: JSON should be created using some JSON library to avoid escaping issues
-  def make_json(events, json_fname, tags_arr)
-    tags_str = tags_arr.map {|t| t.capitalize }.join(" and ")
-    headline = tags_str.titlecase
+  def make_json(events, json_fname, tags_arr, from_jd, to_jd)
+    # Make nice looking main frame for the timeline
+    headline = tags_arr.join(" & ").titlecase
+    if (from_jd.nil? or to_jd.nil?)
+      text = " "
+    else
+      text = "Events from " + Date.jd(from_jd).strftime("%d %b %Y") + " - " +
+        Date.jd(to_jd).strftime("%d %b %Y")
+    end
+
     header_json = <<END
 {"timeline":
   {
   "headline":"#{headline}",
   "type":"default",
   "startDate":"2011,9,1",
-  "text":" ",
+  "text":"#{text}",
   "date": [
 END
 
