@@ -3,7 +3,6 @@
     %div.span7
       %br
       %br
-      %br
       = form_tag events_q_v2_path, :method => :post, :class => "well form-horizontal form-search" do
         - if flash[:notice]
           %div.alert.alert-success
@@ -24,7 +23,6 @@
     %div.span4
       %br
       %br
-      %br
       %div.well
         Check out:
         %a{:href => "/events/q/v2?tags=demo,R+D+Burman"}
@@ -32,7 +30,12 @@
         &nbsp;
         %a{:href => "/events/q/v2?tags=demo,Shivaji,Aurangzeb"}
           %span.label.label-info Shivaji,Aurangzeb
-    
+  
+  
+  /%span.label #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
+  %div#status-line
+    &nbsp; #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
+      
   -if @events_size > 0
     %ul{:class => "nav nav-tabs"}
       -if @viewstyle == "tl"
@@ -54,8 +57,7 @@
         %div.span12.well
           %div#timeline-embed
 
-  %div#status-line
-    &nbsp; #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
+  
  
 %script{:type => "text/javascript"}
   :plain
