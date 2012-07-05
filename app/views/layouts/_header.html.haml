@@ -1,5 +1,11 @@
 %header{:class => "navbar navbar-fixed-top"}
   %div{:class => 'navbar-inner'}
     %div{:class => 'container'}
-      = link_to image_tag("sundial-small.png", alt: "ka.al", id: 'logo'), '/'
-      %h1 kaal
+      = link_to image_tag("sundial-small.png", alt: "kaal", id: 'logo'), '/'
+      %h1{:style => "display:inline"} kaal
+      %ul.nav.nav-pills.pull-right
+        %li
+          %a{:href => "/"} Generic Timeline
+        %li.divider-vertical
+        %li
+          %a{:href => "#"} Featured Timelines
