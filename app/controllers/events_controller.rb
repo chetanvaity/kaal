@@ -95,7 +95,7 @@ class EventsController < ApplicationController
     begin
       (from_jd, to_jd) = get_jds_from_params(@fromdate, @todate)
     rescue ArgumentError => e
-      flash[:warning] = e.to_s
+      flash.now[:warning] = e.to_s
       redirect_to root_url
       return
     end
@@ -128,7 +128,8 @@ class EventsController < ApplicationController
       end
     end
 
-    render :template => "events/tl", :formats => [:html], :handlers => :haml, :layout => "tl"
+    render :template => "events/tl", :formats => [:html], :handlers => :haml,
+    :layout => "tl"
   end
 
   # ----- Util functions -----
@@ -140,7 +141,9 @@ class EventsController < ApplicationController
     tags_arr.each do |norm_tag|
       tlist = Tag.find_all_by_name(norm_tag)
       if tlist.nil? || tlist.empty?
-        flash[:notice] = "No such tag: '#{norm_tag}'"
+        add_link = "<a class=\"pull-right\" href=\"#{url_for(:new_event)}\">Add new event</a>"
+        flash.now[:warning] =
+          "Sorry! I don't know anything like '#{norm_tag}'. #{add_link}".html_safe
         break
       end
       e_ids_for_tag = tlist.map { |t| t.event_id } 
@@ -174,7 +177,7 @@ class EventsController < ApplicationController
     else
       if (to.nil? or to.empty?)
         from_jd = Event.parse_date(from).jd
-        to = Date.today.jd
+        to_jd = Date.today.jd
       else
         from_jd = Event.parse_date(from).jd
         to_jd = Event.parse_date(to).jd
