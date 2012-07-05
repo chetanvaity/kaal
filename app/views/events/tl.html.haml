@@ -31,40 +31,39 @@
           %a{:href => "/events/q/v2?tags=demo,India,Medicine"}
             %span.label.label-info India,Medicine
   
-  %div#status-line.pull-right
-    - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty)
-      &nbsp; #{@events_size} events for tags: #{@tags}
-    - else
-      &nbsp; #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags}
+  %div.row
+    %div.span12.border
+      %div#status-line.pull-right
+        - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty)
+          #{@events_size} events for tags: #{@tags} &nbsp; 
+        - else
+          #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp; 
 
-  -if @events_size > 0
-    %ul{:class => "nav nav-tabs"}
-      -if @viewstyle == "tl"
-        %li.active
-          %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
-        %li
-          %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
-      -else
-        %li
-          %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
-        %li.active
-          %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
-    -if @viewstyle == "list"
-      = render 'elistview'
-      
-  -if @events_size > 0
-    -if @viewstyle == "tl"
-      %div.row
-        %div.span12.well
+      -if @events_size > 0
+        %ul.nav.nav-tabs.no-bottom-margin
+          -if @viewstyle == "tl"
+            %li.active
+              %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
+            %li
+              %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
+          -else
+            %li
+              %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
+            %li.active
+              %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
+        -if @viewstyle == "list"
+          = render 'elistview'
+
+      -if @events_size > 0
+        -if @viewstyle == "tl"
           %div#timeline-embed
-
   
  
 %script{:type => "text/javascript"}
   :plain
     var timeline_config = {
     width:  "100%",
-    height: "400",
+    height: "468",
     source: "#{@json_resource_path}",
     css: '/assets/timeline.css',
     js: '/js/timeline-min-2.js'

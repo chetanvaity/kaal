@@ -141,3 +141,24 @@ footer ul li {
   @extend .control-group;
   @extend .error;	 
 }
+
+.fabric {
+  background-image: url('/assets/fabric_1.png');
+  background-repeat: repeat;
+  background-attachment: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-origin: initial;
+  background-clip: initial;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0px;
+}
+
+.border {
+  border: 1px solid;
+  border-color: $grayLight;
+  border-radius: 5px;
+  box-shadow: 10px 10px 5px #888888;
+}
