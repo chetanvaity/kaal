@@ -28,7 +28,10 @@
 
 
   %body.fabric
-    = render 'layouts/header'
+    -if @embeddedview == 'false'
+      = render 'layouts/header'
+      
     = yield
-    = render 'layouts/footer'
+    -if @embeddedview == 'false'
+      = render 'layouts/footer'
     

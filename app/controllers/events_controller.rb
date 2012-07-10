@@ -118,8 +118,16 @@ class EventsController < ApplicationController
     if @viewstyle.nil?
       @viewstyle = "tl"
     end
+    
+    @embeddedview = params[:embview]
+    if @embeddedview.nil?
+      @embeddedview = "false"
+    end
+    if @embeddedview == "true"
+      @viewstyle = "tl"
+    end
 
-    logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}")
+    logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}, embeddedview=#{@embeddedview}")
     
     begin
       (from_jd, to_jd) = get_jds_from_params(@fromdate, @todate)
@@ -156,9 +164,10 @@ class EventsController < ApplicationController
         logger.info("Size of @fetchedevents is #{@events_size}")
       end
     end
-
+    
     render :template => "events/tl", :formats => [:html], :handlers => :haml,
-    :layout => "tl"
+     :layout => "tl"
+    
   end
 
   # ----- Util functions -----
