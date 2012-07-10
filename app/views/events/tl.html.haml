@@ -34,7 +34,7 @@
   %div.row
     %div.span12.border
       %div#status-line.pull-right
-        - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty)
+        - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty?)
           #{@events_size} events for tags: #{@tags} &nbsp; 
         - else
           #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp; 

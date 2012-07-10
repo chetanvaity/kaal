@@ -41,19 +41,46 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find params[:id]
-  end
-
-  def update
-    @event = Event.find params[:id]
-    if @event.update_attributes(params[:event])
-      flash[:notice] =
-        "<strong>#{@event.title}</strong> was successfully updated".html_safe
-      redirect_to event_path(@event)
-    else
-      render :action => "edit"
+    
+    respond_to do |format|
+      format.html { render :layout => ! request.xhr? }
     end
   end
 
+  
+  
+  def update
+    @event = Event.find params[:id]
+    #This parameter will be available on this form only when edit has attempted from listview.
+    @editfromlistview = params[:editfromlistview]
+      
+    if @event.update_attributes(params[:event])
+      if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
+        #This is edit from list view. 
+        #Let's show success notification and let's show the refreshed listview page
+        flash[:notice] =
+                  "<strong>#{@event.title}</strong> was successfully updated".html_safe
+        #To refresh the listview page
+        redirect_to(:back)
+      else
+        #Normal edit success case
+        flash[:notice] =
+          "<strong>#{@event.title}</strong> was successfully updated".html_safe
+        redirect_to event_path(@event)
+      end
+    else
+      if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
+        #Show error message with refreshed listview page
+        flash[:warning] =   "<strong>#{@event.title}</strong> could not be updated".html_safe
+        redirect_to(:back)  
+      else
+        #Normal edit error case  
+        render :action => "edit"
+      end
+    end
+  end
+
+  
   def destroy
     @event = Event.find params[:id]
     @event.destroy
@@ -61,6 +88,7 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
+  
   def query
     logger.info("EventsController.query() started")
     @tags = params[:tags]
@@ -75,6 +103,7 @@ class EventsController < ApplicationController
     end
   end
 
+  
   # Get events
   # Make JSON for use with Verite Timeline
   # and then render tl.html

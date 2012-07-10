@@ -1,3 +1,12 @@
+/ This is to disp[lay modal popup on demand. Used when clicked on 'edit' link in listview
+%div{:class => "modal hide", :id => "modal-editEvent"}
+  %div{:class => "modal-header"}
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
+    /%h3 Modal Popup
+  %div{:class => "modal-body"}
+
+
+/ List view table
 %table{:class => "table table-bordered table-striped"}
   %thead
     %tr
@@ -6,6 +15,7 @@
       %th Source
       %th Description
       %th URL
+      %th
   %tbody
     - @fetchedevents.each do |eachevent|
       %tr
@@ -19,3 +29,7 @@
           = eachevent.desc
         %td 
           = eachevent.url
+        %td
+          %div{:class => "event"}
+            %div{:class => "details"}
+              = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html

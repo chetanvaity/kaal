@@ -2,6 +2,10 @@
 
 = f.error_messages
 
+/ Added this hidden tag on form if it is crerated from listview page
+-if request.xhr?
+  = hidden_field_tag 'editfromlistview', 'true'
+
 = label :event, :title, 'Title'
 = text_field :event, :title, :class => "span4", :placeholder => "Be short (eg: Shivaji born)"
 
@@ -46,8 +50,20 @@
     %span.help-block Normalized version of the tag will be saved. eg: "Shivaji" will be saved if you add "chattrapati shivaji"
 
 %br
-= button_tag(:type => "submit", :class => "btn btn-primary") do
+= button_tag(:type => "submit", :id => "submit_me", :class => "btn btn-primary") do
   %i.icon-ok.icon-white
   = p " Save"
-%a.btn{:href => events_path}
-  = p "Cancel"
+-if request.xhr?  
+  %a{:href => "#", :class => "btn", "data-dismiss" => "modal"}Cancel
+-else  
+  %a.btn{:href => events_path}
+    = p "Cancel"
+    
+-if request.xhr?
+  :javascript
+    $('#submit_me').bind('click',function() {
+      $('#modal-editEvent').modal('hide');
+    });
+    //$('form').live('ajax:success', function(ev, data, status, xhr) {
+    //  $('#modal-editEvent').modal('hide');
+    //});      
