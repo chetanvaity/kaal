@@ -1,3 +1,27 @@
+/ This is to disp[lay modal popup on demand. 
+%div{:class => "modal hide", :id => "modal-popup"}
+  %div{:class => "modal-header"}
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
+    %strong Copy following html embed code and use on intended webpage
+  %div{:class => "modal-body"}
+    /Here we are going to generate the embed code by doing lot of haml tricks
+    /We need something like "<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=#{@tags}&tlid=#{@tlid}" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>" 
+    /with variables evaluated in side.
+    = succeed ('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>') do
+      = succeed(@tlid) do
+        = succeed('&tlid=') do
+          = succeed(@tags) do
+            = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=')
+    = escape_once(haml_indent())
+    /- haml_concat('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=')
+    /- haml_concat(@tags)
+    /- haml_concat('&tlid=')
+    /- haml_concat(@tlid)
+    /- haml_concat('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>')
+    /= escape_once(haml_indent())
+    /= escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=#{@tags}&tlid=#{@tlid}" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>')
+    /!= "<iframe src=\"http://localhost:3000/events/q/v2?embview=true&tags=#{@tags}&tlid=#{@tlid}\" frameborder=\"yes\" scrolling=\"no\" width=\"78%\" height=\"480\">Test</iframe>"
+
 %div.container
   -if @embeddedview == 'false'
     %div.row
@@ -36,12 +60,14 @@
     %div.span12.border
       %div#status-line.pull-right
         - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty?)
-          #{@events_size} events for tags: #{@tags} &nbsp; 
+          &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events for tags: #{@tags} &nbsp; 
         - else
-          #{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp; 
-
+          &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp; 
+         
       -if @events_size > 0
         -if @embeddedview == 'false'
+          %a.btn.btn-primary.pull-right{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
+            %i.icon-share.icon-white
           %ul.nav.nav-tabs.no-bottom-margin
             -if @viewstyle == "tl"
               %li.active
