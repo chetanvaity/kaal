@@ -1,4 +1,5 @@
-%h2 Edit Event
+-if (!request.xhr?)
+  %h2 Edit Event
 
 = form_for(@event, :html => {:class => "well"}) do |f|
   = render :partial => "new_edit", :locals => {:f => f}

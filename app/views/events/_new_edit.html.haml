@@ -11,15 +11,31 @@
 
 = label :event, :date, 'Date'
 = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
+-if request.xhr?
+  %br
 %span.help-block Be natural. 19 Feb 1630, February 1630, etc
+-if request.xhr?
+  %br
+  %br
+
 
 = label :event, :url, 'URL'
 = text_field :event, :url, :class => "span4", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
+-if request.xhr?
+  %br
 %span.help-block (Optional) A webpage which gives more information about this event
-
+-if request.xhr?
+  %br
+  %br
+  
 = label :event, :desc, 'Description'
 = text_area :event, :desc, :class => "span4", :size => "80x4", :placeholder => "Describe the event here."
+-if request.xhr?
+  %br
 %span.help-block (Optional) Brief description about the event in your own words
+-if request.xhr?
+  %br
+  %br
 
 %div.well
   %fieldset
@@ -46,7 +62,10 @@
     %span.add.add-on.btn
       %i.icon-plus
       = p " Add tag"
-    &nbsp;    
+    &nbsp;
+    -if (!request.xhr?)
+      %span.help-block Normalized version of the tag will be saved. eg: "Shivaji" will be saved if you add "chattrapati shivaji"
+  -if request.xhr?
     %span.help-block Normalized version of the tag will be saved. eg: "Shivaji" will be saved if you add "chattrapati shivaji"
 
 %br
