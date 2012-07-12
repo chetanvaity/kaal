@@ -22,7 +22,11 @@ class Tag < ActiveRecord::Base
     if term.nil?
       return name_str
     else
-      return term.norm_term.term
+      if (term.norm_term.nil?) || (term.norm_term.term.nil?) 
+        return name_str
+      else
+        return term.norm_term.term
+      end
     end
   end
 
