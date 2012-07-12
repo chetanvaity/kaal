@@ -49,8 +49,9 @@ outf = open(outfile, "w")
 for line in inf:
     word = line.strip()
     tset = get_tset(word)
-    outf.write('\t'.join(tset))
-    outf.write('\n')
+    if len(tset) > 1:
+        outf.write('\t'.join(tset))
+        outf.write('\n')
 
 inf.close
 outf.close
