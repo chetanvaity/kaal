@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require 'page_rankr'
 require 'util.rb'
 
 namespace :data do
@@ -128,6 +129,64 @@ namespace :data do
       end
     end
   end
+  
+  desc "Read event db, generate URL if not present and regenerate rank for that event. Create an output file with this information."
+  task :generate_eventurl_and_rank, [:out_file] => :environment do |t, args|
+    File.open(args.out_file, "w:UTF-8:UTF-8") do |outf|
+      #Lets do it for only first 10 records on sample basis
+      recordcount = 0
+      
+      #
+      # It is not possible to load all records in memory at once. HEnce let's use
+      # find_each method which default operates in the batches of 1000 records.
+      #
+      Event.find_each do |evt|
+        # default url and pagerank
+        url2write = evt.url
+        pr2write = 1
+        
+        #
+        #handling for events from 'yago'
+        #
+        if evt.source == 'yago'
+          #
+          # Generate the url if not present
+          #
+          if evt.url.blank?
+            evt.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
+            t = $&.nil? ? evt.title : $2
+            wiki_t = t.gsub(/ /, '_')
+            url2write = "http://en.wikipedia.org/wiki/#{wiki_t}"
+            #media_caption = "Excerpt from the Wikipedia article for #{t}"
+          end
+          
+          # get the page rank
+          begin
+            prhash = PageRankr.ranks(url2write, :google)
+            if (!prhash.nil?)
+              prval = prhash[:google]
+              if (!prval.nil?) && (prval > 0)
+                pr2write = prval
+              end
+            end
+          rescue
+            # do nothing
+          end
+          
+          #write to file
+          outf.puts "#{evt.id}\t#{url2write}\t#{pr2write}"
+          
+          #
+          # to restrict to first 10 records found ...on sample basis
+          # should remove this condition later once we are happy with the code          
+          recordcount = recordcount + 1
+          if recordcount == 10
+            break
+          end
+        end   # if yago          
+      end  #event loop
+    end  #file open
+  end  # task end
 
 end # data namespace
 
