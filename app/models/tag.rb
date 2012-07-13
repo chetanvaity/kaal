@@ -11,23 +11,27 @@ class Tag < ActiveRecord::Base
 
   protected
   def normalize_tag_name
-    self.name = Tag.get_normalized_name(self.name)
+    self.name = Tag.get_normalized_names(self.name)[0]
   end
 
-  # A class method which returns normalized tag name if it exists
+  # A class method which returns array of normalized tag names
   # Else returns the same string that was passed
-  def self.get_normalized_name(name_str)
+  def self.get_normalized_names(name_str)
     name_str.downcase!
-    term = Babel.find_by_term(name_str)
-    if term.nil?
-      return name_str
+    terms = Babel.find_all_by_term(name_str)
+    if terms.nil? or terms.empty?
+      return [name_str]
     else
-      if (term.norm_term.nil?) || (term.norm_term.term.nil?) 
-        return name_str
-      else
-        return term.norm_term.term
+      norm_names = []
+      terms.each do |term|
+        if (term.norm_term.nil?) || (term.norm_term.term.nil?) 
+          norm_names.push(name_str)
+        else
+          norm_names.push(term.norm_term.term)
+        end
       end
     end
+    return norm_names.uniq
   end
 
 end

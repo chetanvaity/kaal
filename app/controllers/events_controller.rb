@@ -93,7 +93,8 @@ class EventsController < ApplicationController
     logger.info("EventsController.query() started")
     @tags = params[:tags]
     tags_arr = @tags.split ','
-    norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
+    norm_tags_arr = []
+    tags_arr.map {|tag_str| norm_tags_arr += Tag.get_normalized_names(tag_str)}
     @events = get_events(norm_tags_arr)
 
     respond_to do |format|
@@ -148,14 +149,13 @@ class EventsController < ApplicationController
     else
       # Get events and create the json
       tags_arr = @tags.split(',').map {|t| t.strip}
-      norm_tags_arr = tags_arr.map {|tag_str| Tag.get_normalized_name(tag_str)}
-      @fetchedevents = get_events(from_jd, to_jd, norm_tags_arr)
+      @fetchedevents = get_events(from_jd, to_jd, tags_arr)
       @events_size = @fetchedevents.size
       
       if @viewstyle == "tl"
         #This is for timeline display
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-        make_json(@fetchedevents, json_fname, norm_tags_arr, from_jd, to_jd)
+        make_json(@fetchedevents, json_fname, tags_arr, from_jd, to_jd)
         @@q_keys.store(query_key, @events_size)
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
@@ -175,21 +175,18 @@ class EventsController < ApplicationController
   # Get events from DB
   # Either from_jd and to_jd should both be nil or they should both be valid
   def get_events(from_jd, to_jd, tags_arr)
+    logger.info("get_events(): tags_arr=#{tags_arr}")
     e_ids = []
-    tags_arr.each do |norm_tag|
-      tlist = Tag.find_all_by_name(norm_tag)
-      if tlist.nil? || tlist.empty?
+    tags_arr.each do |tag|
+      norm_tags = Tag.get_normalized_names(tag)
+      tag_e_ids = get_event_ids_UNION(norm_tags)
+      if tag_e_ids.nil? || tag_e_ids.empty?
         add_link = "<a class=\"pull-right\" href=\"#{url_for(:new_event)}\">Add new event</a>"
         flash.now[:warning] =
-          "Sorry! I don't know anything like '#{norm_tag}'. #{add_link}".html_safe
+          "Sorry! I don't know anything like '#{tag}'. #{add_link}".html_safe
         break
       end
-      e_ids_for_tag = tlist.map { |t| t.event_id } 
-      if e_ids == []
-        e_ids = e_ids_for_tag
-      else
-        e_ids = e_ids & e_ids_for_tag
-      end
+      e_ids = (e_ids.empty?) ? tag_e_ids : (e_ids & tag_e_ids)
     end
 
     if from_jd.nil? or to_jd.nil?
@@ -198,6 +195,20 @@ class EventsController < ApplicationController
     else
       return Event.where(:id => e_ids, :jd => (from_jd..to_jd)).order(:jd)
     end
+  end
+
+  # Get event ids for all tags in the tags_arr (UNION not INTERSECTION)
+  # Used in get_events()
+  def get_event_ids_UNION(tags_arr)
+    logger.info("get_event_ids_UNION(): tags_arr=#{tags_arr}")
+    e_ids = []
+    tags_arr.each do |norm_tag|
+      tlist = Tag.find_all_by_name(norm_tag)
+      e_ids_for_tag = tlist.map { |t| t.event_id }
+      logger.info("get_event_ids_UNION(): e_ids_for_tag(#{norm_tag}): #{e_ids_for_tag}")
+      e_ids = e_ids + e_ids_for_tag
+    end
+    return e_ids
   end
 
   # Convert the date parsms into Date objects and then their JDs
