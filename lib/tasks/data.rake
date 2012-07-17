@@ -131,16 +131,33 @@ namespace :data do
   end
   
   desc "Read event db, generate URL if not present and regenerate rank for that event. Create an output file with this information."
-  task :generate_eventurl_and_rank, [:out_file] => :environment do |t, args|
+  task :generate_eventurl_and_rank, [:out_file, :start_event_id, :end_event_id] => :environment do |t, args|
+    start_eve_id = -1
+    end_eve_id = -1
+    begin
+      start_eve_id = Integer(args.start_event_id)
+      end_eve_id = Integer(args.end_event_id)
+    rescue
+      puts "Please provide valid start and end ids."
+      return
+    end
+    
+    if (start_eve_id <= 0) || (end_eve_id <= 0) || (start_eve_id > end_eve_id)
+      puts "Please provide valid start and end ids."
+      return
+    end
+    
     File.open(args.out_file, "w:UTF-8:UTF-8") do |outf|
-      #Lets do it for only first 10 records on sample basis
-      recordcount = 0
-      
       #
       # It is not possible to load all records in memory at once. HEnce let's use
       # find_each method which default operates in the batches of 1000 records.
       #
-      Event.find_each do |evt|
+      Event.find_each(:start => start_eve_id) do |evt|
+        #Let's stop processing if we have already crossed end_event_id condition
+        if evt.id > end_eve_id
+          break;
+        end
+        
         # default url and pagerank
         url2write = evt.url
         pr2write = 1
@@ -162,28 +179,28 @@ namespace :data do
           
           # get the page rank
           begin
-            prhash = PageRankr.ranks(url2write, :google)
-            if (!prhash.nil?)
-              prval = prhash[:google]
-              if (!prval.nil?) && (prval > 0)
-                pr2write = prval
-              end
+            #prhash = PageRankr.ranks(url2write, :google)
+            #if (!prhash.nil?)
+            #  prval = prhash[:google]
+            #  if (!prval.nil?) && (prval > 0)
+            #    pr2write = prval
+            #  end
+            #end
+            
+            tracker = PageRankr::Ranks::Google.new(url2write)
+            prval = tracker.run;
+            if (!prval.nil?) && (prval > 0)
+              pr2write = prval
             end
+            tracker = nil
           rescue
-            # do nothing
+            #do nothing
           end
           
           #write to file
           outf.puts "#{evt.id}\t#{url2write}\t#{pr2write}"
-          
-          #
-          # to restrict to first 10 records found ...on sample basis
-          # should remove this condition later once we are happy with the code          
-          recordcount = recordcount + 1
-          if recordcount == 10
-            break
-          end
-        end   # if yago          
+        end   # if yago      
+        evt = nil    
       end  #event loop
     end  #file open
   end  # task end
