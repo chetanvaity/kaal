@@ -153,6 +153,11 @@ namespace :data do
       # find_each method which default operates in the batches of 1000 records.
       #
       Event.find_each(:start => start_eve_id) do |evt|
+        if (evt.id % 10) == 0
+          print "##### GC start\n"
+          GC.start
+        end
+          
         #Let's stop processing if we have already crossed end_event_id condition
         if evt.id > end_eve_id
           break;
@@ -179,28 +184,31 @@ namespace :data do
           
           # get the page rank
           begin
-            #prhash = PageRankr.ranks(url2write, :google)
-            #if (!prhash.nil?)
-            #  prval = prhash[:google]
-            #  if (!prval.nil?) && (prval > 0)
-            #    pr2write = prval
-            #  end
-            #end
-            
+            print "Getting rank for #{url2write}\n"          
+            # prhash = PageRankr.ranks(url2write, :google)
+            # if (!prhash.nil?)
+            #   prval = prhash[:google]
+            #   if (!prval.nil?) && (prval > 0)
+            #     pr2write = prval
+            #   end
+            # end
+          
             tracker = PageRankr::Ranks::Google.new(url2write)
             prval = tracker.run;
             if (!prval.nil?) && (prval > 0)
               pr2write = prval
             end
-            tracker = nil
-          rescue
-            #do nothing
+          rescue  Exception => e
+            print "  !!! generate_eventurl_and_rank(): #{e}\n"
+            next
           end
           
           #write to file
+          print "#{evt.id}\t#{url2write}\t#{pr2write}\n"
           outf.puts "#{evt.id}\t#{url2write}\t#{pr2write}"
+          outf.flush
         end   # if yago      
-        evt = nil    
+        evt = nil
       end  #event loop
     end  #file open
   end  # task end
