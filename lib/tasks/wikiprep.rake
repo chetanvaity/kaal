@@ -74,4 +74,26 @@ namespace :wikiprep do
     wu.make_catgraph
   end
 
+  # Read a file consisting of article ids
+  # For each artcle XML file, generate a text file containing words in the article without markup
+  desc "Remove markup from articles XML files"
+  task :xml2txt, [:article_id_file, :outdir] do |t, args|
+    wu = WikiprepUtil.instance
+    open(args.article_id_file).each_line do |article_title|
+      print "\n"
+      print "Now processing: #{article_title}..."
+      article_title.chomp!.rstrip!
+      article_title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
+      t = $&.nil? ? article_title : $2
+      article_id = wu.get_article_id(t)
+      next if (article_id.nil?)
+      print "article_id=#{article_id}"
+      (link_tags, text) = wu.get_tags_n_text_from_article(article_id)
+      txtf = open(args.outdir + "/" + article_id + ".txt", "w:UTF-8")
+      txtf.write(text)
+      print "text written."
+      txtf.close
+    end
+  end
+
 end # namespace :wikiprep
