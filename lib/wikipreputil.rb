@@ -142,10 +142,14 @@ class WikiprepUtil
     # Lets get only the stuff till the first subsection "=="
     summary_text = text.gsub /^==.*/m, ''
 
+    # Remove references
+    summary_text.gsub! /&lt;ref&gt;.*?&lt;\/ref&gt;/, ''
     # Remove everything between &lt; and &gt;
     t2 = summary_text.gsub /&lt;.*?&gt;/, ''
-    # Remove everything in  {{ }} - Infobox
+    # Remove everything in  {{ ^}} - Infobox
     t3 = t2.gsub /{{.*?^}}/m, ''
+    # Remove everything in {{ }} - citation/references
+    t3.gsub! /{{.*?}}/m, ''
     # Convert [[Alps|Alpine]] to [[Alpine]]
     t4 = t3.gsub /\[\[[^\[]*?\|(.*?)\]\]/, '[[\1]]'
     # Get tags - all stuff which is in [[ ]]
@@ -163,7 +167,13 @@ class WikiprepUtil
     t6 = t5.gsub /\'\'\'(.*?)\'\'\'/, '\1'
     # Remove ''  ''
     t7 = t6.gsub /\'\'(.*?)\'\'/, '\1'
-    
+    # Remove "
+    t7.gsub! /"/, ''
+    # Remove ( )
+    t7.gsub! /\(|\)/, ''
+    # Replace newlines with spaces
+    t7.gsub! /\n/, ' '
+
     return link_tags, t7
     
     rescue Exception => e
