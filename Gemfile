@@ -44,3 +44,9 @@ gem 'bootstrap-sass', '2.0.0'
 gem 'awesome_nested_fields'
 gem 'dynamic_form'
 gem 'PageRankr', '3.2.1'
+
+#
+# For third party authentication
+#
+gem 'omniauth'
+gem 'omniauth-openid' #Google

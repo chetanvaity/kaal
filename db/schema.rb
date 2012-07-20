@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120702190847) do
+ActiveRecord::Schema.define(:version => 20120719142900) do
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false
@@ -36,5 +36,18 @@ ActiveRecord::Schema.define(:version => 20120702190847) do
 
   add_index "tags", ["event_id"], :name => "index_tags_on_event_id"
   add_index "tags", ["name"], :name => "name_of_tags"
+
+  create_table "users", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "authprovider"
+    t.string   "authuid"
+    t.string   "remember_token"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
 
 end

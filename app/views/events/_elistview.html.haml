@@ -15,7 +15,8 @@
       %th Source
       %th Description
       %th URL
-      %th
+      -if signed_in?
+        %th
   %tbody
     - @fetchedevents.each do |eachevent|
       %tr
@@ -29,7 +30,8 @@
           = eachevent.desc
         %td 
           = eachevent.url
-        %td
-          %div{:class => "event"}
-            %div{:class => "details"}
-              = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html
+        -if signed_in?
+          %td
+            %div{:class => "event"}
+              %div{:class => "details"}
+                = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html

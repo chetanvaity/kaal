@@ -1,5 +1,38 @@
+/ This is to disp[lay modal popup on demand. Used when clicked on 'edit' link in listview
+%div{:class => "modal hide", :id => "modal-signin"}
+  %div{:class => "modal-header"}
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
+    %h3 Sign in
+  %div{:class => "modal-body"}
+    %div.row-fluid
+      %div.span5
+        = link_to "/auth/google" do 
+          = image_tag("google_64.png",:size => "64x64", :alt => "Google")
+        %br  
+        %a{:href => "/auth/google"} With Google
+      %div.span4
+        = link_to "/auth/facebook" do 
+          = image_tag("facebook_64.png",:size => "64x64", :alt => "facebook")
+        %br  
+        %a{:href => "/auth/facebook"} With Facebook
+
 %header{:class => "navbar navbar-fixed-top"}
   %div{:class => 'navbar-inner'}
     %div{:class => 'container'}
       = link_to image_tag("sundial-small.png", alt: "kaal", id: 'logo'), '/'
       %h1{:style => "display:inline"} kaal
+      %ul.nav.pull-right
+        -if !signed_in?
+          %li
+            %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"} Sign in
+        -else
+          %li{:id => "fat-menu", :class => "dropdown"}
+            %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
+              Account
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                = link_to "Sign out", signout_path, method: "delete"
+          
+        
+        

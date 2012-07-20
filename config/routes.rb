@@ -1,4 +1,6 @@
 Kaal::Application.routes.draw do
+  get "users/new"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -21,6 +23,13 @@ Kaal::Application.routes.draw do
   match 'events/q/v2' => 'events#query2'
   match 'events/myhome/myhome' => 'events#myhome'
   match 'credits' => 'static#credits'
+  
+  match '/auth/:service/callback' => 'sessions#create' 
+  match '/auth/failure' => 'sessions#failure'
+  
+  resources :sessions, only: [ :new, :create, :destroy ]
+  match '/signout', to: 'sessions#destroy', via: :delete
+
 
   # Sample resource route with options:
   #   resources :products do

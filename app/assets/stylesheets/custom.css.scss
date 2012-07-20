@@ -162,3 +162,10 @@ footer ul li {
   border-radius: 5px;
   box-shadow: 10px 10px 5px #888888;
 }
+
+/* Display adjustement for sign-in popup */
+body #modal-signin {
+  width: 310px;
+  /* position: relative; */
+  /* top: 400px;*/
+}
