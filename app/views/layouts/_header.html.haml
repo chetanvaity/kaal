@@ -24,10 +24,14 @@
       %ul.nav.pull-right
         -if !signed_in?
           %li
-            %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"} Sign in
+            %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
+              %i.icon-user.icon-white
+              Sign in
+              
         -else
           %li{:id => "fat-menu", :class => "dropdown"}
             %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
+              %i.icon-user.icon-white
               Account
               %b.caret
             %ul.dropdown-menu
