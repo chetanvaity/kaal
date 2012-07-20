@@ -46,6 +46,7 @@
             = p " Search"
           &nbsp;
           %span.pull-right
+            %i.icon-check
             Examples:
             %a{:href => "/events/q/v2?tags=demo,R+D+Burman"}
               %span.label.label-info R D Burman
@@ -71,14 +72,22 @@
           %ul.nav.nav-tabs.no-bottom-margin
             -if @viewstyle == "tl"
               %li.active
-                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
+                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} 
+                  %i.icon-time
+                  Timeline View
               %li
-                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
+                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} 
+                  %i.icon-list-alt
+                  List View
             -else
               %li
-                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} Timeline View
+                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} 
+                  %i.icon-time
+                  Timeline View
               %li.active
-                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} List View
+                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"}
+                  %i.icon-list-alt 
+                  List View
         -if @viewstyle == "list"
           = render 'elistview'
 
