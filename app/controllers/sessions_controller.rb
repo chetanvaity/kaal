@@ -31,6 +31,11 @@ class SessionsController < ApplicationController
       omniauth['uid'] ? @authhash[:uid] = omniauth['uid'].to_s : @authhash[:uid] = ''
       omniauth['provider'] ? @authhash[:provider] = omniauth['provider'] : @authhash[:provider] = ''
     elsif authservice == "facebook"
+      omniauth['extra']['raw_info']['email'] ? @authhash[:email] =  omniauth['extra']['raw_info']['email'] : @authhash[:email] = ''
+      omniauth['extra']['raw_info']['name'] ? @authhash[:name] =  omniauth['extra']['raw_info']['name'] : @authhash[:name] = ''
+      omniauth['extra']['raw_info']['id'] ?  @authhash[:uid] =  omniauth['extra']['raw_info']['id'].to_s : @authhash[:uid] = ''
+      omniauth['provider'] ? @authhash[:provider] = omniauth['provider'] : @authhash[:provider] = ''
+    else
       raise request.env["omniauth.auth"].to_yaml
     end
     
@@ -42,13 +47,16 @@ class SessionsController < ApplicationController
     #
     # OK ...let's now check user availability and if already signed in , etc checks
     #
+    logger.info("Finding user based on uid and auth-provider")
     auth_user = User.find_by_authprovider_and_authuid(@authhash[:provider], @authhash[:uid])
     if auth_user
       # signin existing user
+      logger.info("Existing user, sign in him")
       sign_in(auth_user)
       redirect_to root_url
     else
       # create new user and sign in him
+      logger.info("New user, create him and sign in him")
       new_user = User.new
       new_user.email = @authhash[:email]
       new_user.name = @authhash[:name]
