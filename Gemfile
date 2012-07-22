@@ -50,3 +50,4 @@ gem 'PageRankr', '3.2.1'
 #
 gem 'omniauth'
 gem 'omniauth-openid' #Google
+gem 'omniauth-facebook' #Facebook

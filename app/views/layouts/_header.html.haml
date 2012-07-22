@@ -31,8 +31,14 @@
         -else
           %li{:id => "fat-menu", :class => "dropdown"}
             %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
-              %i.icon-user.icon-white
-              Account
+              -if current_user.authprovider == "google"
+                = image_tag("google_64.png",:size => "16x16", :alt => "")
+              -else 
+                -if current_user.authprovider == "facebook"
+                  = image_tag("facebook_64.png",:size => "16x16", :alt => "")
+                -else
+                  %i.icon-user.icon-white
+              = truncate(current_user.name, :length => 15)
               %b.caret
             %ul.dropdown-menu
               %li
