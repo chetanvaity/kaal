@@ -120,12 +120,21 @@ class EventsController < ApplicationController
       @viewstyle = "tl"
     end
     
+    @fullscr = params[:fullscr]
+    if @fullscr.nil?
+      @fullscr = "false"
+    end
+    if @fullscr != "false" && @fullscr != "true"
+      @fullscr = "false"
+    end
+    
     @embeddedview = params[:embview]
     if @embeddedview.nil?
       @embeddedview = "false"
     end
     if @embeddedview == "true"
       @viewstyle = "tl"
+      @fullscr = "false"
     end
 
     logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}, embeddedview=#{@embeddedview}")
@@ -165,8 +174,13 @@ class EventsController < ApplicationController
       end
     end
     
-    render :template => "events/tl", :formats => [:html], :handlers => :haml,
-     :layout => "tl"
+    if @fullscr == "false"
+      render :template => "events/tl", :formats => [:html], :handlers => :haml,
+       :layout => "tl"
+    else
+      render :template => "events/tl-fullscr", :formats => [:html], :handlers => :haml,
+             :layout => "tl"
+    end
     
   end
 

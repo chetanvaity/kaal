@@ -70,8 +70,16 @@
          
       -if @events_size > 0
         -if @embeddedview == 'false'
-          %a.btn.btn-primary.pull-right{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
-            %i.icon-share.icon-white
+          %div.pull-right
+            %a.btn.btn-primary{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
+              %i.icon-share.icon-white
+            -if @viewstyle == "tl"
+              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=tl&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip", :style => "margin-right:10px;"}
+                %i.icon-resize-full.icon-white
+            -else 
+              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=list&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip", :style => "margin-right:10px;"}
+                %i.icon-resize-full.icon-white
+          
           %ul.nav.nav-tabs.no-bottom-margin
             -if @viewstyle == "tl"
               %li.active

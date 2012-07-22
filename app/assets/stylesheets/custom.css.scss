@@ -169,3 +169,15 @@ body #modal-signin {
   /* position: relative; */
   /* top: 400px;*/
 }
+
+/* 
+ * AMOL: Customized btn-primary clor and lable-info color to match black/gray-ish look-n-feel.
+ * Comment it if you don't like
+ * -------------------------------------------------------------- 
+ */
+.btn-primary {
+  @include buttonBackground(#888888, #000);
+  //@include buttonBackground($gray, #000);
+} 
+.label-info      { background-color: $gray; }
+/* -------------------------------------------------------------- */
