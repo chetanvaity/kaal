@@ -29,10 +29,10 @@
 
 
   %body.fabric
-    -if @embeddedview == 'false'
+    -if @embeddedview == 'false' && @fullscr == 'false'
       = render 'layouts/header'
       
     = yield
-    -if @embeddedview == 'false'
+    -if @embeddedview == 'false' && @fullscr == 'false'
       = render 'layouts/footer'
     
