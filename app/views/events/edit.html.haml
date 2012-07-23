@@ -2,6 +2,9 @@
   %h2 Edit Event
 
 = form_for(@event, :html => {:class => "well"}) do |f|
-  = render :partial => "new_edit", :locals => {:f => f}
+  -if (!request.xhr?)
+    = render :partial => "new_edit", :locals => {:f => f, :stdintendedview => "edit"}
+  -else
+    = render :partial => "new_edit", :locals => {:f => f}
   
   

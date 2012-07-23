@@ -31,7 +31,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(params[:event])
     if @event.save
-      flash[:notice] =
+      flash.now[:notice] =
         "<strong>#{@event.title}</strong> was successfully created".html_safe
       redirect_to event_path(@event)
     else
@@ -85,7 +85,8 @@ class EventsController < ApplicationController
     @event = Event.find params[:id]
     @event.destroy
     flash[:notice] = "<strong>#{@event.title}</strong> deleted".html_safe
-    redirect_to events_path
+    #redirect_to events_path
+    redirect_to root_path
   end
 
   

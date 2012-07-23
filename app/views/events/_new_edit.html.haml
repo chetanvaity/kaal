@@ -75,8 +75,12 @@
 -if request.xhr?  
   %a{:href => "#", :class => "btn", "data-dismiss" => "modal"}Cancel
 -else  
-  %a.btn{:href => events_path}
-    = p "Cancel"
+  -if stdintendedview == "edit"
+    %a.btn{:href => event_path}
+      = p "Cancel"
+  -else
+    %a.btn{:href => root_path}
+      = p "Cancel"
     
 -if request.xhr?
   :javascript
