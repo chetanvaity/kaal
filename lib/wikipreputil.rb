@@ -18,11 +18,11 @@ class WikiprepUtil
     @idmap_file = @enwiki_dir + "/idmap.txt"
     @catgraph_file = @enwiki_dir + "/catgraph.txt"
 
-    open(@idmap_file).each_line do |line|
-      terms = line.chomp.split("\t")
-      @articles_map[terms[0]] = terms[1]
-    end
-    @log.info "initialize(): done reading #{@idmap_file}"
+    #open(@idmap_file).each_line do |line|
+    #  terms = line.chomp.split("\t")
+    #  @articles_map[terms[0]] = terms[1]
+    #end
+    #@log.info "initialize(): done reading #{@idmap_file}"
   end
 
   # from the articles map (idmap.txt), get id for this article
@@ -140,20 +140,31 @@ class WikiprepUtil
     end
 
     # Lets get only the stuff till the first subsection "=="
-    summary_text = text.gsub /^==.*/m, ''
+    #summary_text = text.gsub /^==.*/m, ''
 
+    # Remove headings
+    text.gsub! /\=\=\=\=.*?\=\=\=/, ''
+    text.gsub! /\=\=\=.*?\=\=\=/, ''
+    text.gsub! /\=\=.*?\=\=/, ''
     # Remove references
-    summary_text.gsub! /&lt;ref&gt;.*?&lt;\/ref&gt;/, ''
+    text.gsub! /&lt;ref&gt;.*?&lt;\/ref&gt;/, ''
+    text.gsub! /&lt;ref;.*?&gt;/, ''
+    text.gsub! /&lt;ref.*?&gt;/, ''
+    # Remove all Category links
+    text.gsub! /\[\[Category:.*?\]\]/, ''
     # Remove everything between &lt; and &gt;
-    t2 = summary_text.gsub /&lt;.*?&gt;/, ''
-    # Remove everything in  {{ ^}} - Infobox
-    t3 = t2.gsub /{{.*?^}}/m, ''
+    text.gsub! /&lt;.*?&gt;/, ''
+    # Remove this crappy nowrap markup
+    text.gsub! /{{nowrap end}}}}/, ''
     # Remove everything in {{ }} - citation/references
-    t3.gsub! /{{.*?}}/m, ''
+    text.gsub! /{{.*?}}/, ''
+    # Remove everything in  {{ ^}} - Infobox
+    text.gsub! /{{Infobox.*?^}}/m, ''
+    text.gsub! /{{Persondata.*?^}}/m, ''
     # Convert [[Alps|Alpine]] to [[Alpine]]
-    t4 = t3.gsub /\[\[[^\[]*?\|(.*?)\]\]/, '[[\1]]'
+    text.gsub! /\[\[[^\[]*?\|(.*?)\]\]/, '[[\1]]'
     # Get tags - all stuff which is in [[ ]]
-    link_tags = t4.scan /\[\[(.*?)\]\]/
+    link_tags = text.scan /\[\[(.*?)\]\]/
     # get the strings out of the arrays
     link_tags.map! { |e| e[0] }
     # Remove tags which have "|" or "[" or "]"
@@ -162,19 +173,24 @@ class WikiprepUtil
     link_tags.map! { |e| e.downcase }
     
     # Convert [[Alpine]] to Alpine
-    t5 = t4.gsub /\[\[(.*?)\]\]/, '\1'
+    text.gsub! /\[\[(.*?)\]\]/, '\1'
     # Remove '''  '''
-    t6 = t5.gsub /\'\'\'(.*?)\'\'\'/, '\1'
+    text.gsub! /\'\'\'(.*?)\'\'\'/, '\1'
     # Remove ''  ''
-    t7 = t6.gsub /\'\'(.*?)\'\'/, '\1'
-    # Remove "
-    t7.gsub! /"/, ''
+    text.gsub! /\'\'(.*?)\'\'/, '\1'
+    # Remove " and *
+    text.gsub! /"|\*/, ''
     # Remove ( )
-    t7.gsub! /\(|\)/, ''
-    # Replace newlines with spaces
-    t7.gsub! /\n/, ' '
+    text.gsub! /\(|\)/, ''
+    # Remove anything with [ ] - usually links etc
+    text.gsub! /\[.*?\]/, ''
+    # Remove any remaining }}
+    text.gsub! /}}/, ''
 
-    return link_tags, t7
+    # Replace newlines with spaces
+    text.gsub! /\n/, ' '
+
+    return link_tags, text
     
     rescue Exception => e
     print "  !!! get_tags_n_text_from_article(): #{e}\n"
@@ -199,13 +215,87 @@ class WikiprepUtil
     end
   end
 
+  # Return resolved id
+  # level is the recursion level - to come out of cycles
+  def resolve_redirects(id, level)
+    return nil if level > 5
+    
+    (prefix1, prefix2) = make_path_prefix(id)
+    fname = @enwiki_dir + "/" + prefix1 + "/" + prefix2 + "/#{id}.xml"
+    s = File.open(fname, "r:UTF-8").read
+    if s =~ /#REDIRECT \[\[(.*?)\]\]/
+      # If there is a "#" in the redirect title, remove stuff after it
+      new_title = $1.gsub /#.*/, ''
+      # Get article id for the new title
+      new_id = get_article_id(new_title)
+      return nil if new_id.nil?
+      return resolve_redirects(new_id, level+1)
+    else
+      return id
+    end
+  end
+
+  # Use Stanford's Parser tool to get nouns from the txt
+  # Assume that the Parser server is running on port 2020
+  # java -mx300m -cp stanford-postagger-2012-07-09.jar edu.stanford.nlp.tagger.maxent.MaxentTaggerServer -model "models/wsj-0-18-left3words.tagger" -port 2020  -outputFormat tsv
+  def get_parser_response(para)
+    para.gsub! /\n/, '.' # Remove newlines
+    para += "\n" # add one at the end
+    socket = TCPSocket.open('localhost', 2020)
+    socket.set_encoding("UTF-8")
+    socket.print(para)
+    return socket.read
+  end
+
+  # Return a list of tags by parsing the response
+  # Also downcase all nouns
+  def get_nouns_from_parser_response(s)
+    nouns = []
+    noun = ""
+    s.each_line do |line|
+      (word, pos) = line.split
+      next if word =~ /\|/
+      if pos =~ /NN/
+        if noun == ""
+          noun = word
+        else
+          noun += " " + word
+        end
+      else
+        nouns.push(noun) unless noun == ""
+        noun = ""
+      end
+    end
+    nouns.map! { |n| n.downcase }
+    # Remove the language versions of the title found in the wiki text page
+    nouns.reject { |n| n =~ /\saf$|\sam$|\sar$|\sast$|\saz$|\sbn$|\sbe$|\sbg$|\sbs$|\sbr$|\sca$|\scs$|\scy$|\sda$|\sde$|\set$|\sel$|\ses$|\seo$|\seu$|\sfa$|\shif$|\sfo$|\sfr$|\sfy$|\sgl$|\sgu$|\sko$|\shi$|\shr$|\sio$|\sid$|\sia$|\sis$|\sit$|\shy$|\she$|\sjv$|\skn$|\ska$|\skk$|\ssw$|\sku$|\sky$|\sla$|\slv$|\slb$|\slt$|\shu$|\smk$|\sml$|\smr$|\sms$|\smn$|\smy$|\sml$|\sne$|\snew$|\sja$|\sno$|\snn$|\snl$|\soc$|\spnb$|\snds$|\spl$|\spt$|\sro$|\squ$|\sru$|\ssa$|\ssco$|\ssq$|\ssi$|\ssimple$|\ssk$|\ssl$|\ssr$|\ssh$|\sfi$|\ssv$|\stl$|\sta$|\ste$|\sth$|\str$|\suk$|\sur$|\svi$|\swar$|\syo$|\sbat$|\szh$/ }
+  end
+
+  #
+  def get_nouns_from_article_txt(txt_file)
+    all_nouns = []
+    open(txt_file).each_line do |line|
+      line.gsub! /\s\s/, ' - '
+      response = get_parser_response(line)
+      nouns = get_nouns_from_parser_response(response)
+      all_nouns = all_nouns + nouns
+    end
+    return all_nouns
+
+    rescue Exception => e
+    print "  !!! get_nouns_from_article_txt(): #{e}\n"
+    return nil
+  end
+
+  # ---- Category related -----
+
   # For a given article, extract the categories it belongs to
   # Return nil if article not found
   def extract_categories(title)
     # First find the article_id
     article_id = get_article_id(title)
     return nil if article_id.nil?
-
+    
     (prefix1, prefix2) = make_path_prefix(article_id)
     fname = @enwiki_dir + "/" + prefix1 + "/" + prefix2 + "/#{article_id}.xml"
     catlist = []

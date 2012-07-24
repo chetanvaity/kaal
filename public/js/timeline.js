@@ -5191,11 +5191,11 @@ if (typeof VMM.Slider != 'undefined') {
 			$wrap	=	VMM.appendAndGetElement(element, "<div>", "content");
 			$slide	=	VMM.appendAndGetElement($wrap, "<div>");
 
-		    /* Chetan */
+		    /* Chetan 
 		    if (data.id != null && data.id != "") {
 			c.text += '<span class="btn btn-small" style="float:right"><a href="/events/' + data.id + '/edit/">Edit</a></span>';
 		    }
-		    /* End Chetan */
+		    End Chetan */
 
 			/* DATE
 			================================================== */

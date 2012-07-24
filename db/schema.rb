@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20120724041904) do
     t.text    "desc"
     t.string  "url"
     t.integer "ownerid"
+    t.integer "wiki_id"
   end
 
   create_table "tags", :force => true do |t|
