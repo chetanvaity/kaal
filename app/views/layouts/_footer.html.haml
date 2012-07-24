@@ -1,16 +1,17 @@
 %footer.footer{:style => "background-color:#30302a;"}
   %p.pull-right
     %ul
+      %li
+        = link_to "Credits", '/credits'
       %li 
         = link_to "About",   '#'
       %li 
         = link_to "Contact", '#'
-
+  
+  /
+  / Note: This is an empty div. Without this, somehow footer does not get rendered. Solve it if you want to.
+  /      
   %p.pull-left
     %div
-      Built using 
-      %a{:href => "http://www.rubyonrails.com"} Rails,
-      %a{:href => "http://timeline.verite.co"} Verite Timeline JS,
-      %a{:href => "http://twitter.github.com/bootstrap/"} Twitter Bootstrap,
-      and
-      %a{:href => "/credits"} lots more
+      &nbsp;&nbsp;
+       

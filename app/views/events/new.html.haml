@@ -1,4 +1,3 @@
 %h2 Create new event
-
 = form_for(@event, :url => events_path, :method => :post, :html => {:class => "well"}) do |f|
-  = render :partial => "new_edit", :locals => {:f => f}
+  = render :partial => "new_edit", :locals => {:f => f, :stdintendedview => "new"}

@@ -27,8 +27,11 @@
             %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
               %i.icon-user.icon-white
               Sign in
-              
         -else
+          %li
+            %a.btn-large{:href => "/events/new"}
+              %i.icon-pencil.icon-white
+              Add new event
           %li{:id => "fat-menu", :class => "dropdown"}
             %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
               -if current_user.authprovider == "google"

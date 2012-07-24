@@ -56,6 +56,7 @@
             &nbsp;
             %a{:href => "/events/q/v2?tags=demo,India,Medicine"}
               %span.label.label-info India,Medicine
+          
   
   / %div.row
   /   = image_tag("http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG",:size => "40x40")
@@ -74,10 +75,10 @@
             %a.btn.btn-primary{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
               %i.icon-share.icon-white
             -if @viewstyle == "tl"
-              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=tl&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip", :style => "margin-right:10px;"}
+              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=tl&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
                 %i.icon-resize-full.icon-white
             -else 
-              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=list&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip", :style => "margin-right:10px;"}
+              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=list&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
                 %i.icon-resize-full.icon-white
           
           %ul.nav.nav-tabs.no-bottom-margin
