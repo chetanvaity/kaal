@@ -46,6 +46,11 @@ gem 'dynamic_form'
 gem 'PageRankr', '3.2.1'
 
 #
+# for default auth mechanism
+#
+gem 'bcrypt-ruby', '3.0.1'
+
+#
 # For third party authentication
 #
 gem 'omniauth'

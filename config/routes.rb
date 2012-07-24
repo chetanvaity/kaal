@@ -28,6 +28,7 @@ Kaal::Application.routes.draw do
   match '/auth/failure' => 'sessions#failure'
   
   resources :sessions, only: [ :new, :create, :destroy ]
+  match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
 

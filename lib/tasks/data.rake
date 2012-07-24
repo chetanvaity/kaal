@@ -130,6 +130,23 @@ namespace :data do
     end
   end
   
+  desc "Populate default admin user"
+  task :populate_admin_user  => :environment do
+    admin_email = "kp@ap.cv"
+    admin_auth_provider = "default"
+    admin = User.find_by_authprovider_and_email(admin_auth_provider,admin_email)
+    if admin.nil?
+      admin = User.create!(name: "KaalPurush",
+                   email: "kp@ap.cv",
+                   authprovider: "default",
+                   password: "kpapcv_qaz_123",
+                   password_confirmation: "kpapcv_qaz_123")
+      admin.toggle!(:isadmin)
+      admin.authuid = admin.id
+      admin.save
+    end
+  end
+  
   desc "Read event db, generate URL if not present and regenerate rank for that event. Create an output file with this information."
   task :generate_eventurl_and_rank, [:out_file, :start_event_id, :end_event_id] => :environment do |t, args|
     start_eve_id = -1

@@ -30,6 +30,14 @@ class EventsController < ApplicationController
   # The <strong> markup in flash message is breaking strict MVC
   def create
     @event = Event.new(params[:event])
+    
+    #Assign ownerid  
+    if signed_in?
+      if !current_user.nil?
+        @event.ownerid = current_user.id
+      end
+    end
+    
     if @event.save
       flash.now[:notice] =
         "<strong>#{@event.title}</strong> was successfully created".html_safe
@@ -82,11 +90,17 @@ class EventsController < ApplicationController
 
   
   def destroy
+    del_from_listview = params[:fromlistview]
     @event = Event.find params[:id]
     @event.destroy
     flash[:notice] = "<strong>#{@event.title}</strong> deleted".html_safe
-    #redirect_to events_path
-    redirect_to root_path
+    if (!del_from_listview.nil?) && (del_from_listview == 'true')
+      # refresh the listview page
+      redirect_to (:back)
+    else
+      # delete from normal page
+      redirect_to root_path
+    end
   end
 
   

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120719142900) do
+ActiveRecord::Schema.define(:version => 20120724041904) do
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false
@@ -21,11 +21,12 @@ ActiveRecord::Schema.define(:version => 20120719142900) do
   add_index "babels", ["term"], :name => "index_babels_on_term"
 
   create_table "events", :force => true do |t|
-    t.text    "title",                :null => false
-    t.integer "jd",                   :null => false
-    t.string  "source", :limit => 10
+    t.text    "title",                 :null => false
+    t.integer "jd",                    :null => false
+    t.string  "source",  :limit => 10
     t.text    "desc"
     t.string  "url"
+    t.integer "ownerid"
   end
 
   create_table "tags", :force => true do |t|
@@ -43,8 +44,10 @@ ActiveRecord::Schema.define(:version => 20120719142900) do
     t.string   "authprovider"
     t.string   "authuid"
     t.string   "remember_token"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "password_digest"
+    t.boolean  "isadmin"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

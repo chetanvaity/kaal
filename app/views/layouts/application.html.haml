@@ -17,6 +17,10 @@
       %div.alert.alert-error
         %i.icon-exclamation-sign
         = flash[:warning]
+    - elsif flash[:error]
+      %div.alert.alert-error
+        %i.icon-exclamation-sign
+        = flash[:error]
 
     = render 'layouts/header'
     %div{:class => "container"}

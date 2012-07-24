@@ -1,0 +1,19 @@
+= provide(:title, "Sign in")
+%h1 Sign in using Kaal login
+
+%div.row
+  %div.span6.offset3
+    = form_for(:session, url: sessions_path) do |f|
+      = f.error_messages
+      
+      = f.hidden_field :service, :value => "defaultauth"
+      
+
+      = f.label :email
+      = f.text_field :email
+
+      = f.label :password
+      = f.password_field :password
+
+      = f.submit "Sign in", class: "btn btn-large btn-primary"
+

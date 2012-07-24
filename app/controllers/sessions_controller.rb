@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   
-  before_filter :authenticate_user!, :except => [:create, :failure]
+  before_filter :authenticate_user!, :except => [:new, :create, :failure]
   protect_from_forgery :except => :create     # see https://github.com/intridea/omniauth/issues/203
 
   
@@ -8,12 +8,24 @@ class SessionsController < ApplicationController
   end
   
   def create
+    #From google/facebook
     authservice = params[:service]
-    
+        
     if authservice.nil?
-      flash[:error] = 'No authentication service recognized'
-      redirect_to root_path # we may redirect to separate signin page if we have one
+      begin
+        #from local auth
+        authservice = params[:session][:service]
+      rescue
+        authservice = nil
+      end
+      
+      if authservice.nil?
+        flash[:error] = 'No authentication service recognized'
+        redirect_to root_path # we may redirect to separate signin page if we have one
+      end
     end
+    
+    logger.info("authservice = " + authservice)
     
     # get the full hash from omniauth
     omniauth = request.env['omniauth.auth']
@@ -25,12 +37,34 @@ class SessionsController < ApplicationController
     # create a new hash
     @authhash = Hash.new
     
-    if authservice == "google"
+    if authservice == "defaultauth"
+      #
+      # Default atuthentication by our product
+      #
+      defaultauthprovider = "default"
+      user = User.find_by_authprovider_and_email(defaultauthprovider, params[:session][:email])
+      if user && user.authenticate(params[:session][:password])
+        # Sign the user in and redirect to root.
+        sign_in user
+        redirect_to root_path
+        return
+      else
+        flash.now[:error] = 'Invalid email/password combination' 
+        render 'new'
+        return
+      end
+    elsif authservice == "google"
+      #
+      # Google info
+      #
       omniauth['info']['email'] ? @authhash[:email] =  omniauth['info']['email'] : @authhash[:email] = ''
       omniauth['info']['name'] ? @authhash[:name] =  omniauth['info']['name'] : @authhash[:name] = ''
       omniauth['uid'] ? @authhash[:uid] = omniauth['uid'].to_s : @authhash[:uid] = ''
       omniauth['provider'] ? @authhash[:provider] = omniauth['provider'] : @authhash[:provider] = ''
     elsif authservice == "facebook"
+      #
+      #  Facebook info
+      #
       omniauth['extra']['raw_info']['email'] ? @authhash[:email] =  omniauth['extra']['raw_info']['email'] : @authhash[:email] = ''
       omniauth['extra']['raw_info']['name'] ? @authhash[:name] =  omniauth['extra']['raw_info']['name'] : @authhash[:name] = ''
       omniauth['extra']['raw_info']['id'] ?  @authhash[:uid] =  omniauth['extra']['raw_info']['id'].to_s : @authhash[:uid] = ''
@@ -62,6 +96,8 @@ class SessionsController < ApplicationController
       new_user.name = @authhash[:name]
       new_user.authprovider = @authhash[:provider]
       new_user.authuid = @authhash[:uid]
+      new_user.password = "test123"
+      new_user.password_confirmation = "test123"
       if new_user.save
         sign_in new_user
         redirect_to root_path

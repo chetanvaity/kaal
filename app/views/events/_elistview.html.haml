@@ -36,4 +36,10 @@
               %div{:class => "details"}
                 %i.icon-edit
                 = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html
+            -if !current_user.nil?
+              -if (current_user.isadmin) || (current_user.id == eachevent.ownerid)
+                %div
+                  %i.icon-remove
+                  = link_to "Delete", "/events/#{eachevent.id}?fromlistview=true", :method=> :delete, :confirm => 'Are you sure you want to delete this event?'
+                  
             
