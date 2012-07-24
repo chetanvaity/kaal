@@ -21,11 +21,12 @@ ActiveRecord::Schema.define(:version => 20120719142900) do
   add_index "babels", ["term"], :name => "index_babels_on_term"
 
   create_table "events", :force => true do |t|
-    t.text    "title",                :null => false
-    t.integer "jd",                   :null => false
-    t.string  "source", :limit => 10
+    t.text    "title",                 :null => false
+    t.integer "jd",                    :null => false
+    t.string  "source",  :limit => 10
     t.text    "desc"
     t.string  "url"
+    t.integer "wiki_id"
   end
 
   create_table "tags", :force => true do |t|

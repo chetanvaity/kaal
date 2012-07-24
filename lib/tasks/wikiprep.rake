@@ -13,17 +13,27 @@ namespace :wikiprep do
     wu.make_pages2(wpfname, outdir)    
   end
 
-  desc "For all events in DB, check if we have a wikipedia entry"
-  task :check_wikipedia_for_event, [:start_event] => :environment do |t, args|
+  desc "For all events, populate URL with wikipedia page and populate wiki_id"
+  task :populate_url_wiki_id, [:start_event] => :environment do |t, args|
     se = args.start_event.to_i
     print "Starting from event id: #{se}\n"
 
     wu = WikiprepUtil.instance
     Event.find_each(:start => se) do |e|
       e.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
-      article_id = $&.nil? ? wu.get_article_id(e.title) : wu.get_article_id($2)
-      if article_id.nil?
+      t = $&.nil? ? e.title : $2
+      wiki_t = t.gsub(/ /, '_')
+      url = "http://en.wikipedia.org/wiki/#{wiki_t}"
+      wiki_id = wu.get_article_id(t)
+      if wiki_id.nil?
         print "#{e.id}\t#{e.title}: No article found.\n"
+      else
+        e.wiki_id = wiki_id
+      end
+      e.url = url
+      e.save
+      if (e.id % 1000) == 0
+        print "#{e.id}\t#{e.title} done\n"
       end
     end
   end
@@ -74,25 +84,84 @@ namespace :wikiprep do
     wu.make_catgraph
   end
 
-  # Read a file consisting of article ids
   # For each artcle XML file, generate a text file containing words in the article without markup
   desc "Remove markup from articles XML files"
-  task :xml2txt, [:article_id_file, :outdir] do |t, args|
+  task :xml2txt, [:start_event, :end_event, :outdir] => :environment do |t, args|
+    se = args.start_event.to_i
+    ee = args.end_event.to_i
     wu = WikiprepUtil.instance
-    open(args.article_id_file).each_line do |article_title|
-      print "\n"
-      print "Now processing: #{article_title}..."
-      article_title.chomp!.rstrip!
-      article_title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
-      t = $&.nil? ? article_title : $2
-      article_id = wu.get_article_id(t)
-      next if (article_id.nil?)
-      print "article_id=#{article_id}"
-      (link_tags, text) = wu.get_tags_n_text_from_article(article_id)
-      txtf = open(args.outdir + "/" + article_id + ".txt", "w:UTF-8")
-      txtf.write(text)
-      print "text written."
-      txtf.close
+    Event.find_each(:start => se) do |e|
+      abort("e.id exceeded end_event") if (e.id > ee)
+      print "\nNow processing: event_id: #{e.id}\n" if (e.id % 1000) == 0
+      next if e.wiki_id.nil?
+      wiki_id = e.wiki_id.to_s
+      (link_tags, text) = wu.get_tags_n_text_from_article(wiki_id)
+      if text.nil?
+        Rails.logger.info("xml2txt(): nil returned as text for event=#{e.id}, wiki_id=#{wiki_id}")
+        next
+      end
+      (prefix1, prefix2) = wu.make_path_prefix(wiki_id)
+      deep_dir = args.outdir + "/" + prefix1 + "/" + prefix2
+      FileUtils.mkdir_p(deep_dir)
+      File.open(deep_dir + '/' + wiki_id + ".txt", "w:UTF-8") do |of|
+        of.write(text)
+      end
+    end
+  end
+
+  desc "Follow redirects and correct wiki_ids for all events"
+  task :correct_redirected_ids, [:start_event,:end_event] => :environment do |t, args|
+    se = args.start_event.to_i
+    ee = args.end_event.to_i
+    print "Starting from event id: #{se}\n"
+
+    wu = WikiprepUtil.instance
+    Event.find_each(:start => se) do |e|
+      Rails.logger.info("correct_redirected_ids(): HELLO")
+      abort("e.id exceeded end_event") if (e.id > ee)
+      print "Starting with #{e.id}\n" if (e.id % 1000) == 0
+
+      next if e.wiki_id.nil?
+      resolved_id = wu.resolve_redirects(e.wiki_id.to_s, 0)
+      if !(resolved_id.nil?)
+        res_id = resolved_id.to_i
+        if (res_id != e.wiki_id)
+          print "event_id=#{e.id}, id=#{e.wiki_id}, resolved_id=#{resolved_id}\n"
+          e.wiki_id = resolved_id
+          e.save
+        end
+      end
+    end
+  end
+
+  # For each article txt file, get a bag-of-words file
+  # This file will consist of only nouns - got by using Stanford POS tagger
+  desc "Get Bag of Words for all article TXT files"
+  task :txt2bow, [:start_event, :end_event, :txtdir, :outdir] => :environment do |t, args|
+    se = args.start_event.to_i
+    ee = args.end_event.to_i
+    wu = WikiprepUtil.instance
+    Event.find_each(:start => se) do |e|
+      abort("e.id exceeded end_event") if (e.id > ee)
+      print "#{Time.now}: Now processing: event_id: #{e.id}\n" if (e.id % 100) == 0
+      next if e.wiki_id.nil?
+      wiki_id = e.wiki_id.to_s
+      (prefix1, prefix2) = wu.make_path_prefix(wiki_id)
+      txt_file = args.txtdir + "/" + prefix1 + "/" + prefix2 + "/" + wiki_id + ".txt"
+      nouns = wu.get_nouns_from_article_txt(txt_file)
+      if nouns.nil?
+        Rails.logger.info("txt2bow(): nil returned as nouns for event=#{e.id}, wiki_id=#{wiki_id}")
+        next
+      end
+
+      norm_nouns = []
+      nouns.map { |n| norm_nouns += Tag.get_normalized_names(n) } 
+      
+      deep_dir = args.outdir + "/" + prefix1 + "/" + prefix2
+      FileUtils.mkdir_p(deep_dir)
+      File.open(deep_dir + '/' + wiki_id + ".txt", "w:UTF-8") do |of|
+        of.write(norm_nouns.join("\n"))
+      end
     end
   end
 
