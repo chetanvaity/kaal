@@ -5,6 +5,14 @@ class SessionsController < ApplicationController
 
   
   def new
+    if signed_in?
+      if !current_user.nil?
+        flash[:warning] = "You are already logged in as '" + current_user.name + "' using '" + current_user.authprovider + "' authentication."
+      else
+        flash[:warning] = "You are already logged in."
+      end
+      redirect_to root_path
+    end
   end
   
   def create
