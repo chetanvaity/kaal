@@ -56,6 +56,8 @@ p {
 
 
 /* header */
+
+
 header h1 {
   font-size: 2.5em;
   letter-spacing: -2px;
@@ -181,4 +183,16 @@ body #modal-signin {
   //@include buttonBackground($gray, #000);
 } 
 .label-info      { background-color: $gray; }
+
+
+///* ** AMOL: IF you want to change header color , ...here is the place. Jus comment this block to retain original behavior.
+.navbar-fixed-top{
+   .navbar-inner {
+      background-color: $grayDark;
+      background-image: none;
+      background-repeat: no-repeat;
+      filter: none;
+   }
+}
+//* */
 /* -------------------------------------------------------------- */
