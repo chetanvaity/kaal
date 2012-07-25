@@ -19,8 +19,10 @@
 %header{:class => "navbar navbar-fixed-top"}
   %div{:class => 'navbar-inner'}
     %div{:class => 'container'}
-      = link_to image_tag("sundial-small.png", alt: "kaal", id: 'logo'), '/'
-      %h1{:style => "display:inline"} kaal
+      = link_to image_tag("pg-black-back.png", alt: "PollenGrain", id: 'logo'), '/'
+      %ul.nav.pull-left
+        %li 
+          %h2 Browse data chronologically!
       %ul.nav.pull-right
         -if !signed_in?
           %li
@@ -47,5 +49,5 @@
               %li
                 = link_to "Sign out", signout_path, method: "delete"
           
-        
+          
         
