@@ -68,7 +68,8 @@ header h1 {
 }
 
 header h2 {
-  font-size: 1.7em;
+  //font-size: 1.7em;
+  font-size: 1.4em;
   letter-spacing: -1px;
   margin-bottom: 5px;
   margin-top: 10px;
@@ -171,6 +172,15 @@ body #modal-signin {
   width: 310px;
   /* position: relative; */
   /* top: 400px;*/
+}
+
+body #modal-about {
+  background-color: $gray;
+  width: 800px;
+}
+
+body #modal-contact {
+  background-color: $gray;
 }
 
 /* 
