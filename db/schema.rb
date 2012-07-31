@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20120724041904) do
     t.string  "source",  :limit => 10
     t.text    "desc"
     t.string  "url"
-    t.integer "ownerid"
     t.integer "wiki_id"
+    t.integer "ownerid"
   end
 
   create_table "tags", :force => true do |t|

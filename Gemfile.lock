@@ -37,6 +37,7 @@ GEM
     arel (3.0.2)
     awesome_nested_fields (0.6.0)
       rails (>= 3.0.0)
+    bcrypt-ruby (3.0.1)
     bootstrap-sass (2.0.0)
     builder (3.0.0)
     coffee-rails (3.2.2)
@@ -165,6 +166,7 @@ PLATFORMS
 DEPENDENCIES
   PageRankr (= 3.2.1)
   awesome_nested_fields
+  bcrypt-ruby (= 3.0.1)
   bootstrap-sass (= 2.0.0)
   coffee-rails (~> 3.2.1)
   debugger
