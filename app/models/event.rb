@@ -89,4 +89,12 @@ class Event < ActiveRecord::Base
     return date
   end
 
+  #
+  # search integration
+  #
+  searchable do
+    text :title, :default_boost => 2
+    text :extra_words
+  end
+
 end

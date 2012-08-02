@@ -165,4 +165,27 @@ namespace :wikiprep do
     end
   end
 
+  desc "Adds extra_words from wiki bag of words to events"
+  task :add_extra_words, [:start_event, :end_event, :bowdir] => :environment do |t, args|
+    se = args.start_event.to_i
+    ee = args.end_event.to_i
+    wu = WikiprepUtil.instance
+    Event.find_each(:start => se) do |e|
+      abort("e.id exceeded end_event") if (e.id > ee)
+      print "#{Time.now}: Now processing: event_id: #{e.id}\n" if (e.id % 100) == 0
+      next if e.wiki_id.nil?
+      wiki_id = e.wiki_id.to_s
+      (prefix1, prefix2) = wu.make_path_prefix(wiki_id)
+      bow_file = args.bowdir + "/" + prefix1 + "/" + prefix2 + "/" + wiki_id + ".txt"
+      begin
+        s = open(bow_file).readlines.map { |word| word.chomp }.join('\t')
+      rescue
+        print "Error reading file: event_id=#{e.id}, #{bow_file}\n"
+        next
+      end
+      e.extra_words = s
+      e.save
+    end         
+  end
+
 end # namespace :wikiprep

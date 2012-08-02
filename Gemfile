@@ -56,3 +56,10 @@ gem 'bcrypt-ruby', '3.0.1'
 gem 'omniauth'
 gem 'omniauth-openid' #Google
 gem 'omniauth-facebook' #Facebook
+
+# 
+# To integrate with search server "Solr" which works on top of 'lucene'
+# 
+gem 'sunspot_rails', '~> 1.3.0'
+gem 'sunspot_solr'  #to control local solr instance
+gem 'progress_bar'

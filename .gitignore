@@ -4,3 +4,5 @@ db/dumps/
 log/
 tmp/
 tmpjson/
+solr/data
+solr/pids

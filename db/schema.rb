@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120724041904) do
+ActiveRecord::Schema.define(:version => 20120801074833) do
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false
@@ -21,13 +21,14 @@ ActiveRecord::Schema.define(:version => 20120724041904) do
   add_index "babels", ["term"], :name => "index_babels_on_term"
 
   create_table "events", :force => true do |t|
-    t.text    "title",                 :null => false
-    t.integer "jd",                    :null => false
-    t.string  "source",  :limit => 10
+    t.text    "title",                     :null => false
+    t.integer "jd",                        :null => false
+    t.string  "source",      :limit => 10
     t.text    "desc"
     t.string  "url"
     t.integer "wiki_id"
     t.integer "ownerid"
+    t.text    "extra_words"
   end
 
   create_table "tags", :force => true do |t|

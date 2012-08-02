@@ -1,0 +1,8 @@
+%ul{:class => "search_results"}
+  -@search.each_hit_with_result do |hit, event|
+    %li
+      %h3
+        = event.id
+        = h(event.title)
+        = hit.score
+

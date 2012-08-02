@@ -347,5 +347,20 @@ END
     render :template => "events/myhome", :formats => [:html], :handlers => :haml
   end
 
+  def search
+    searchkey = params[:searchkey]
+    if searchkey.nil?
+      return
+    end
+
+    norm_searchkey = Tag.get_normalized_names(searchkey)[0]
+
+    @search = Event.search() do
+      keywords norm_searchkey, :fields => [:title, :extra_words]
+      paginate :page => 1, :per_page => 1200
+    end
+    render :template => "events/search", :formats => [:html], :handlers => :haml
+  end
+
 
 end
