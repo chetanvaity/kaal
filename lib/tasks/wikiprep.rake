@@ -178,14 +178,14 @@ namespace :wikiprep do
       (prefix1, prefix2) = wu.make_path_prefix(wiki_id)
       bow_file = args.bowdir + "/" + prefix1 + "/" + prefix2 + "/" + wiki_id + ".txt"
       begin
-        s = open(bow_file).readlines.map { |word| word.chomp }.join('\t')
+        s = open(bow_file).readlines.map { |word| word.chomp }.join(' ')
       rescue
         print "Error reading file: event_id=#{e.id}, #{bow_file}\n"
         next
       end
       e.extra_words = s
       e.save
-    end         
+    end
   end
 
 end # namespace :wikiprep

@@ -178,8 +178,10 @@ class EventsController < ApplicationController
       
       if @viewstyle == "tl"
         #This is for timeline display
+        logger.info("1")
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
         make_json(@fetchedevents, json_fname, tags_arr, from_jd, to_jd)
+        logger.info("2")
         @@q_keys.store(query_key, @events_size)
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
@@ -190,6 +192,7 @@ class EventsController < ApplicationController
     end
     
     if @fullscr == "false"
+      logger.info("3")
       render :template => "events/tl", :formats => [:html], :handlers => :haml,
        :layout => "tl"
     else
@@ -201,29 +204,35 @@ class EventsController < ApplicationController
 
   # ----- Util functions -----
   
-  # Get events from DB
+  # Get events from the Solr index
   # Either from_jd and to_jd should both be nil or they should both be valid
-  def get_events(from_jd, to_jd, tags_arr)
-    logger.info("get_events(): tags_arr=#{tags_arr}")
-    e_ids = []
-    tags_arr.each do |tag|
-      norm_tags = Tag.get_normalized_names(tag)
-      tag_e_ids = get_event_ids_UNION(norm_tags)
-      if tag_e_ids.nil? || tag_e_ids.empty?
-        add_link = "<a class=\"pull-right\" href=\"#{url_for(:new_event)}\">Add new event</a>"
-        flash.now[:warning] =
-          "Sorry! I don't know anything like '#{tag}'. #{add_link}".html_safe
-        break
-      end
-      e_ids = (e_ids.empty?) ? tag_e_ids : (e_ids & tag_e_ids)
+  def get_events(from_jd, to_jd, query_terms)
+    logger.info("get_events(): query_terms=#{query_terms}")
+
+    search = Event.search() do
+      keywords query_terms.join(' '), :fields => [:title, :extra_words]
+      paginate :page => 1, :per_page => 20
     end
 
-    if from_jd.nil? or to_jd.nil?
-      # Forget date bracketing
-      return Event.where(:id => e_ids).order(:jd)
-    else
-      return Event.where(:id => e_ids, :jd => (from_jd..to_jd)).order(:jd)
+    if search.total == 0
+      add_link = "<a class=\"pull-right\" href=\"#{url_for(:new_event)}\">Add new event</a>"
+      flash.now[:warning] =
+        "Sorry! I don't know anything like '#{query_terms}'. #{add_link}".html_safe
     end
+
+    event_results = []
+    search.each_hit_with_result do |hit, event|
+      event.score = hit.score
+      if from_jd.nil? or to_jd.nil?
+        event_results.push(event)
+      else
+        if event.jd >= from_jd and event.jd <= to_jd
+          event_results.push(event)
+        end
+      end
+    end
+
+    return event_results
   end
 
   # Get event ids for all tags in the tags_arr (UNION not INTERSECTION)
@@ -240,7 +249,7 @@ class EventsController < ApplicationController
     return e_ids
   end
 
-  # Convert the date parsms into Date objects and then their JDs
+  # Convert the date params into Date objects and then their JDs
   # If both are nil, return nils
   # If from is nil, return JD = 0
   # If to is nil, return current date JD
@@ -352,11 +361,13 @@ END
     if searchkey.nil?
       return
     end
-
-    norm_searchkey = Tag.get_normalized_names(searchkey)[0]
+    
+    #norm_searchkey = Tag.get_normalized_names(searchkey)[0]
+    #logger.info("search(): norm_searchkey=#{norm_searchkey}")
 
     @search = Event.search() do
-      keywords norm_searchkey, :fields => [:title, :extra_words]
+      #keywords "\"#{norm_searchkey}\"", :fields => [:title, :extra_words]
+      keywords searchkey, :fields => [:title, :extra_words]
       paginate :page => 1, :per_page => 1200
     end
     render :template => "events/search", :formats => [:html], :handlers => :haml

@@ -59,6 +59,10 @@ class Event < ActiveRecord::Base
   end
   ### end virtual attribute - date_str
 
+  ### virtual attribute - score (used when treating event as a search result)
+  attr_accessor :score
+  ### end virtual attribute - score
+
   # A class method to parse a string into a date
   # Raises exception if we cannot convert the given string
   def self.parse_date(s)
