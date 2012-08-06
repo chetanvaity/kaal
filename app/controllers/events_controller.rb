@@ -162,7 +162,7 @@ class EventsController < ApplicationController
       return
     end
 
-    @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
+    @tags = "Katrina Kaif Akshay Kumar" if @tags.nil? or @tags.empty?
     query_key = @util.get_query_key(from_jd, to_jd, @tags)
     @json_resource_path = "/tmpjson/#{query_key}.json"
 
@@ -172,15 +172,14 @@ class EventsController < ApplicationController
       @events_size = val
     else
       # Get events and create the json
-      tags_arr = @tags.split(',').map {|t| t.strip}
-      @fetchedevents = get_events(from_jd, to_jd, tags_arr)
+      @fetchedevents = get_events(from_jd, to_jd, @tags)
       @events_size = @fetchedevents.size
       
       if @viewstyle == "tl"
         #This is for timeline display
         logger.info("1")
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-        make_json(@fetchedevents, json_fname, tags_arr, from_jd, to_jd)
+        make_json(@fetchedevents, json_fname, @tags, from_jd, to_jd)
         logger.info("2")
         @@q_keys.store(query_key, @events_size)
         logger.info("EventsController.query2() - json made: #{json_fname}")
@@ -192,7 +191,6 @@ class EventsController < ApplicationController
     end
     
     if @fullscr == "false"
-      logger.info("3")
       render :template => "events/tl", :formats => [:html], :handlers => :haml,
        :layout => "tl"
     else
@@ -206,18 +204,20 @@ class EventsController < ApplicationController
   
   # Get events from the Solr index
   # Either from_jd and to_jd should both be nil or they should both be valid
-  def get_events(from_jd, to_jd, query_terms)
-    logger.info("get_events(): query_terms=#{query_terms}")
+  def get_events(from_jd, to_jd, query_str)
+    logger.info("get_events(): query_str=#{query_str}")
+    norm_query_str = Babel.get_normalized_query(query_str)
+    logger.info("get_events(): norm_query_str=#{norm_query_str}")
 
     search = Event.search() do
-      keywords query_terms.join(' '), :fields => [:title, :extra_words]
+      keywords norm_query_str, :fields => [:title, :extra_words]
       paginate :page => 1, :per_page => 20
     end
 
     if search.total == 0
       add_link = "<a class=\"pull-right\" href=\"#{url_for(:new_event)}\">Add new event</a>"
       flash.now[:warning] =
-        "Sorry! I don't know anything like '#{query_terms}'. #{add_link}".html_safe
+        "Sorry! I don't know anything like '#{query_str}'. #{add_link}".html_safe
     end
 
     event_results = []
@@ -276,9 +276,9 @@ class EventsController < ApplicationController
 
   # Make JSON file as needed by Verite Timeline
   # TBD: JSON should be created using some JSON library to avoid escaping issues
-  def make_json(events, json_fname, tags_arr, from_jd, to_jd)
+  def make_json(events, json_fname, query_str, from_jd, to_jd)
     # Make nice looking main frame for the timeline
-    headline = tags_arr.join(" & ").titlecase
+    headline = query_str.titlecase
     if (from_jd.nil? or to_jd.nil?)
       text = " "
     else
