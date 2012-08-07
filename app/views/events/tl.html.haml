@@ -63,6 +63,9 @@
         /  &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp;
         -pg_less_more = "test"
         -displaywords = "test"
+        -embviewstatus = ""
+        -if @embeddedview == 'true'
+          -embviewstatus = "&embview=true"
         -if @events_on_a_page == "more"
           -displaywords = "Show less."
           -pg_less_more = "default"
@@ -73,10 +76,10 @@
         -if @total_search_size > 0
           -if @viewstyle == "tl"
             -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false,  pg_less_more)
-            %a{:href => "#{url_to_use}"} #{displaywords}&nbsp;
+            %a{:href => "#{url_to_use}#{embviewstatus}"} #{displaywords}&nbsp;
           -else
             -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, pg_less_more )
-            %a{:href => "#{url_to_use}"} #{displaywords}&nbsp;
+            %a{:href => "#{url_to_use}#{embviewstatus}"} #{displaywords}&nbsp;
          
       -if @events_size > 0
         -if @embeddedview == 'false'
