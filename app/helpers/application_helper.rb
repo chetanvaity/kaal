@@ -51,7 +51,7 @@ module ApplicationHelper
     
     #tags
     if !given_tags.nil?
-      url_to_return += "&tags=" + given_tags.to_s
+      url_to_return += "&q=" + given_tags.to_s
     end
     
     

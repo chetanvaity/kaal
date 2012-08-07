@@ -10,8 +10,8 @@
     = succeed ('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>') do
       = succeed(@tlid) do
         = succeed('&tlid=') do
-          = succeed(@tags) do
-            = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=')
+          = succeed(@query) do
+            = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&q=')
     = escape_once(haml_indent())
     
 
@@ -30,10 +30,10 @@
     &nbsp;&nbsp;&nbsp;&nbsp;Displayed #{@events_size} events.
     -if @total_search_size > 0
       -if @viewstyle == "tl"
-        -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, true,  pg_less_more)
+        -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, true,  pg_less_more)
         %a{:href => "#{url_to_use}"} #{displaywords}&nbsp;
       -else
-        -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, true, pg_less_more )
+        -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, true, pg_less_more )
         %a{:href => "#{url_to_use}"} #{displaywords}&nbsp;
      
   -if @events_size > 0
@@ -42,11 +42,11 @@
         %a.btn.btn-primary{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
           %i.icon-share.icon-white
         -if @viewstyle == "tl"
-          -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+          -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, false, @pgevts )
           %a.btn.btn-primary{:href => "#{url_to_use}", :title => "Normal screen view", :rel => "tooltip", :style => "margin-right:10px;"}
             %i.icon-resize-small.icon-white
         -else
-          -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts ) 
+          -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, false, @pgevts ) 
           %a.btn.btn-primary{:href => "#{url_to_use}", :title => "Normal screen view", :rel => "tooltip", :style => "margin-right:10px;"}
             %i.icon-resize-small.icon-white
                 
@@ -58,23 +58,23 @@
         /
         -if @viewstyle == "tl"
           %li.active
-            -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+            -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, true, @pgevts )
             %a{:href => "#{url_to_use}"} 
               %i.icon-time
               Timeline View
           %li
-            -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+            -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, true, @pgevts )
             %a{:href => "#{url_to_use}"} 
               %i.icon-list-alt
               List View
         -else
           %li
-            -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+            -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, true, @pgevts )
             %a{:href => "#{url_to_use}"} 
               %i.icon-time
               Timeline View
           %li.active
-            -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+            -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, true, @pgevts )
             %a{:href => "#{url_to_use}"}
               %i.icon-list-alt 
               List View

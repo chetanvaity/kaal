@@ -9,9 +9,9 @@
     /with variables evaluated in side.
     = succeed ('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>') do
       = succeed(@tlid) do
-        = succeed('&q=') do
+        = succeed('&tlid=') do
           = succeed(@query) do
-            = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=')
+            = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&q=')
     = escape_once(haml_indent())
     
 
@@ -54,7 +54,7 @@
     %div.span12.border
       %div#status-line.pull-right
         /- if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty?)
-        /  &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events for tags: #{@tags} &nbsp; 
+        /  &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events for tags: #{} &nbsp; 
         /- else
         /  &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp;
         -pg_less_more = "test"
@@ -71,10 +71,10 @@
         &nbsp;&nbsp;&nbsp;&nbsp;Displayed #{@events_size} events.
         -if @total_search_size > 0
           -if @viewstyle == "tl"
-            -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false,  pg_less_more)
+            -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, false,  pg_less_more)
             %a{:href => "#{url_to_use}#{embviewstatus}"} #{displaywords}&nbsp;
           -else
-            -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, pg_less_more )
+            -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, false, pg_less_more )
             %a{:href => "#{url_to_use}#{embviewstatus}"} #{displaywords}&nbsp;
          
       -if @events_size > 0
@@ -83,12 +83,12 @@
             %a.btn.btn-primary{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
               %i.icon-share.icon-white
             -if @viewstyle == "tl"
-              -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+              -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, true, @pgevts )
               /%a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=tl&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
               %a.btn.btn-primary{:href => "#{url_to_use}", :title => "Full screen view", :rel => "tooltip"}
                 %i.icon-resize-full.icon-white
             -else 
-              -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+              -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, true, @pgevts )
               /%a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=list&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
               %a.btn.btn-primary{:href => "#{url_to_use}", :title => "Full screen view", :rel => "tooltip"}
                 %i.icon-resize-full.icon-white
@@ -101,23 +101,23 @@
             /
             -if @viewstyle == "tl"
               %li.active
-                -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, false, @pgevts )
                 %a{:href => "#{url_to_use}"} 
                   %i.icon-time
                   Timeline View
               %li
-                -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, false, @pgevts )
                 %a{:href => "#{url_to_use}"}  
                   %i.icon-list-alt
                   List View
             -else
               %li
-                -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                -url_to_use = generate_timeline_view_url(@query,@tlid, @fromdate, @todate, false, @pgevts )
                 %a{:href => "#{url_to_use}"} 
                   %i.icon-time
                   Timeline View
               %li.active
-                -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                -url_to_use = generate_list_view_url(@query,@tlid, @fromdate, @todate, false, @pgevts )
                 %a{:href => "#{url_to_use}"}
                   %i.icon-list-alt 
                   List View
