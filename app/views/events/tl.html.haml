@@ -13,14 +13,7 @@
           = succeed(@tags) do
             = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=')
     = escape_once(haml_indent())
-    /- haml_concat('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=')
-    /- haml_concat(@tags)
-    /- haml_concat('&tlid=')
-    /- haml_concat(@tlid)
-    /- haml_concat('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>')
-    /= escape_once(haml_indent())
-    /= escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&tags=#{@tags}&tlid=#{@tlid}" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>')
-    /!= "<iframe src=\"http://localhost:3000/events/q/v2?embview=true&tags=#{@tags}&tlid=#{@tlid}\" frameborder=\"yes\" scrolling=\"no\" width=\"78%\" height=\"480\">Test</iframe>"
+    
 
 %div.container
   -if @embeddedview == 'false'
@@ -64,10 +57,26 @@
   %div.row
     %div.span12.border
       %div#status-line.pull-right
-        - if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty?)
-          &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events for tags: #{@tags} &nbsp; 
-        - else
-          &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp; 
+        /- if (@fromdate.nil? or @fromdate.empty?) and (@todate.nil? or @todate.empty?)
+        /  &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events for tags: #{@tags} &nbsp; 
+        /- else
+        /  &nbsp;&nbsp;&nbsp;&nbsp;#{@events_size} events between [#{@fromdate} - #{@todate}] for tags: #{@tags} &nbsp;
+        -pg_less_more = "test"
+        -displaywords = "test"
+        -if @events_on_a_page == "more"
+          -displaywords = "Show less."
+          -pg_less_more = "default"
+        -else
+          -displaywords = "Show more."
+          -pg_less_more = "more"
+        &nbsp;&nbsp;&nbsp;&nbsp;Displayed #{@events_size} events.
+        -if @total_search_size > 0
+          -if @viewstyle == "tl"
+            -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false,  pg_less_more)
+            %a{:href => "#{url_to_use}"} #{displaywords}&nbsp;
+          -else
+            -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, pg_less_more )
+            %a{:href => "#{url_to_use}"} #{displaywords}&nbsp;
          
       -if @events_size > 0
         -if @embeddedview == 'false'
@@ -75,29 +84,42 @@
             %a.btn.btn-primary{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
               %i.icon-share.icon-white
             -if @viewstyle == "tl"
-              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=tl&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
+              -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+              /%a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=tl&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
+              %a.btn.btn-primary{:href => "#{url_to_use}", :title => "Full screen view", :rel => "tooltip"}
                 %i.icon-resize-full.icon-white
             -else 
-              %a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=list&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
+              -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, true, @pgevts )
+              /%a.btn.btn-primary{:href => "/events/q/v2?fullscr=true&view=list&tags=#{@tags}&tlid=#{@tlid}", :title => "Full screen view", :rel => "tooltip"}
+              %a.btn.btn-primary{:href => "#{url_to_use}", :title => "Full screen view", :rel => "tooltip"}
                 %i.icon-resize-full.icon-white
           
           %ul.nav.nav-tabs.no-bottom-margin
+            /
+            / We need following types of urls:
+            / for tl-view: "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"
+            / for list-view: "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"
+            /
             -if @viewstyle == "tl"
               %li.active
-                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} 
+                -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                %a{:href => "#{url_to_use}"} 
                   %i.icon-time
                   Timeline View
               %li
-                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"} 
+                -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                %a{:href => "#{url_to_use}"}  
                   %i.icon-list-alt
                   List View
             -else
               %li
-                %a{:href => "/events/q/v2?view=tl&tags=#{@tags}&tlid=#{@tlid}"} 
+                -url_to_use = generate_timeline_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                %a{:href => "#{url_to_use}"} 
                   %i.icon-time
                   Timeline View
               %li.active
-                %a{:href => "/events/q/v2?view=list&tags=#{@tags}&tlid=#{@tlid}"}
+                -url_to_use = generate_list_view_url(@tags,@tlid, @fromdate, @todate, false, @pgevts )
+                %a{:href => "#{url_to_use}"}
                   %i.icon-list-alt 
                   List View
         -if @viewstyle == "list"

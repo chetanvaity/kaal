@@ -110,7 +110,7 @@ class EventsController < ApplicationController
     tags_arr = @tags.split ','
     norm_tags_arr = []
     tags_arr.map {|tag_str| norm_tags_arr += Tag.get_normalized_names(tag_str)}
-    @events = get_events(norm_tags_arr)
+    @events = get_events(norm_tags_arr)[1]
 
     respond_to do |format|
       format.html { render :template => "events/index", :formats => [:html],
@@ -125,6 +125,7 @@ class EventsController < ApplicationController
   # and then render tl.html
   # Variables passed to view - @tags, @events_size, @json_resource_path
   def query2
+        
     @fromdate = params[:from]
     @todate = params[:to]
     @tags = params[:tags]
@@ -151,6 +152,24 @@ class EventsController < ApplicationController
       @viewstyle = "tl"
       @fullscr = "false"
     end
+    
+    @events_on_a_page = params[:pgevts] # Allowed values are 'default' and 'more'
+    if ( @events_on_a_page.nil? ) ||
+       ( (@events_on_a_page != "default") && (@events_on_a_page != "more"))
+      @events_on_a_page = "default"
+    end
+    #local var
+    numevents_on_a_page = DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
+    if(@events_on_a_page == "more")
+      numevents_on_a_page= MORE_NUM_OF_EVENTS_TOBE_DISPLAYED
+    end
+    
+    #local var
+    #cache_refresh = false;
+    #tmp_cache_refresh = params[:cacherefresh]
+    #if(!tmp_cache_refresh.nil? && tmp_cache_refresh == "true")
+    #  cache_refresh = true;
+    #end
 
     logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}, embeddedview=#{@embeddedview}")
     
@@ -163,17 +182,20 @@ class EventsController < ApplicationController
     end
 
     @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
-    query_key = @util.get_query_key(from_jd, to_jd, @tags)
+    query_key = @util.get_query_key(from_jd, to_jd, @tags, @events_on_a_page)
     @json_resource_path = "/tmpjson/#{query_key}.json"
 
     val = @@q_keys[query_key]
     if (not val.nil?)  &&  (@viewstyle == "tl") 
       logger.info("Cache hit!")
-      @events_size = val
+      @events_size = val[0]
+      @total_search_size = val[1]
     else
       # Get events and create the json
       tags_arr = @tags.split(',').map {|t| t.strip}
-      @fetchedevents = get_events(from_jd, to_jd, tags_arr)
+      res_arr = get_events(from_jd, to_jd, tags_arr, numevents_on_a_page)
+      @fetchedevents = res_arr[1]
+      @total_search_size = res_arr[0]
       @events_size = @fetchedevents.size
       
       if @viewstyle == "tl"
@@ -182,13 +204,17 @@ class EventsController < ApplicationController
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
         make_json(@fetchedevents, json_fname, tags_arr, from_jd, to_jd)
         logger.info("2")
-        @@q_keys.store(query_key, @events_size)
+        @@q_keys.store(query_key, [@events_size,@total_search_size])
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
         #This is for tabular display
         # @fetchedevents should be used by the view for display purpose
         logger.info("Size of @fetchedevents is #{@events_size}")
       end
+    end
+    
+    if @total_search_size <= DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
+      @total_search_size = -1 # no more data
     end
     
     if @fullscr == "false"
@@ -206,18 +232,17 @@ class EventsController < ApplicationController
   
   # Get events from the Solr index
   # Either from_jd and to_jd should both be nil or they should both be valid
-  def get_events(from_jd, to_jd, query_terms)
+  def get_events(from_jd, to_jd, query_terms, numevents_on_a_page)
     logger.info("get_events(): query_terms=#{query_terms}")
 
     search = Event.search() do
       keywords query_terms.join(' '), :fields => [:title, :extra_words]
-      paginate :page => 1, :per_page => 20
+      paginate :page => 1, :per_page => numevents_on_a_page
     end
 
     if search.total == 0
-      add_link = "<a class=\"pull-right\" href=\"#{url_for(:new_event)}\">Add new event</a>"
       flash.now[:warning] =
-        "Sorry! I don't know anything like '#{query_terms}'. #{add_link}".html_safe
+        "Sorry! we don't know anything like '#{query_terms}'."
     end
 
     event_results = []
@@ -232,7 +257,7 @@ class EventsController < ApplicationController
       end
     end
 
-    return event_results
+    return [search.total, event_results] 
   end
 
   # Get event ids for all tags in the tags_arr (UNION not INTERSECTION)
@@ -372,6 +397,5 @@ END
     end
     render :template => "events/search", :formats => [:html], :handlers => :haml
   end
-
 
 end

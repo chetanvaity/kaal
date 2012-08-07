@@ -1,2 +1,90 @@
 module ApplicationHelper
+  
+  # Quick helper for timeline view url
+  def generate_timeline_view_url(given_tags, # search words
+                                      given_timeline_id, # IF it is direct search by giving timeline-id ..future
+                                      given_from_date, given_to_date, # date conditions
+                                      is_fullscreen, # is it fullscreen display? 'true' means yes.
+                                      events_on_page) # Expected values 'default' or 'more'
+    generate_list_or_tl_view_url(true,given_tags,given_timeline_id,given_from_date, given_to_date,is_fullscreen,events_on_page)
+  end
+  
+  
+  # Quick helper for list view url
+  def generate_list_view_url(given_tags, # search words
+                                        given_timeline_id, # IF it is direct search by giving timeline-id ..future
+                                        given_from_date, given_to_date, # date conditions
+                                        is_fullscreen, # is it fullscreen display? 'true' means yes.
+                                        events_on_page) # Expected values 'default' or 'more'
+      generate_list_or_tl_view_url(false,given_tags,given_timeline_id,given_from_date, given_to_date,is_fullscreen,events_on_page)
+  end
+  
+  
+  #
+  # This funhction will generate partial url which will be used on tab-click, button-click, etc.
+  #
+  def generate_list_or_tl_view_url(is_tl_view,  # IS this timeline view or listview? 'true' means timeline view. 
+                                    given_tags, # search words
+                                    given_timeline_id, # IF it is direct search by giving timeline-id ..future
+                                    given_from_date, given_to_date, # date conditions
+                                    is_fullscreen, # is it fullscreen display? 'true' means yes.
+                                    events_on_page) # Expected values 'default' or 'more'
+                                    
+    base_search_url = "/events/q/v2?"
+    
+    url_to_return = base_search_url 
+    
+    # fullscreen param
+    if (!is_fullscreen.nil? && is_fullscreen == true)
+      url_to_return += "fullscr=true"
+    else
+      url_to_return += "fullscr=false"
+    end
+    
+    # timeline or list view??
+    url_to_return += "&"
+    if (!is_tl_view.nil? && is_tl_view == true)
+      url_to_return += "view=tl"
+    else
+      url_to_return += "view=list"
+    end
+    
+    #tags
+    if !given_tags.nil?
+      url_to_return += "&tags=" + given_tags.to_s
+    end
+    
+    
+    #timeline id
+    if !given_timeline_id.nil?
+      url_to_return += "&tlid=" + given_timeline_id.to_s
+    end
+    
+    
+    #from-to dates
+    if !given_from_date.nil?
+      url_to_return += "&from=" + given_from_date.to_s
+    end
+    if !given_to_date.nil?
+      url_to_return += "&to=" + given_to_date.to_s 
+    end
+    
+    
+    #events on page
+    if (!events_on_page.nil? && events_on_page == "more")
+      url_to_return += "&pgevts=more"
+    else
+      url_to_return += "&pgevts=default"
+    end
+    
+    logger.debug("URL: " + url_to_return)
+    return url_to_return
+  end
+  
+  
+  
+  # TBD
+  def generate_complete_embedview_url()
+    
+  end
 end
