@@ -99,6 +99,9 @@ class Event < ActiveRecord::Base
   searchable do
     text :title, :default_boost => 2
     text :extra_words
+    text :tags, :boost => 1.5 do
+      tags.map {|tag| tag.name}.join(" ")
+    end
   end
 
 end
