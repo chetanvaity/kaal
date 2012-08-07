@@ -241,7 +241,7 @@ class EventsController < ApplicationController
   # TBD: JSON should be created using some JSON library to avoid escaping issues
   def make_json(events, json_fname, query_str, from_jd, to_jd)
     # Make nice looking main frame for the timeline
-    headline = query_str.titlecase
+    headline = ActiveSupport::JSON.encode(query_str.titlecase)
     if (from_jd.nil? or to_jd.nil?)
       text = " "
     else
@@ -252,7 +252,7 @@ class EventsController < ApplicationController
     header_json = <<END
 {"timeline":
   {
-  "headline":"#{headline}",
+  "headline":#{headline},
   "type":"default",
   "startDate":"2011,9,1",
   "text":"#{text}",
