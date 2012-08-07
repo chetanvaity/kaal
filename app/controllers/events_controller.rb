@@ -230,7 +230,7 @@ class EventsController < ApplicationController
     logger.info("get_events(): norm_query_str=#{norm_query_str}")
 
     search = Event.search() do
-      keywords norm_query_str, :fields => [:title, :extra_words]
+      keywords norm_query_str, :fields => [:title, :tags, :extra_words]
       paginate :page => 1, :per_page => numevents_on_a_page
     end
 
