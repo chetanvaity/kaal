@@ -1,0 +1,35 @@
+shivaji:
+ id: 1
+ term: shivaji
+ norm_term_id: 1
+
+king shivaji:
+ id: 2
+ term: king shivaji
+ norm_term_id: 1
+
+chatrapati shivaji:
+ id: 3
+ term: chatrapati shivaji
+ norm_term_id: 1
+
+india:
+ id: 4
+ term: india
+ norm_term_id: 4
+
+bharat:
+ id: 5
+ term: bharat
+ norm_term_id: 4
+
+r.d.burman:
+ id: 6
+ term: r.d.burman
+ norm_term_id: 6
+
+pancham:
+ id: 7
+ term: pancham
+ norm_term_id: 6
+

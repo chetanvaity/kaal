@@ -47,4 +47,27 @@ class Tag < ActiveRecord::Base
     return norm_names
   end
 
+  # Given a query "w1 w2 w3",
+  # First look for normalized name for "w1". If found, replace.
+  # If not found, look for normalized name for "w1 w2"
+  # and so on
+  def self.get_normalized_query(query_str)
+    normalized_query = ""
+    curr_phrase = ""
+    query_str.split.each do |w|
+      curr_phrase = (curr_phrase == "") ? w : (curr_phrase + " " + w)
+      norm_phrase = Tag.get_normalized_names(curr_phrase)[0]
+      if norm_phrase == curr_phrase
+        next
+      else
+        normalized_query += norm_phrase + " "
+        curr_phrase = ""
+      end
+    end
+    if curr_phrase != ""
+      normalized_query += curr_phrase
+    end
+    return normalized_query
+  end
+
 end

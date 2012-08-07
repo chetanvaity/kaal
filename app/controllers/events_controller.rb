@@ -55,8 +55,6 @@ class EventsController < ApplicationController
     end
   end
 
-  
-  
   def update
     @event = Event.find params[:id]
     #This parameter will be available on this form only when edit has attempted from listview.
@@ -88,7 +86,6 @@ class EventsController < ApplicationController
     end
   end
 
-  
   def destroy
     del_from_listview = params[:fromlistview]
     @event = Event.find params[:id]
@@ -123,13 +120,12 @@ class EventsController < ApplicationController
   # Get events
   # Make JSON for use with Verite Timeline
   # and then render tl.html
-  # Variables passed to view - @tags, @events_size, @json_resource_path
+  # Variables passed to view - @query, @events_size, @json_resource_path
   def query2
         
     @fromdate = params[:from]
     @todate = params[:to]
-    @tags = params[:tags]
-    @tlid = params[:tlid]
+    @query = params[:q]
     @fetchedevents = nil
     @viewstyle = params[:view]
     if @viewstyle.nil?
@@ -171,7 +167,7 @@ class EventsController < ApplicationController
     #  cache_refresh = true;
     #end
 
-    logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, tags=#{@tags}, tlid=#{@tlid}, viewstyle=#{@viewstyle}, embeddedview=#{@embeddedview}")
+    logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, q=#{@query}, viewstyle=#{@viewstyle}, embeddedview=#{@embeddedview}")
     
     begin
       (from_jd, to_jd) = get_jds_from_params(@fromdate, @todate)
@@ -181,8 +177,8 @@ class EventsController < ApplicationController
       return
     end
 
-    @tags = "Katrina Kaif,Akshay Kumar" if @tags.nil? or @tags.empty?
-    query_key = @util.get_query_key(from_jd, to_jd, @tags, @events_on_a_page)
+    @query = "Katrina Kaif Akshay Kumar" if @query.nil? or @query.empty?
+    query_key = @util.get_query_key(from_jd, to_jd, @query, @events_on_a_page)
     @json_resource_path = "/tmpjson/#{query_key}.json"
 
     val = @@q_keys[query_key]
@@ -192,18 +188,15 @@ class EventsController < ApplicationController
       @total_search_size = val[1]
     else
       # Get events and create the json
-      tags_arr = @tags.split(',').map {|t| t.strip}
-      res_arr = get_events(from_jd, to_jd, tags_arr, numevents_on_a_page)
+      res_arr = get_events(from_jd, to_jd, @query, numevents_on_a_page)
       @fetchedevents = res_arr[1]
       @total_search_size = res_arr[0]
       @events_size = @fetchedevents.size
       
       if @viewstyle == "tl"
         #This is for timeline display
-        logger.info("1")
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-        make_json(@fetchedevents, json_fname, tags_arr, from_jd, to_jd)
-        logger.info("2")
+        make_json(@fetchedevents, json_fname, @query, from_jd, to_jd)
         @@q_keys.store(query_key, [@events_size,@total_search_size])
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
@@ -218,7 +211,6 @@ class EventsController < ApplicationController
     end
     
     if @fullscr == "false"
-      logger.info("3")
       render :template => "events/tl", :formats => [:html], :handlers => :haml,
        :layout => "tl"
     else
@@ -232,17 +224,19 @@ class EventsController < ApplicationController
   
   # Get events from the Solr index
   # Either from_jd and to_jd should both be nil or they should both be valid
-  def get_events(from_jd, to_jd, query_terms, numevents_on_a_page)
-    logger.info("get_events(): query_terms=#{query_terms}")
+  def get_events(from_jd, to_jd, query_str,numevents_on_a_page)
+    logger.info("get_events(): query_str=#{query_str}")
+    norm_query_str = Babel.get_normalized_query(query_str)
+    logger.info("get_events(): norm_query_str=#{norm_query_str}")
 
     search = Event.search() do
-      keywords query_terms.join(' '), :fields => [:title, :extra_words]
+      keywords norm_query_str, :fields => [:title, :extra_words]
       paginate :page => 1, :per_page => numevents_on_a_page
     end
 
     if search.total == 0
       flash.now[:warning] =
-        "Sorry! we don't know anything like '#{query_terms}'."
+        "Sorry! we don't know anything like '#{query_str}'."
     end
 
     event_results = []
@@ -258,20 +252,6 @@ class EventsController < ApplicationController
     end
 
     return [search.total, event_results] 
-  end
-
-  # Get event ids for all tags in the tags_arr (UNION not INTERSECTION)
-  # Used in get_events()
-  def get_event_ids_UNION(tags_arr)
-    logger.info("get_event_ids_UNION(): tags_arr=#{tags_arr}")
-    e_ids = []
-    tags_arr.each do |norm_tag|
-      tlist = Tag.find_all_by_name(norm_tag)
-      e_ids_for_tag = tlist.map { |t| t.event_id }
-      logger.info("get_event_ids_UNION(): e_ids_for_tag(#{norm_tag}): #{e_ids_for_tag}")
-      e_ids = e_ids + e_ids_for_tag
-    end
-    return e_ids
   end
 
   # Convert the date params into Date objects and then their JDs
@@ -301,9 +281,9 @@ class EventsController < ApplicationController
 
   # Make JSON file as needed by Verite Timeline
   # TBD: JSON should be created using some JSON library to avoid escaping issues
-  def make_json(events, json_fname, tags_arr, from_jd, to_jd)
+  def make_json(events, json_fname, query_str, from_jd, to_jd)
     # Make nice looking main frame for the timeline
-    headline = tags_arr.join(" & ").titlecase
+    headline = ActiveSupport::JSON.encode(query_str.titlecase)
     if (from_jd.nil? or to_jd.nil?)
       text = " "
     else
@@ -314,7 +294,7 @@ class EventsController < ApplicationController
     header_json = <<END
 {"timeline":
   {
-  "headline":"#{headline}",
+  "headline":#{headline},
   "type":"default",
   "startDate":"2011,9,1",
   "text":"#{text}",
@@ -324,22 +304,12 @@ END
     date_json_array = []
     events.each do |e|
       d = Date.jd(e.jd).strftime("%Y,%m,%d")
-
       text = e.desc.blank? ? " " : e.desc
       text = ActiveSupport::JSON.encode(text)
-
       title = ActiveSupport::JSON.encode(e.title)
-
       media_url = e.url
       media_caption = e.url
-      if e.url.blank?
-        e.title =~ /(Birth:|Death:|Created:|Ended:|Started:|End:) (.*)/
-        t = $&.nil? ? e.title : $2
-        wiki_t = t.gsub(/ /, '_')
-        media_url = "http://en.wikipedia.org/wiki/#{wiki_t}"
-        media_caption = "Excerpt from the Wikipedia article for #{t}"
-      end
-      
+
       date_json = <<END
         {
         "startDate":"#{d}",
@@ -387,11 +357,7 @@ END
       return
     end
     
-    #norm_searchkey = Tag.get_normalized_names(searchkey)[0]
-    #logger.info("search(): norm_searchkey=#{norm_searchkey}")
-
     @search = Event.search() do
-      #keywords "\"#{norm_searchkey}\"", :fields => [:title, :extra_words]
       keywords searchkey, :fields => [:title, :extra_words]
       paginate :page => 1, :per_page => 1200
     end
