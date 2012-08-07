@@ -56,9 +56,9 @@ module ApplicationHelper
     
     
     #timeline id
-    if !given_timeline_id.nil?
-      url_to_return += "&tlid=" + given_timeline_id.to_s
-    end
+    #if !given_timeline_id.nil?
+    #  url_to_return += "&tlid=" + given_timeline_id.to_s
+    #end
     
     
     #from-to dates
