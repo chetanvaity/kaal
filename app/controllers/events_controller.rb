@@ -250,6 +250,9 @@ class EventsController < ApplicationController
         end
       end
     end
+    
+    # sort it on event date in ascending order, needed for list-view display.
+    event_results.sort!{ |a,b| a.jd <=> b.jd }
 
     return [search.total, event_results] 
   end
