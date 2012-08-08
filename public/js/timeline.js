@@ -6847,6 +6847,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 						_date.uniqueid			= VMM.Util.unique_ID(7);
 					    /* Chetan  - Add our own id as well */
 					    _date.id = data.date[i].id;
+					    _date.importance = data.date[i].importance;
 					    /* End Chetan */
 						_dates.push(_date);
 					} 
@@ -8140,7 +8141,16 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				var _marker, _marker_flag, _marker_content, _marker_dot, _marker_line, _marker_line_event, _marker_title = "", has_title = false;
 				
 				_marker					= VMM.appendAndGetElement($content, "<div>", "marker");
+				//_marker_flag			= VMM.appendAndGetElement(_marker, "<div>", "flag");
+			        // Chetan
+			    if (data[i].importance == "1") {
+				_marker_flag			= VMM.appendAndGetElement(_marker, "<div>", "flag hiscore");
+			    } else if (data[i].importance == "2") {
+				_marker_flag			= VMM.appendAndGetElement(_marker, "<div>", "flag midscore");
+			    } else {
 				_marker_flag			= VMM.appendAndGetElement(_marker, "<div>", "flag");
+			    }
+			        // End Chetan
 				_marker_content			= VMM.appendAndGetElement(_marker_flag, "<div>", "flag-content");
 				_marker_dot				= VMM.appendAndGetElement(_marker, "<div>", "dot");
 				_marker_line			= VMM.appendAndGetElement(_marker, "<div>", "line");

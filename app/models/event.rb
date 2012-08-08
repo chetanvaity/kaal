@@ -59,9 +59,12 @@ class Event < ActiveRecord::Base
   end
   ### end virtual attribute - date_str
 
-  ### virtual attribute - score (used when treating event as a search result)
+  ### virtual attributes - score, importance (used when treating event as a search result)
+  # score is as returned by Solr
+  # importance is 1 or 2 or 3 - depending on the relative importance in the search results
   attr_accessor :score
-  ### end virtual attribute - score
+  attr_accessor :importance
+  ### end virtual attribute - score, importance
 
   # A class method to parse a string into a date
   # Raises exception if we cannot convert the given string
@@ -91,6 +94,32 @@ class Event < ActiveRecord::Base
     raise ArgumentError, "Invalid date: #{s}" if date == zero_date
 
     return date
+  end
+
+  # A class method to assign "importance" to events in a search result
+  # We note the high score and low score
+  # Give importance=1 for events with score in top 20% of the (high-low) score range
+  # Give importance=2 for events with score in 20%-50% of the (high-low) score range
+  #
+  #   |-------------------------------|
+  #   ^     ^        ^                ^ 
+  #  high  r1       r2               low
+  def self.populate_importance(events)
+    return events if events.size == 0
+    high = events.max_by { |e| e.score }.score
+    low = events.min_by { |e| e.score }.score
+    range = high - low
+    r1 = high - (range * 0.2)
+    r2 = high - (range * 0.5)
+    return events.each do |e|
+      if e.score >= r1
+        e.importance = 1
+      elsif e.score >= r2
+        e.importance = 2
+      else
+        e.importance = 3
+      end
+    end
   end
 
   #
