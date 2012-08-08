@@ -66,6 +66,9 @@ class EventsController < ApplicationController
         #Let's show success notification and let's show the refreshed listview page
         flash[:notice] =
                   "<strong>#{@event.title}</strong> was successfully updated".html_safe
+        #cache update
+        remove_from_cache(session[:qkey])
+          
         #To refresh the listview page
         redirect_to(:back)
       else
@@ -92,6 +95,10 @@ class EventsController < ApplicationController
     @event.destroy
     flash[:notice] = "<strong>#{@event.title}</strong> deleted".html_safe
     if (!del_from_listview.nil?) && (del_from_listview == 'true')
+      
+      #cache update
+      remove_from_cache(session[:qkey])
+                
       # refresh the listview page
       redirect_to (:back)
     else
@@ -116,6 +123,22 @@ class EventsController < ApplicationController
     end
   end
 
+  #
+  # To remove cached entry and delete any relevant jason file present
+  # TBD: IS this threadsafe?? AMOL
+  #
+  def remove_from_cache(qkey)
+    if qkey.nil?
+      return
+    end
+    
+    #Remove from cache  
+    @@q_keys.delete(qkey)
+    
+    #remove json file too
+    json_fname = "#{Rails.root}/public/tmpjson/#{qkey}.json"
+    File.delete(json_fname)
+  end
   
   # Get events
   # Make JSON for use with Verite Timeline
@@ -208,6 +231,13 @@ class EventsController < ApplicationController
     
     if @total_search_size <= DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
       @total_search_size = -1 # no more data
+    end
+    
+    # remember query key in session. We'll need if user edits/delets event
+    if signed_in?
+      if !current_user.nil?
+        session[:qkey] = query_key
+      end
     end
     
     if @fullscr == "false"
