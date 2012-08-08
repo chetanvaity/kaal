@@ -9,5 +9,9 @@ class StaticController < ApplicationController
       format.html { render :layout => ! request.xhr? }
     end
   end
+  
+  def contact_us
+    
+  end
 
 end
