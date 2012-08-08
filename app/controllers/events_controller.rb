@@ -280,6 +280,9 @@ class EventsController < ApplicationController
         end
       end
     end
+
+    # Put importance(1/2/3) in each event
+    event_results = Event.populate_importance(event_results)
     
     # sort it on event date in ascending order, needed for list-view display.
     event_results.sort!{ |a,b| a.jd <=> b.jd }
@@ -349,6 +352,7 @@ END
         "headline":#{title},
         "text":#{text},
         "id":"#{e.id}",
+        "importance":"#{e.importance}",
         "asset":
           {
           "media":"#{media_url}",
