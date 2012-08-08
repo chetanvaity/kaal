@@ -63,3 +63,10 @@ gem 'omniauth-facebook' #Facebook
 gem 'sunspot_rails', '~> 1.3.0'
 gem 'sunspot_solr'  #to control local solr instance
 gem 'progress_bar'
+
+#
+# For google analytics
+#
+group :production do
+  gem 'rack-google-analytics', :require => 'rack/google-analytics'
+end 
