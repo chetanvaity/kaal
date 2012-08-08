@@ -1,0 +1,50 @@
+%h3 What is it?
+%br
+%p
+  %i.icon-ok
+  %b #{PRODUCT_DISPLAY_NAME} 
+  is all about browsing data in chronological order. You search data giving logical key-words or 
+  time-span or combination of it.Searched data-events are shown in the form of 
+  %b time-line 
+  display. 
+%p
+  %i.icon-ok
+  You can browse those events one-by-one on time-line, scroll time-line and jump to any random event, 
+  or zoom the time-line and so on. 
+%p
+  %i.icon-ok
+  #{PRODUCT_DISPLAY_NAME} time-lines can be embedded on any external web-sites by using its html embed code.
+%p
+  %i.icon-ok
+  Visit our 
+  %a{:href => "/"}homepage
+  to get your first-hand experience.
+%br
+-if !request.xhr?
+  / ******************
+  /Show it only on normal page.
+  / ******************
+  %br
+  %h4 Team #{PRODUCT_DISPLAY_NAME}
+  %table{:class => "table"}
+    %tbody
+      %tr
+        %td
+          %img{:src => "/assets/chetan.png", :width => "48", :height => "55"}
+          %img{:src => "/assets/amol.png", :width => "48", :height => "55"}
+          %br 
+          %a{:href => "http://www.linkedin.com/pub/chetan-vaity/1/93/842"} Chetan 
+          and 
+          %a{:href => "http://in.linkedin.com/pub/amol-potnis/1/285/15a"} Amol
+        %td
+          They together bring 22+ years of software development experience with 10+ years
+          %br 
+          of focused product development. Their expertise range from product design, coding 
+          %br
+          to product management and pre-sales interactions. They are proudly associated 
+          %br
+          with
+          %a{:href => "http://www.kpoint.com"} 
+            %img{:src => "/assets/kpoint.png", :width => "60", :height => "20"} 
+          and 
+          %a{:href => "http://www.gslab.com"} GS Lab. 

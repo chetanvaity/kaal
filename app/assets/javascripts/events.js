@@ -7,5 +7,15 @@ jQuery(function($) {
         $('#modal-editEvent').modal({show: true , backdrop : true , keyboard: true});
     });
     
+    
+  // 
+  // Show 'about us' form in popup if clicked on product tagline
+  //
+  //$('.pg a[data-type=html]').on('ajax:success', function(event, data, status, xhr) {
+  //      $('#modal-about').find('.modal-body').html(data);
+  //      $('#modal-about').modal({show: true , backdrop : true , keyboard: true});
+  //});
+  //
+      
   
 });
