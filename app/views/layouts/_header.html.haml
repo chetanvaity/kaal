@@ -51,31 +51,7 @@
       %a{:href => "/"}homepage
       to get your first-hand experience.
     %br
-    %br
-    %h4 Team #{PRODUCT_DISPLAY_NAME}
-    %table{:class => "table"}
-      %tbody
-        %tr
-          %td
-            %img{:src => "/assets/chetan.png", :width => "48", :height => "55"}
-            %img{:src => "/assets/amol.png", :width => "48", :height => "55"}
-            %br 
-            %a{:href => "http://www.linkedin.com/pub/chetan-vaity/1/93/842"} Chetan 
-            and 
-            %a{:href => "http://in.linkedin.com/pub/amol-potnis/1/285/15a"} Amol
-          %td
-            They together bring 22+ years of software development experience with 10+ years
-            %br 
-            of focused product development. Their expertise range from product design, coding 
-            %br
-            to product management and pre-sales interactions. They are proudly associated 
-            %br
-            with
-            %a{:href => "http://www.kpoint.com"} 
-              %img{:src => "/assets/kpoint.png", :width => "60", :height => "20"} 
-            and 
-            %a{:href => "http://www.gslab.com"} GS Lab. 
-         
+             
 / ===========================================================================================
 
 %header{:class => "navbar navbar-fixed-top"}
@@ -86,6 +62,9 @@
         %li
           %a.btn-large{:id => "aboutpopupbtn", :href => "#modal-about", "data-toggle" => "modal"}
             #{PRODUCT_TAG_LINE}
+          /%div{:class => "pg"}
+          /  %div{:class => "about"}
+          /   = link_to "#{PRODUCT_TAG_LINE}", "/about", :remote => true, "data-type" => :html
       %ul.nav.pull-right
         -if !signed_in?
           %li

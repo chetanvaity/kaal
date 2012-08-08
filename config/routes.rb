@@ -24,6 +24,7 @@ Kaal::Application.routes.draw do
   match 'events/q/v2' => 'events#query2'
   match 'events/myhome/myhome' => 'events#myhome'
   match 'credits' => 'static#credits'
+  match 'about' => 'static#about_us'
   
   match '/auth/:service/callback' => 'sessions#create' 
   match '/auth/failure' => 'sessions#failure'
