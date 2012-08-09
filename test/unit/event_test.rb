@@ -42,18 +42,17 @@ class EventTest < ActiveSupport::TestCase
                  Event.parse_date("45 BC").strftime("%d %m %Y"))
     assert_equal("01 01 -0005",
                  Event.parse_date("5 BCE").strftime("%d %m %Y"))
+
+    # Just numbers - treated as years
+    assert_equal("01 01 1947",
+                 Event.parse_date("1947").strftime("%d %m %Y"))
+    assert_equal("01 01 0650",
+                 Event.parse_date("650").strftime("%d %m %Y"))
+    assert_equal("01 01 0042",
+                 Event.parse_date("42").strftime("%d %m %Y"))
   end
 
   def test_parse_date_negative()
-    assert_raise ArgumentError do
-      Event.parse_date("1947") # Naked year not accepted. AD or BC is necessary
-    end
-    assert_raise ArgumentError do
-      Event.parse_date("54")
-    end
-    assert_raise ArgumentError do
-      Event.parse_date("7")
-    end
     assert_raise ArgumentError do
       Event.parse_date("1947 August")
     end
