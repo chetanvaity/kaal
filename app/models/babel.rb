@@ -4,6 +4,7 @@ class Babel < ActiveRecord::Base
   belongs_to :norm_term, :class_name => "Babel"
 
   # Use memoization to keep filling this up
+  # TBD: Use Hashery to make this limited size LRU cache
   @@babels_map = {}
 
   # A class method which returns array of normalized names

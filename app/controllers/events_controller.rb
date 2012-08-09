@@ -107,22 +107,6 @@ class EventsController < ApplicationController
     end
   end
 
-  
-  def query
-    logger.info("EventsController.query() started")
-    @tags = params[:tags]
-    tags_arr = @tags.split ','
-    norm_tags_arr = []
-    tags_arr.map {|tag_str| norm_tags_arr += Tag.get_normalized_names(tag_str)}
-    @events = get_events(norm_tags_arr)[1]
-
-    respond_to do |format|
-      format.html { render :template => "events/index", :formats => [:html],
-        :handlers => :haml }
-      format.json  { render :json => @events }
-    end
-  end
-
   #
   # To remove cached entry and delete any relevant jason file present
   # TBD: IS this threadsafe?? AMOL
