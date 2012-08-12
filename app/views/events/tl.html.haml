@@ -33,7 +33,7 @@
   
           = text_field_tag :from, nil, {:class => "input-small", :placeholder => "From: (eg: 1947)"}
           = text_field_tag :to, nil, {:class => "input-small", :placeholder => "To: (eg: 1977)"}
-          = text_field_tag :q, nil, {:class => "input-medium", :placeholder => "eg: india,prime minister"}
+          = text_field_tag :q, nil, {:class => "input-medium", :placeholder => "eg: india prime minister"}
           = button_tag(:type => "submit", :class => "btn btn-primary") do
             %i.icon-search.icon-white
             = p " Search"
@@ -41,14 +41,14 @@
           %span.pull-right
             %i.icon-check
             Examples:
-            %a{:href => "/events/q/v2?q=demo,R+D+Burman"}
+            %a{:href => "/events/q/v2?q=R+D+Burman"}
               %span.label.label-info R D Burman
             &nbsp;
-            %a{:href => "/events/q/v2?q=demo,Shivaji,Aurangzeb"}
-              %span.label.label-info Shivaji,Aurangzeb
+            %a{:href => "/events/q/v2?q=Shivaji+Aurangzeb"}
+              %span.label.label-info Shivaji Aurangzeb
             &nbsp;
-            %a{:href => "/events/q/v2?q=demo,India,Medicine"}
-              %span.label.label-info India,Medicine
+            %a{:href => "/events/q/v2?q=India+Medicine"}
+              %span.label.label-info India Medicine
     
   %div.row
     %div.span12.border

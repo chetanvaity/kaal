@@ -31,7 +31,7 @@ class Event < ActiveRecord::Base
   validates :url, :format => {
     :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
     :message => '^URL (%{value}) is invalid'
- }, :allow_blank => true
+  }, :allow_blank => true
 
   # Validation for tags
   validates_associated :tags
@@ -69,15 +69,21 @@ class Event < ActiveRecord::Base
   # A class method to parse a string into a date
   # Raises exception if we cannot convert the given string
   def self.parse_date(s)
-    dateformats = ['%d %b %Y', # 15 Aug 1947
-                   '%d %B %Y', # 15 August 1947
-                   '%b %d %Y', # Aug 15 1947
-                   '%B %d %Y', # August 15 1947
-                   '%b %Y', # Dec 1755
-                   '%B %Y', # December 1755
-                   '%Y', # 1005 (BC/AD handled with sign of year)
+    dateformats = ['%d*%b*%Y', # 15 Aug 1947
+                   '%d*%B*%Y', # 15 August 1947
+                   '%b*%d*%Y', # Aug 15 1947
+                   '%B*%d*%Y', # August 15 1947
+                   '%b*%Y',    # Dec 1755
+                   '%B*%Y'     # December 1755
                   ]
+    year_df = '%Y'     # Just the year (used in AD/BC handling below)
+
     s.strip!
+    s.downcase!
+    # If its just a number, append "ad" at the end
+    s += " ad" if s =~ /^[0-9]+$/
+ 
+    s.gsub!(/\s+/, "*") # replace space with "*" to avoid confusion in strptime
     zero_date = Date.jd(0)
 
     date = zero_date
@@ -88,6 +94,17 @@ class Event < ActiveRecord::Base
       rescue ArgumentError => e
         next
       end
+    end
+
+    # Check if its a AD/BC date
+    begin
+      last2 = s[-2..-1]
+      date = Date.strptime(s[0..-3], year_df) if last2 == "ad" or last2 == "ce"
+      date = Date.strptime("-" + s[0..-3], year_df) if last2 == "bc"
+      last3 = s[-3..-1]
+      date = Date.strptime("-" + s[0..-4], year_df) if last3 == "bce"
+    rescue
+      raise ArgumentError, "Invalid year date: #{s}" if date == zero_date
     end
 
     # We could not convert using any of the formats
