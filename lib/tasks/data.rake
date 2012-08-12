@@ -3,6 +3,8 @@
 require 'page_rankr'
 require 'util.rb'
 
+
+
 namespace :data do
   desc "Copy tags from the events table to the tags table"
   task :copy_tags => :environment do
@@ -230,6 +232,77 @@ namespace :data do
     end  #file open
   end  # task end
 
+
+  desc "Read event db, generate imgURL if not present, and save it."
+  task :generate_imgurl, [:start_event_id, :end_event_id] => :environment do |t, args|
+    start_eve_id = -1
+    end_eve_id = -1
+    begin
+      start_eve_id = Integer(args.start_event_id)
+      end_eve_id = Integer(args.end_event_id)
+    rescue
+      puts "Please provide valid start and end ids."
+      return
+    end
+    
+    if (start_eve_id <= 0) || (end_eve_id <= 0) || (start_eve_id > end_eve_id)
+      puts "Please provide valid start and end ids."
+      return
+    end
+    
+    util = Util.instance
+    evtcounter = 0;
+    Event.find_each(:start => start_eve_id) do |evt|
+      #Let's stop processing if we have already crossed end_event_id condition
+      if evt.id > end_eve_id
+        break;
+      end
+      
+               
+      #
+      #handling for events from 'yago'
+      #
+      if evt.source == 'yago'
+        if !evt.imgurl.blank?
+          #No need to do anything. skip it
+          next
+        end
+        
+        if evt.url.blank?
+          #This event does not have its page url. So we can't get image url. skip it.
+          next
+        end
+        
+        #
+        # Generate image url
+        #
+        imgurl2write = util.get_wikipage_image_url(evt.url)
+        if imgurl2write.nil? or imgurl2write.blank?
+          next
+        end
+        puts "For evtid #{evt.id}, we got => #{imgurl2write}"
+        
+        #imgurl2write = Event.sanitize(imgurl2write)
+        
+        evt.imgurl = imgurl2write
+        begin
+          evt.save
+        rescue  Exception => e
+          print "  !!! generate_imgurl(): #{e}\n"
+        end
+        evtcounter += 1
+        
+      end   # if yago   
+      
+      if evtcounter == 100
+        puts "================================="
+        puts "AMOL: Completed up to evetid #{evt.id}"
+        evtcounter = 0;
+      end   
+    end  #event loop
+
+  end  # task end
+  
 end # data namespace
 
 

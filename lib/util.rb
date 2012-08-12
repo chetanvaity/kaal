@@ -6,11 +6,99 @@ require 'socket'
 require 'singleton'
 require 'digest'
 
+#Added by amol
+require 'uri'
+require 'net/http'
+require 'rexml/document'
+require 'digest/md5'
+#
+
 class Util
   include Singleton
 
   def initialize
   end
+  
+  # Get image url for a given wiki page url
+  def get_wikipage_image_url(wiki_page_url)
+    if wiki_page_url.blank?
+      return nil
+    end
+    
+    begin
+      #get the last part of the wiki page url. That is typically title of the page
+      str_arr = wiki_page_url.split('/')
+      page_title = str_arr[str_arr.length - 1]
+      imgurl = get_wiki_infobox_image_url(page_title)
+      return imgurl
+    rescue
+      return nil
+    end
+  end
+  
+  #
+  # This 'valid_title' is string without any spaces.
+  #
+  def get_wiki_infobox_image_url(valid_title)
+    res_datastr = nil
+    infobox_str = nil
+    logoline = nil
+    filename_str = nil
+    logourl = nil
+  
+    begin
+      searchurl_str = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=xml&rvsection=0&titles='
+      url = URI.parse(searchurl_str + valid_title + '&redirects')
+      res_datastr = Net::HTTP.get(url)
+    rescue
+      return nil
+    end
+  
+    begin
+      doc = REXML::Document.new(res_datastr)
+      doc.elements.each('api/query/pages/page/revisions/rev') do |rev|
+         infobox_str = rev.text
+         break
+      end
+    rescue
+      return nil
+    end
+  
+    infobox_str.each_line {|s| 
+      #puts s
+      if s.start_with?("| logo") || s.start_with?("| image")
+        logoline = s
+        break;
+      end
+    }
+  
+    if logoline.nil?
+      return nil
+    end
+  
+  
+    begin
+      if logoline.start_with?("| logo")
+        str_array = logoline.split("File:")
+        filename_str = str_array[1].split("|")[0].strip
+      elsif
+        #str_array = logoline.split("image = ")
+        str_array = logoline.split("=")
+        filename_str = str_array[1].strip
+      end
+  
+      filename1 = filename_str.gsub(' ', '_')
+      digest = Digest::MD5.hexdigest(filename1)
+      folder = digest[0] + "/" + digest[0] + digest[1] + "/" + URI::encode(filename1);
+      logourl = 'http://upload.wikimedia.org/wikipedia/commons/' + folder;
+    rescue
+      return nil
+    end
+  
+    #puts "Infobox filename: " + filename_str
+    return logourl
+  end
+
   
   # Fire a Google query on the first sentence of title and check if there is
   # a Wikipedia page in the first 10 results
@@ -158,5 +246,8 @@ class Util
     t_jd_str = to_jd.nil? ? "nil" : to_jd.to_s
     return Digest::MD5.hexdigest("#{f_jd_str}-#{t_jd_str}-#{tags}-#{events_on_a_page}")
   end
+  
+  
+  
 
 end
