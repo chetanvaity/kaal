@@ -329,6 +329,10 @@ END
       title = ActiveSupport::JSON.encode(e.title)
       media_url = e.url
       media_caption = e.url
+      cur_imgurl = nil
+      if !e.imgurl.nil?  &&  !e.imgurl.blank?
+        cur_imgurl = URI::encode(e.imgurl)
+      end
 
       date_json = <<END
         {
@@ -337,6 +341,7 @@ END
         "text":#{text},
         "id":"#{e.id}",
         "importance":"#{e.importance}",
+        "imgurl":"#{cur_imgurl}",
         "asset":
           {
           "media":"#{media_url}",

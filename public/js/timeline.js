@@ -5191,11 +5191,18 @@ if (typeof VMM.Slider != 'undefined') {
 			$wrap	=	VMM.appendAndGetElement(element, "<div>", "content");
 			$slide	=	VMM.appendAndGetElement($wrap, "<div>");
 
-		    /* Chetan 
-		    if (data.id != null && data.id != "") {
-			c.text += '<span class="btn btn-small" style="float:right"><a href="/events/' + data.id + '/edit/">Edit</a></span>';
+		    /* AMOL - add image display */
+		    if (data.imgurl != null && data.imgurl != "") 
+		    {
+		      c.text += '<div id="gx">'  
+		                + '<a target="new" href="' + data.imgurl + '">'  
+		                + '<img src="' + data.imgurl + '" width="60px" height="60px" title="click to see bigger image" />'  
+		                + '</a></div>';
 		    }
-		    End Chetan */
+		    
+		    //c.text += '<div id="gx"><a target="new" href="http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG"><img src="http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG" width="60px" height="60px" alt="click to see bigger image" title="click to see bigger image" /></a></div>';
+			
+		    /* End AMOL */
 
 			/* DATE
 			================================================== */
@@ -6849,6 +6856,11 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 					    _date.id = data.date[i].id;
 					    _date.importance = data.date[i].importance;
 					    /* End Chetan */
+					    
+					    /* AMOL - Add image url */
+					     _date.imgurl = data.date[i].imgurl
+					    /* End AMOL */
+					    
 						_dates.push(_date);
 					} 
 					
