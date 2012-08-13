@@ -5,6 +5,8 @@
 / Added this hidden tag on form if it is crerated from listview page
 -if request.xhr?
   = hidden_field_tag 'editfromlistview', 'true'
+-if @editfromlistview == 'true'
+  = hidden_field_tag 'editfromlistview', 'true'
 
 = label :event, :title, 'Title'
 = text_field :event, :title, :class => "span4", :placeholder => "Be short (eg: Shivaji born)"
@@ -76,8 +78,12 @@
   %a{:href => "#", :class => "btn", "data-dismiss" => "modal"}Cancel
 -else  
   -if stdintendedview == "edit"
-    %a.btn{:href => event_path}
-      = p "Cancel"
+    -if @editfromlistview == 'true'
+      %a.btn{:href => session[:listviewurl]}
+        = p "Cancel"
+    -else
+      %a.btn{:href => event_path}
+        = p "Cancel"
   -else
     %a.btn{:href => root_path}
       = p "Cancel"

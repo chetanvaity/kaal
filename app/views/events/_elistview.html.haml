@@ -28,14 +28,18 @@
           = eachevent.source
         %td 
           = eachevent.desc
-        %td 
-          = eachevent.url
+        %td
+          -if !eachevent.url.nil?
+            %a{:href => "#{eachevent.url}", :target => "new"} 
+              = eachevent.url
         -if signed_in?
-          %td
-            %div{:class => "event"}
-              %div{:class => "details"}
-                %i.icon-edit
-                = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html
+          %td{:style => "width: 9%"}
+            /%div{:class => "event"}
+            /  %div{:class => "details"}
+            /    %i.icon-edit
+            /    = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html
+            %i.icon-edit
+            = link_to "Edit", "#{edit_event_path(eachevent)}?editfromlistview=true" 
             -if !current_user.nil?
               -if (current_user.isadmin) || (current_user.id == eachevent.ownerid)
                 %div

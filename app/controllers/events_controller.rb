@@ -49,7 +49,12 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find params[:id]
-    
+    @editfromlistview = params[:editfromlistview]
+    if (@editfromlistview.nil?) || (@editfromlistview != 'true')
+      @editfromlistview = 'false'
+    end
+       
+    # to take care of ajax request ..if any
     respond_to do |format|
       format.html { render :layout => ! request.xhr? }
     end
@@ -70,7 +75,12 @@ class EventsController < ApplicationController
         remove_from_cache(session[:qkey])
           
         #To refresh the listview page
-        redirect_to(:back)
+        #redirect_to(:back)
+        if !session[:listviewurl].nil?
+          redirect_to(session[:listviewurl])
+        else
+          redirect_to root_url
+        end
       else
         #Normal edit success case
         flash[:notice] =
@@ -78,14 +88,14 @@ class EventsController < ApplicationController
         redirect_to event_path(@event)
       end
     else
-      if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
-        #Show error message with refreshed listview page
-        flash[:warning] =   "<strong>#{@event.title}</strong> could not be updated".html_safe
-        redirect_to(:back)  
-      else
-        #Normal edit error case  
-        render :action => "edit"
-      end
+      #if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
+      #  #Show error message with refreshed listview page
+      #  flash[:warning] =   "<strong>#{@event.title}</strong> could not be updated".html_safe
+      #  redirect_to(:back)  
+      #else
+      #Normal edit error case  
+      render :action => "edit"
+      #end
     end
   end
 
@@ -121,7 +131,10 @@ class EventsController < ApplicationController
     
     #remove json file too
     json_fname = "#{Rails.root}/public/tmpjson/#{qkey}.json"
-    File.delete(json_fname)
+    begin
+      File.delete(json_fname)
+    rescue
+    end
   end
   
   # Get events
@@ -129,6 +142,14 @@ class EventsController < ApplicationController
   # and then render tl.html
   # Variables passed to view - @query, @events_size, @json_resource_path
   def query2
+    
+    #cleanup of session vars ..if any
+    if signed_in?
+      if !current_user.nil?
+        session.delete(:qkey)
+        session.delete(:listviewurl)
+      end
+    end
         
     @fromdate = params[:from]
     @todate = params[:to]
@@ -217,12 +238,22 @@ class EventsController < ApplicationController
       @total_search_size = -1 # no more data
     end
     
-    # remember query key in session. We'll need if user edits/delets event
+    
     if signed_in?
       if !current_user.nil?
+        
+        # remember query key in session. We'll need if user edits/delets event
         session[:qkey] = query_key
+      
+        # Remember listviewurl , we need it in edit func.
+        if @viewstyle == 'list'
+          tmp_list_url = generate_list_view_url(@query,nil, @fromdate, @todate, @fullscr== 'true'?true:false, @events_on_a_page)
+          #puts "Amol ..saving listviewurl in session: " + tmp_list_url
+          session[:listviewurl] = tmp_list_url
+        end
       end
     end
+    
     
     if @fullscr == "false"
       render :template => "events/tl", :formats => [:html], :handlers => :haml,
