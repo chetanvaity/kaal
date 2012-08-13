@@ -5194,10 +5194,14 @@ if (typeof VMM.Slider != 'undefined') {
 		    /* AMOL - add image display */
 		    if (data.imgurl != null && data.imgurl != "") 
 		    {
-		      c.text += '<div id="gx">'  
+		      /* c.text += '<div id="gx">'  
 		                + '<a target="new" href="' + data.imgurl + '">'  
 		                + '<img src="' + data.imgurl + '" width="60px" height="60px" title="click to see bigger image" />'  
-		                + '</a></div>';
+		                + '</a></div>'; 
+		      */
+		       c.text += '<a href="' + data.imgurl + '" rel="lightbox">'  
+                    + '<img src="' + data.imgurl + '" width="60px" height="60px" title="click to see bigger image" />'  
+                    + '</a>';
 		    }
 		    
 		    //c.text += '<div id="gx"><a target="new" href="http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG"><img src="http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG" width="60px" height="60px" alt="click to see bigger image" title="click to see bigger image" /></a></div>';
