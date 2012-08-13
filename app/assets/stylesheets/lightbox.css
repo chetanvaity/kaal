@@ -8,6 +8,7 @@
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);
   opacity: 0.85;
   display: none;
+  max-height: 400px;
 }
 
 /* line 15, ../sass/lightbox.sass */
@@ -24,7 +25,8 @@
 /* line 24, ../sass/lightbox.sass */
 #lightbox img {
   width: auto;
-  height: auto;
+  /* height: auto; */
+  max-height: 400px;
 }
 /* line 27, ../sass/lightbox.sass */
 #lightbox a img {

@@ -5200,7 +5200,7 @@ if (typeof VMM.Slider != 'undefined') {
 		                + '</a></div>'; 
 		      */
 		       c.text += '<a href="' + data.imgurl + '" rel="lightbox">'  
-                    + '<img src="' + data.imgurl + '" width="60px" height="60px" title="click to see bigger image" />'  
+                    + '<img src="' + data.imgurl + '" width="60px" height="60px" title="Click to see bigger image" />'  
                     + '</a>';
 		    }
 		    
