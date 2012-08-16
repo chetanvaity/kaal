@@ -511,8 +511,8 @@ namespace :data do
     counter = 0;
     File.open(args.imgurl_file, "r:UTF-8:UTF-8").each_line do |line|
       counter += 1
-      tokens = line.strip.split("     ")
-      if tokens.nil? || tokens.length < 2
+      tokens = line.strip.split(/\t/)
+      if tokens.nil? || tokens.length != 3
         puts "Invalid values on line: " + line.strip
         next
       end
