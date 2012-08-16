@@ -469,7 +469,75 @@ namespace :data do
       end #correct file open  
     end  #null file open
   end  # task end
+
+  desc "set image urls to NULL in DB for event ids from given file"
+  task :set_imageurls_to_null, [:imgurl_file] => :environment do |t, args|
+    line_count = 0;
+    ids_str = ""
+    File.open(args.imgurl_file, "r:UTF-8:UTF-8").each_line do |line|
+      line_count += 1
+      
+      if !ids_str.empty?
+        ids_str += ","
+      end
+      
+      ids_str += line.strip
+      
+      if line_count == 100
+        begin
+          Event.connection.execute("update events set imgurl=NULL where id in (#{ids_str})")
+          puts "Set NULL value for ids: #{ids_str}"  
+        rescue
+          puts "ERROR while setting NULL for ids: #{ids_str}" 
+        end
+        line_count = 0
+        ids_str = ""
+      end
+    end # file ends
+    if !ids_str.empty?
+      begin
+        Event.connection.execute("update events set imgurl=NULL where id in (#{ids_str})")
+        puts "Set NULL value for ids: #{ids_str}"  
+      rescue
+        puts "ERROR while setting NULL for ids: #{ids_str}" 
+      end
+    end
+    
+  end  # task end
   
+  
+  desc "set image url in DB with values given from input file for specific events"
+  task :set_imageurls, [:imgurl_file] => :environment do |t, args|
+    counter = 0;
+    File.open(args.imgurl_file, "r:UTF-8:UTF-8").each_line do |line|
+      counter += 1
+      tokens = line.strip.split("     ")
+      if tokens.nil? || tokens.length < 2
+        puts "Invalid values on line: " + line.strip
+        next
+      end
+      
+      evt_id_str = tokens[0].strip
+      url_arr = tokens[1].strip.split("New:")
+      if url_arr.nil? || url_arr.length < 2
+        puts "Invalid new url value: " + tokens[1]
+        next
+      end
+      begin
+        new_url = url_arr[1]
+        Event.connection.execute("update events set imgurl='#{new_url}' where id=#{evt_id_str}")
+        puts "Updated #{evt_id_str} with #{new_url}"  
+      rescue
+        puts "ERROR while setting ulr to #{new_url} for id: #{evt_id_str}"
+        next 
+      end
+      
+      if counter == 2
+        puts "=================================="
+        puts "Processed event: #{evt_id_str}"
+      end
+    end # file ends
+  end  # task end  
   
 end # data namespace
 
