@@ -321,6 +321,7 @@ namespace :data do
       return
     end
     
+    util = Util.instance
     evtcounter = 0;
     File.open(args.nullout_file, "w:UTF-8:UTF-8") do |nulloutf|
       File.open(args.correctout_file, "w:UTF-8:UTF-8") do |correctoutf|
@@ -377,8 +378,14 @@ namespace :data do
                   end
                   if !str2use.nil?
                     changed_token = str2use.split("%")[0]
-                    tmparr[tmparr.length - 1] = changed_token.split("]")[0]
-                    url2write = tmparr.join("/")
+                    
+                    #
+                    #tmparr[tmparr.length - 1] = changed_token.split("]")[0]
+                    #url2write = tmparr.join("/")
+                    #
+                    mod_filename = changed_token.split("]")[0]
+                    url2write = util.helper_get_wiki_infobox_image_url(mod_filename)
+                    
                     print "#{evt.id}: #{url2write}\n"
                     correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
                     correctoutf.flush

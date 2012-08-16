@@ -98,6 +98,18 @@ class Util
     #puts "Infobox filename: " + filename_str
     return logourl
   end
+  
+  # IF yoiu have a valid filename, use it
+  def helper_get_wiki_infobox_image_url(valid_filename)
+    begin
+      filename1 = valid_filename.gsub(' ', '_')
+      digest = Digest::MD5.hexdigest(filename1)
+      folder = digest[0] + "/" + digest[0] + digest[1] + "/" + URI::encode(filename1);
+      logourl = 'http://upload.wikimedia.org/wikipedia/commons/' + folder;
+    rescue
+      return nil
+    end
+  end
 
   
   # Fire a Google query on the first sentence of title and check if there is
