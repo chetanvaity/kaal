@@ -303,6 +303,104 @@ namespace :data do
 
   end  # task end
   
+  
+  desc "Polish image urls and write to output file"
+  task :polish_imageurls, [:nullout_file, :correctout_file, :start_event_id, :end_event_id] => :environment do |t, args|
+    start_eve_id = -1
+    end_eve_id = -1
+    begin
+      start_eve_id = Integer(args.start_event_id)
+      end_eve_id = Integer(args.end_event_id)
+    rescue
+      puts "Please provide valid start and end ids."
+      return
+    end
+    
+    if (start_eve_id <= 0) || (end_eve_id <= 0) || (start_eve_id > end_eve_id)
+      puts "Please provide valid start and end ids."
+      return
+    end
+    
+    evtcounter = 0;
+    File.open(args.nullout_file, "w:UTF-8:UTF-8") do |nulloutf|
+      File.open(args.correctout_file, "w:UTF-8:UTF-8") do |correctoutf|
+        Event.find_each(:start => start_eve_id) do |evt|
+          
+          
+          #Let's stop processing if we have already crossed end_event_id condition
+          if evt.id > end_eve_id
+            break;
+          end
+          #
+          #handling for events from 'yago'
+          #
+          if evt.source == 'yago'
+            if !evt.imgurl.blank?
+            
+              if evtcounter == 100
+                puts "================================="
+                puts "AMOL: evetid #{evt.id} is under processing"
+                evtcounter = 0;
+              end
+            
+              evtcounter += 1
+              
+              begin
+                # Case 1
+                if evt.imgurl.end_with?("/")
+                  # ur lwithout any file name
+                  puts "#{evt.id} : Processed for NULL"
+                  nulloutf.puts "#{evt.id}"
+                  nulloutf.flush
+                  next
+                end
+                
+                tmparr = evt.imgurl.split("/")
+                last_token = tmparr[tmparr.length - 1]
+                
+                # Case 2
+                if last_token.start_with?("%")
+                  #This seems to be useless url for us.
+                  puts "#{evt.id} : Processed for NULL"
+                  nulloutf.puts "#{evt.id}"
+                  nulloutf.flush
+                  next
+                end
+                
+                # Case 3
+                if last_token.start_with?("[[")
+                  str2use = nil
+                  if last_token.start_with?("[[File:")
+                    str2use = last_token.split("[[File:")[1]
+                  elsif last_token.start_with?("[[Image:")
+                    str2use = last_token.split("[[Image:")[1]
+                  end
+                  if !str2use.nil?
+                    changed_token = str2use.split("%")[0]
+                    tmparr[tmparr.length - 1] = changed_token.split("]")[0]
+                    url2write = tmparr.join("/")
+                    print "#{evt.id}: #{url2write}\n"
+                    correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                    correctoutf.flush
+                  end
+                  
+                  next
+                end
+              rescue Exception => e
+                print "  !!! polish_imgurl(): #{e}\n"
+                next
+              end
+              
+              
+            end
+          end   # if yago
+                
+        end  #event loop
+      end #correct file open  
+    end  #null file open
+  end  # task end
+  
+  
 end # data namespace
 
 
