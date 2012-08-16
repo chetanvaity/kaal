@@ -400,9 +400,16 @@ namespace :data do
                     end
                   end
                 else
-                  local_arr = last_token.split("%")
-                  if local_arr.length > 1
-                    url2write = util.helper_get_wiki_infobox_image_url(local_arr[0], true)
+                  token2use = nil
+                  if !last_token.index(".JPG%").nil?
+                    token2use = last_token.split(".JPG")[0] + ".JPG"
+                  elsif !last_token.index(".jpg%").nil?
+                    token2use = last_token.split(".jpg")[0] + ".jpg"
+                  elsif !last_token.index(".Jpg%").nil?
+                    token2use = last_token.split(".Jpg")[0] + ".Jpg"
+                  end
+                  if !token2use.nil?
+                    url2write = util.helper_get_wiki_infobox_image_url(token2use, true)
                     modurl_flag = true
                     
                     if img_exists_check == false
