@@ -100,14 +100,25 @@ class Util
   end
   
   # IF yoiu have a valid filename, use it
-  def helper_get_wiki_infobox_image_url(valid_filename)
+  def helper_get_wiki_infobox_image_url(valid_filename, commons_flag)
     begin
       filename1 = valid_filename.gsub(' ', '_')
       digest = Digest::MD5.hexdigest(filename1)
       folder = digest[0] + "/" + digest[0] + digest[1] + "/" + URI::encode(filename1);
-      logourl = 'http://upload.wikimedia.org/wikipedia/commons/' + folder;
+      if commons_flag == true
+        return 'http://upload.wikimedia.org/wikipedia/commons/' + folder;
+      else
+        return 'http://upload.wikimedia.org/wikipedia/en/' + folder;
+      end
     rescue
       return nil
+    end
+  end
+  
+  def remote_imagefile_exists?(url)
+    url = URI.parse(url)
+    Net::HTTP.start(url.host, url.port) do |http|
+      return http.head(url.request_uri)['Content-Type'].start_with? 'image'
     end
   end
 

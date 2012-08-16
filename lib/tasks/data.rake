@@ -323,6 +323,7 @@ namespace :data do
     
     util = Util.instance
     evtcounter = 0;
+    img_exists_check = true
     File.open(args.nullout_file, "w:UTF-8:UTF-8") do |nulloutf|
       File.open(args.correctout_file, "w:UTF-8:UTF-8") do |correctoutf|
         Event.find_each(:start => start_eve_id) do |evt|
@@ -369,6 +370,8 @@ namespace :data do
                 end
                 
                 # Case 3
+                url2write = evt.imgurl
+                modurl_flag = false
                 if last_token.start_with?("[[")
                   str2use = nil
                   if last_token.start_with?("[[File:")
@@ -379,13 +382,26 @@ namespace :data do
                   if !str2use.nil?
                     changed_token = str2use.split("%")[0]
                     
-                    #
-                    #tmparr[tmparr.length - 1] = changed_token.split("]")[0]
-                    #url2write = tmparr.join("/")
-                    #
                     mod_filename = changed_token.split("]")[0]
-                    url2write = util.helper_get_wiki_infobox_image_url(mod_filename)
+                    url2write = util.helper_get_wiki_infobox_image_url(mod_filename, true)
+                    modurl_flag = true
                     
+                    if img_exists_check == false
+                      print "#{evt.id}: #{url2write}\n"
+                      correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                      correctoutf.flush
+                      next
+                    end
+                  end
+                end
+                
+                if img_exists_check == false
+                  next
+                end
+                
+                # check if it is image and is accessible
+                if util.remote_imagefile_exists?(url2write)
+                  if modurl_flag == true
                     print "#{evt.id}: #{url2write}\n"
                     correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
                     correctoutf.flush
@@ -393,6 +409,26 @@ namespace :data do
                   
                   next
                 end
+                
+                # The url that we have, is not accessible. See if alternate url is accessible.
+                newurl2write = url2write.sub("/commons/", "/en/")
+                if util.remote_imagefile_exists?(newurl2write)
+                  print "#{evt.id}: #{newurl2write}\n"
+                  correctoutf.puts "#{evt.id}\tNew:#{newurl2write}\tOld:#{evt.imgurl}"
+                  correctoutf.flush
+                else
+                  # None of the generated urls are accessible at this moment.
+                  # Hence giving benefit of doubt to 'commons' url if we have generated it.
+                  #
+                  if modurl_flag == true
+                    print "#{evt.id}: Accepted though not accessible: #{url2write}\n"
+                    correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                    correctoutf.flush
+                  else
+                    print "#{evt.id}: existing NOT REACHABLE: #{url2write}\n"
+                  end
+                end
+                
               rescue Exception => e
                 print "  !!! polish_imgurl(): #{e}\n"
                 next
