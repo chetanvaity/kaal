@@ -373,9 +373,11 @@ namespace :data do
                   next
                 end
                 
-                # Case 3
+                
                 url2write = evt.imgurl
                 modurl_flag = false
+                
+                # Case 3
                 if last_token.start_with?("[[")
                   str2use = nil
                   if last_token.start_with?("[[File:")
@@ -388,6 +390,19 @@ namespace :data do
                     
                     mod_filename = changed_token.split("]")[0]
                     url2write = util.helper_get_wiki_infobox_image_url(mod_filename, true)
+                    modurl_flag = true
+                    
+                    if img_exists_check == false
+                      print "#{evt.id}: #{url2write}\n"
+                      correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                      correctoutf.flush
+                      next
+                    end
+                  end
+                else
+                  local_arr = last_token.split("%")
+                  if local_arr.length > 1
+                    url2write = util.helper_get_wiki_infobox_image_url(local_arr[0], true)
                     modurl_flag = true
                     
                     if img_exists_check == false
