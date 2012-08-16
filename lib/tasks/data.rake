@@ -327,6 +327,7 @@ namespace :data do
     if !args.check_img.blank? && args.check_img == "true"
       img_exists_check = true
     end 
+    out_delim = "     "
     
     File.open(args.nullout_file, "w:UTF-8:UTF-8") do |nulloutf|
       File.open(args.correctout_file, "w:UTF-8:UTF-8") do |correctoutf|
@@ -394,7 +395,7 @@ namespace :data do
                     
                     if img_exists_check == false
                       print "#{evt.id}: #{url2write}\n"
-                      correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                      correctoutf.puts "#{evt.id}#{out_delim}New:#{url2write}#{out_delim}Old:#{evt.imgurl}"
                       correctoutf.flush
                       next
                     end
@@ -414,7 +415,7 @@ namespace :data do
                     
                     if img_exists_check == false
                       print "#{evt.id}: #{url2write}\n"
-                      correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                      correctoutf.puts "#{evt.id}#{out_delim}New:#{url2write}#{out_delim}Old:#{evt.imgurl}"
                       correctoutf.flush
                       next
                     end
@@ -429,7 +430,7 @@ namespace :data do
                 if util.remote_imagefile_exists?(url2write)
                   if modurl_flag == true
                     print "#{evt.id}: #{url2write}\n"
-                    correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                    correctoutf.puts "#{evt.id}#{out_delim}New:#{url2write}#{out_delim}Old:#{evt.imgurl}"
                     correctoutf.flush
                   end
                   
@@ -440,7 +441,7 @@ namespace :data do
                 newurl2write = url2write.sub("/commons/", "/en/")
                 if util.remote_imagefile_exists?(newurl2write)
                   print "#{evt.id}: #{newurl2write}\n"
-                  correctoutf.puts "#{evt.id}\tNew:#{newurl2write}\tOld:#{evt.imgurl}"
+                  correctoutf.puts "#{evt.id}#{out_delim}New:#{newurl2write}#{out_delim}Old:#{evt.imgurl}"
                   correctoutf.flush
                 else
                   # None of the generated urls are accessible at this moment.
@@ -448,7 +449,7 @@ namespace :data do
                   #
                   if modurl_flag == true
                     print "#{evt.id}: Accepted though not accessible: #{url2write}\n"
-                    correctoutf.puts "#{evt.id}\tNew:#{url2write}\tOld:#{evt.imgurl}"
+                    correctoutf.puts "#{evt.id}#{out_delim}New:#{url2write}#{out_delim}Old:#{evt.imgurl}"
                     correctoutf.flush
                   else
                     print "#{evt.id}: existing NOT REACHABLE: #{url2write}\n"
