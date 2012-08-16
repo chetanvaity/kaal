@@ -305,7 +305,7 @@ namespace :data do
   
   
   desc "Polish image urls and write to output file"
-  task :polish_imageurls, [:nullout_file, :correctout_file, :start_event_id, :end_event_id] => :environment do |t, args|
+  task :polish_imageurls, [:nullout_file, :correctout_file, :start_event_id, :end_event_id, :check_img] => :environment do |t, args|
     start_eve_id = -1
     end_eve_id = -1
     begin
@@ -323,7 +323,11 @@ namespace :data do
     
     util = Util.instance
     evtcounter = 0;
-    img_exists_check = true
+    img_exists_check = false
+    if !args.check_img.blank? && args.check_img == "true"
+      img_exists_check = true
+    end 
+    
     File.open(args.nullout_file, "w:UTF-8:UTF-8") do |nulloutf|
       File.open(args.correctout_file, "w:UTF-8:UTF-8") do |correctoutf|
         Event.find_each(:start => start_eve_id) do |evt|
