@@ -30,6 +30,10 @@
           %a.btn-large{:href => "/about"}
             #{PRODUCT_TAG_LINE}
       %ul.nav.pull-right
+        %li
+          %a.btn-large{:href => root_path}
+            %i.icon-home.icon-white
+            Home
         -if !signed_in?
           %li
             %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
