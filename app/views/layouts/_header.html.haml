@@ -17,40 +17,6 @@
           = image_tag("facebook_64.png",:size => "64x64", :alt => "facebook")
         %br  
         %a{:href => "/auth/facebook"} With Facebook
-
-/ ===========================================================================================
-/
-/ About-us display
-/
-/
-%div{:class => "modal hide fade", :id => "modal-about"}
-  %div{:class => "modal-header"}
-    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
-    %img{:src => "/assets/pg-black-back.png", :alt => "PollenGrain"}  
-    %font{:color => "white"} #{PRODUCT_TAG_LINE}
-  %div{:class => "modal-body fabric"}
-    %h3 What is it?
-    %br
-    %p
-      %i.icon-ok
-      %b #{PRODUCT_DISPLAY_NAME} 
-      is all about browsing data in chronological order. You search data giving logical key-words or 
-      time-span or combination of it.Searched data-events are shown in the form of 
-      %b time-line 
-      display. 
-    %p
-      %i.icon-ok
-      You can browse those events one-by-one on time-line, scroll time-line and jump to any random event, 
-      or zoom the time-line and so on. 
-    %p
-      %i.icon-ok
-      #{PRODUCT_DISPLAY_NAME} time-lines can be embedded on any external web-sites by using its html embed code.
-    %p
-      %i.icon-ok
-      Visit our 
-      %a{:href => "/"}homepage
-      to get your first-hand experience.
-    %br
              
 / ===========================================================================================
 
@@ -60,11 +26,8 @@
       = link_to image_tag("pg-black-back.png", alt: "PollenGrain", id: 'logo'), '/'
       %ul.nav.pull-left
         %li
-          %a.btn-large{:id => "aboutpopupbtn", :href => "#modal-about", "data-toggle" => "modal"}
+          %a.btn-large{:href => "/about"}
             #{PRODUCT_TAG_LINE}
-          /%div{:class => "pg"}
-          /  %div{:class => "about"}
-          /   = link_to "#{PRODUCT_TAG_LINE}", "/about", :remote => true, "data-type" => :html
       %ul.nav.pull-right
         -if !signed_in?
           %li
