@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20120812132622) do
     t.string  "source",      :limit => 10
     t.text    "desc"
     t.string  "url"
-    t.integer "ownerid"
     t.integer "wiki_id"
+    t.integer "ownerid"
     t.text    "extra_words"
     t.string  "imgurl"
   end

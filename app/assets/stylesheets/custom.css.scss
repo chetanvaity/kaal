@@ -145,6 +145,7 @@ footer ul li {
   @extend .control-group;
   @extend .error;	 
 }
+/* Done form error messages */
 
 .fabric {
   background-image: url('/assets/fabric_1.png');
@@ -206,3 +207,7 @@ body #modal-contact {
 }
 //* */
 /* -------------------------------------------------------------- */
+
+.small-gray-text {
+  color: $grayLight;
+}
