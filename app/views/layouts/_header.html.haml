@@ -1,23 +1,24 @@
 /
 / This is to display modal popup on demand. Used when clicked on 'edit' link in listview
 /
-%div{:class => "modal hide", :id => "modal-signin"}
-  %div{:class => "modal-header"}
-    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
-    %h3 Sign in
-  %div{:class => "modal-body"}
-    %div.row-fluid
-      %div.span5
-        = link_to "/auth/google" do 
-          = image_tag("google_64.png",:size => "64x64", :alt => "Google")
-        %br  
-        %a{:href => "/auth/google"} With Google
-      %div.span4
-        = link_to "/auth/facebook" do 
-          = image_tag("facebook_64.png",:size => "64x64", :alt => "facebook")
-        %br  
-        %a{:href => "/auth/facebook"} With Facebook
-             
+%div.modal.hide#modal-signin
+  %div.modal-header
+    %button.close{:type => "button", "data-dismiss" => "modal"}×
+    %h3 Login to Pollengrain
+  %div.modal-body
+    %div.span2.well
+      %a.button{:href => "/auth/google"}
+        %div
+          = image_tag("google_64.png", :size => "64x64", :alt => "Google")
+        %div
+          %strong Login with Google
+    %div.span2.well
+      %a.button{:href => "/auth/facebook"}
+        %div
+          = image_tag("facebook_64.png",:size => "64x64", :alt => "Facebook")
+        %div
+          %strong Login with Facebook
+
 / ===========================================================================================
 
 %header{:class => "navbar navbar-fixed-top"}
@@ -33,7 +34,7 @@
           %li
             %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
               %i.icon-user.icon-white
-              Sign in
+              Login
         -else
           %li
             %a.btn-large{:href => "/events/new"}
