@@ -7,12 +7,13 @@
     /Here we are going to generate the embed code by doing lot of haml tricks
     /We need something like "<iframe src="http://localhost:3000/events/q/v2?embview=true&q=#{@query}&tlid=#{@tlid}" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>" 
     /with variables evaluated in side.
-    = succeed ('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>') do
-      = succeed(@tlid) do
-        = succeed('&tlid=') do
-          = succeed(@query) do
-            = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&q=')
-    = escape_once(haml_indent())
+    /= succeed ('" frameborder="yes" scrolling="no" width="78%" height="480">Test</iframe>') do
+    /  = succeed(@tlid) do
+    /    = succeed('&tlid=') do
+    /      = succeed(@query) do
+    /        = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&q=')
+    /= escape_once(haml_indent())
+    = generate_complete_embedview_url(@query,@tlid, @fromdate, @todate)
     
 
 %div.container

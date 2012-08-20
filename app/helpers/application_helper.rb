@@ -1,5 +1,6 @@
 module ApplicationHelper
   
+  
   # Quick helper for timeline view url
   def generate_timeline_view_url(given_tags, # search words
                                       given_timeline_id, # IF it is direct search by giving timeline-id ..future
@@ -84,7 +85,38 @@ module ApplicationHelper
   
   
   # TBD
-  def generate_complete_embedview_url()
+  def generate_complete_embedview_url(given_tags, given_timeline_id,
+                                      given_from_date, given_to_date)
+    
+    protocol_host_port = "#{request.protocol}#{request.host_with_port}"
+    main_url = "#{protocol_host_port}/events/q/v2?embview=true"
+        
+    #tags
+    if !given_tags.nil?
+      main_url += "&q=" + given_tags.to_s
+    end
+        
+        
+    #timeline id
+    #if !given_timeline_id.nil?
+    #  main_url += "&tlid=" + given_timeline_id.to_s
+    #end
+    
+    #from-to dates
+    if !given_from_date.nil?
+      main_url += "&from=" + given_from_date.to_s
+    end
+    if !given_to_date.nil?
+      main_url += "&to=" + given_to_date.to_s 
+    end
+    
+        
+    url_to_return = '<iframe src="'
+    url_to_return += URI::encode(main_url) + '" frameborder="yes" scrolling="no" width="84%" height="500">Test</iframe>'
+        
+    logger.debug("URL: " + url_to_return)
+    return url_to_return
     
   end
+  
 end
