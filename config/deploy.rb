@@ -41,8 +41,14 @@ namespace :deploy do
     run "ln -nfs /data/solr/data #{release_path}/solr/data"
   end
 
+  desc "Create tmpjson directory"
+  task :create_tmpjson do
+    run "mkdir #{release_path}/public/tmpjson"
+  end
+
 end
 
 after 'deploy:setup', 'deploy:chown'
 after 'deploy:update_code', 'deploy:symlink_shared'
-after 'deploy:symlink_shared', 'deploy:chown'
+after 'deploy:symlink_shared', 'deploy:create_tmpjson'
+after 'deploy:create_tmpjson', 'deploy:chown'
