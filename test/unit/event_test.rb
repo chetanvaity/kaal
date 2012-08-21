@@ -50,6 +50,12 @@ class EventTest < ActiveSupport::TestCase
                  Event.parse_date("650").strftime("%d %m %Y"))
     assert_equal("01 01 0042",
                  Event.parse_date("42").strftime("%d %m %Y"))
+
+    # Dates with commas
+    assert_equal("04 11 1618",
+                 Event.parse_date("November 04, 1618").strftime("%d %m %Y"))
+    assert_equal("04 11 1618",
+                 Event.parse_date("4 November, 1618").strftime("%d %m %Y"))
   end
 
   def test_parse_date_negative()

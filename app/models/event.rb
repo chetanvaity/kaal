@@ -83,7 +83,7 @@ class Event < ActiveRecord::Base
     # If its just a number, append "ad" at the end
     s += " ad" if s =~ /^[0-9]+$/
  
-    s.gsub!(/\s+/, "*") # replace space with "*" to avoid confusion in strptime
+    s.gsub!(/[\s,;:]+/, "*") # replace space,comma, etc with "*" to avoid confusion in strptime
     zero_date = Date.jd(0)
 
     date = zero_date
