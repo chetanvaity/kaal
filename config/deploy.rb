@@ -22,8 +22,6 @@ after "deploy:restart", "deploy:cleanup"
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
-load "deploy/assets"
-
 # If you are using Passenger mod_rails uncomment this:
 namespace :deploy do
   task :start do ; end
@@ -51,7 +49,11 @@ namespace :deploy do
 
 end
 
+# The order here is important
+# The load "deploy/assets" line adds an "after" hook to deploy:update_code
+# But we want the deploy_symlink_shared to run before that
 after 'deploy:setup', 'deploy:chown'
 after 'deploy:update_code', 'deploy:symlink_shared'
 after 'deploy:symlink_shared', 'deploy:create_tmpjson'
+load "deploy/assets"
 after 'deploy:create_tmpjson', 'deploy:chown'
