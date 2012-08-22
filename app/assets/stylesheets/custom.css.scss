@@ -196,7 +196,7 @@ body #modal-contact {
 .label-info      { background-color: $gray; }
 
 
-///* ** AMOL: IF you want to change header color , ...here is the place. Jus comment this block to retain original behavior.
+/* AMOL: IF you want to change header color , ...here is the place. Jus comment this block to retain original behavior. */
 .navbar-fixed-top{
    .navbar-inner {
       background-color: $grayDark;
@@ -205,8 +205,6 @@ body #modal-contact {
       filter: none;
    }
 }
-//* */
-/* -------------------------------------------------------------- */
 
 .small-gray-text {
   color: $grayLight;
