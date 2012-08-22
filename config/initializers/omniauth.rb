@@ -6,6 +6,10 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   
   #Facebook Auth Strategy
   #provider :facebook, 'APP_ID', 'APP_SECRET'
-  provider :facebook, '339152742831452', 'f5383af93f971a513bbb6ed1ceb72058'
+  if Rails.env.development?
+    provider :facebook, '339152742831452', 'f5383af93f971a513bbb6ed1ceb72058'
+  elsif Rails.env.production?
+    provider :facebook, '494616447232497', 'b7928390c434fef1022fcc7af08cee12'
+  end
 
 end
