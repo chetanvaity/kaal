@@ -42,7 +42,7 @@ class Babel < ActiveRecord::Base
   # and try to find normalized names for all
   # Once found, replace in original query_str
   def self.get_normalized_query(query_str)
-    normalized_query = query_str
+    normalized_query = query_str.dup
 
     arr = query_str.split
     subsequences = (0 ... arr.length).map do |i|
