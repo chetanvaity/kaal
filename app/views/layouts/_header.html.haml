@@ -34,6 +34,11 @@
           %a.btn-large{:href => root_path}
             %i.icon-home.icon-white
             Home
+        %li
+          %a.btn-large{:href => "/examples"}
+            %i.icon-check.icon-white
+            Examples
+
         -if !signed_in?
           %li
             %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}

@@ -273,6 +273,7 @@ class EventsController < ApplicationController
     logger.info("get_events(): query_str=#{query_str}")
     norm_query_str = Babel.get_normalized_query(query_str)
     logger.info("get_events(): norm_query_str=#{norm_query_str}")
+    logger.info("get_events(): query_str=#{query_str}")
 
     search = Event.search() do
       keywords norm_query_str, :fields => [:title, :tags, :extra_words]

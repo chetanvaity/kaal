@@ -30,11 +30,11 @@
   %br
   %br
 
-= label :event, :imgurl, 'Photo'
+= label :event, :imgurl, 'Image'
 = text_field :event, :imgurl, :class => "span4", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 -if request.xhr?
   %br
-%span.help-block (Optional) A photo/picture which gives more information about this event
+%span.help-block (Optional) Link to a picture about this event
 -if request.xhr?
   %br
   %br
