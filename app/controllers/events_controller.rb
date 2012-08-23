@@ -354,7 +354,7 @@ END
 
     date_json_array = []
     events.each do |e|
-      d = Date.jd(e.jd).strftime("%Y,%m,%d")
+      d = Date.jd(e.jd).strftime("%d/%m/%Y")
       text = e.desc.blank? ? " " : e.desc
       text = ActiveSupport::JSON.encode(text)
       title = ActiveSupport::JSON.encode(e.title)
