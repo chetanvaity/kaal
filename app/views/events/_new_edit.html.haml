@@ -29,6 +29,16 @@
 -if request.xhr?
   %br
   %br
+
+= label :event, :imgurl, 'Photo'
+= text_field :event, :imgurl, :class => "span4", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
+-if request.xhr?
+  %br
+%span.help-block (Optional) A photo/picture which gives more information about this event
+-if request.xhr?
+  %br
+  %br
+
   
 = label :event, :desc, 'Description'
 = text_area :event, :desc, :class => "span4", :size => "80x4", :placeholder => "Describe the event here."

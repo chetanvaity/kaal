@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
   }
 
   # Validation for url
-  validates :url, :format => {
+  validates :url, :imgurl,:format => {
     :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
     :message => '^URL (%{value}) is invalid'
   }, :allow_blank => true
