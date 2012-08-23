@@ -210,7 +210,8 @@ class EventsController < ApplicationController
     @json_resource_path = "/tmpjson/#{query_key}.json"
 
     val = @@q_keys[query_key]
-    if (not val.nil?)  &&  (@viewstyle == "tl") 
+    # !!! Disable cacheing entirely till we fix issues !!!
+    if false && (not val.nil?) && (@viewstyle == "tl") 
       logger.info("Cache hit!")
       @events_size = val[0]
       @total_search_size = val[1]
@@ -273,7 +274,6 @@ class EventsController < ApplicationController
     logger.info("get_events(): query_str=#{query_str}")
     norm_query_str = Babel.get_normalized_query(query_str)
     logger.info("get_events(): norm_query_str=#{norm_query_str}")
-    logger.info("get_events(): query_str=#{query_str}")
 
     search = Event.search() do
       keywords norm_query_str, :fields => [:title, :tags, :extra_words]
@@ -332,10 +332,11 @@ class EventsController < ApplicationController
   
 
   # Make JSON file as needed by Verite Timeline
-  # TBD: JSON should be created using some JSON library to avoid escaping issues
   def make_json(events, json_fname, query_str, from_jd, to_jd)
     # Make nice looking main frame for the timeline
-    headline = ActiveSupport::JSON.encode(query_str.titlecase)
+    # Drop the tokens begining with '@'
+    headline_str = query_str.split.delete_if {|t| t[0] == '@'}.join(' ')
+    headline = ActiveSupport::JSON.encode(headline_str.titlecase)
     if (from_jd.nil? or to_jd.nil?)
       text = " "
     else
