@@ -10,8 +10,7 @@ class StaticController < ApplicationController
     end
   end
   
-  def contact_us
-    
+  def examples
   end
 
 end
