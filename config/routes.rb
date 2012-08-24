@@ -18,9 +18,14 @@ Kaal::Application.routes.draw do
   resources :events
   match 'events/q/search' => 'events#search'  
 
-  # Sample query:
-  # http://servername/events/q/v1?tags=india+pakistan
-  match 'events/q/v2' => 'events#query2'
+  #This is our search function
+  #Note: Here we have given 'tlsearch' as alias, so that we can use 
+  #tlsearch_path in our code. Later we can change actual route from 'tl' to something else.
+  #And there, we do not need to change our code to adjust the calling function.
+  # SO ...keep 'tlsearch' as it is even if you change actual route.
+  match 'tl' => 'events#query2', :as=> :tlsearch
+  #match 'events/q/v2' => 'events#query2'
+  
   match 'events/myhome/myhome' => 'events#myhome'
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'

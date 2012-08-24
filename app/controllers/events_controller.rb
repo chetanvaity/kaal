@@ -155,33 +155,49 @@ class EventsController < ApplicationController
     @todate = params[:to]
     @query = params[:q]
     @fetchedevents = nil
+    
+    # We'll default to 'tl' view if not found.
     @viewstyle = params[:view]
-    if @viewstyle.nil?
+    if @viewstyle.nil? || @viewstyle.blank? 
       @viewstyle = "tl"
     end
+    if @viewstyle != "tl" && @viewstyle != "list"
+      @viewstyle = "tl"
+    end
+    # 
     
+    # We'll default to 'no fullscreen' view if not found.
     @fullscr = params[:fullscr]
-    if @fullscr.nil?
+    if @fullscr.nil? || @fullscr.blank? 
       @fullscr = "false"
     end
     if @fullscr != "false" && @fullscr != "true"
       @fullscr = "false"
     end
+    #
     
+    # We'll default to 'non-embedded' view if not found.
     @embeddedview = params[:embview]
-    if @embeddedview.nil?
+    if @embeddedview.nil? || @embeddedview.blank? 
+      @embeddedview = "false"
+    end
+    if @embeddedview != "false" && @embeddedview != "true"
       @embeddedview = "false"
     end
     if @embeddedview == "true"
       @viewstyle = "tl"
       @fullscr = "false"
     end
+    #
     
+    # We'll default to 'default' events per page if not found.
     @events_on_a_page = params[:pgevts] # Allowed values are 'default' and 'more'
     if ( @events_on_a_page.nil? ) ||
        ( (@events_on_a_page != "default") && (@events_on_a_page != "more"))
       @events_on_a_page = "default"
     end
+    #
+    
     #local var
     numevents_on_a_page = DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
     if(@events_on_a_page == "more")

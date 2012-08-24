@@ -31,7 +31,8 @@ module ApplicationHelper
                                     is_fullscreen, # is it fullscreen display? 'true' means yes.
                                     events_on_page) # Expected values 'default' or 'more'
                                     
-    base_search_url = "/events/q/v2?"
+    #base_search_url = "/tl?"
+    base_search_url = "#{tlsearch_path}?"
     
     url_to_return = base_search_url 
     
@@ -39,15 +40,16 @@ module ApplicationHelper
     if (!is_fullscreen.nil? && is_fullscreen == true)
       url_to_return += "fullscr=true"
     else
-      url_to_return += "fullscr=false"
+      #We already have default handling for this case. So let's not provide this in url.
+      #url_to_return += "fullscr=false"
     end
     
     # timeline or list view??
-    url_to_return += "&"
     if (!is_tl_view.nil? && is_tl_view == true)
-      url_to_return += "view=tl"
+      #We already have default handling for this case. So let's not provide this in url.
+      #url_to_return += "&view=tl"
     else
-      url_to_return += "view=list"
+      url_to_return += "&view=list"
     end
     
     #tags
@@ -63,10 +65,10 @@ module ApplicationHelper
     
     
     #from-to dates
-    if !given_from_date.nil?
+    if !given_from_date.nil? &&  !given_from_date.blank?
       url_to_return += "&from=" + given_from_date.to_s
     end
-    if !given_to_date.nil?
+    if !given_to_date.nil? && !given_to_date.blank?
       url_to_return += "&to=" + given_to_date.to_s 
     end
     
@@ -75,7 +77,8 @@ module ApplicationHelper
     if (!events_on_page.nil? && events_on_page == "more")
       url_to_return += "&pgevts=more"
     else
-      url_to_return += "&pgevts=default"
+      #We already have default handling for this case. So let's not provide this in url.
+      #url_to_return += "&pgevts=default"
     end
     
     logger.debug("URL: " + url_to_return)
@@ -89,7 +92,7 @@ module ApplicationHelper
                                       given_from_date, given_to_date)
     
     protocol_host_port = "#{request.protocol}#{request.host_with_port}"
-    main_url = "#{protocol_host_port}/events/q/v2?embview=true"
+    main_url = "#{protocol_host_port}#{tlsearch_path}?embview=true"
         
     #tags
     if !given_tags.nil?
@@ -103,10 +106,10 @@ module ApplicationHelper
     #end
     
     #from-to dates
-    if !given_from_date.nil?
+    if !given_from_date.nil? && !given_from_date.blank?
       main_url += "&from=" + given_from_date.to_s
     end
-    if !given_to_date.nil?
+    if !given_to_date.nil?  &&  !given_to_date.blank?
       main_url += "&to=" + given_to_date.to_s 
     end
     

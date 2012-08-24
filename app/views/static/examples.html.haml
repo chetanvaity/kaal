@@ -6,25 +6,31 @@
       %h4 History
       %ul
         %li
-          %a{:href => "/events/q/v2?q=Ashoka+@chetanv_ashoka"}
+          -url_to_use = generate_timeline_view_url("Ashoka+@chetanv_ashoka",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Ashoka
         %li
-          %a{:href => "/events/q/v2?q=Buddha+@chetanv_buddha"}
+          -url_to_use = generate_timeline_view_url("Buddha+@chetanv_buddha",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Buddha
         %li
-          %a{:href => "/events/q/v2?q=Satvahana+@chetanv_satvahana"}
+          -url_to_use = generate_timeline_view_url("Satvahana+@chetanv_satvahana",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Satvahana
     %div.well
       %h4 Science
       %ul
         %li
-          %a{:href => "/events/q/v2?q=India+Medicine+@chetanv_india_medicine"}
+          -url_to_use = generate_timeline_view_url("India+Medicine+@chetanv_india_medicine",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info India, Medicine
         %li
-          %a{:href => "/events/q/v2?q=DNA+@chetanv_dna"}
+          -url_to_use = generate_timeline_view_url("DNA+@chetanv_dna",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info DNA
         %li
-          %a{:href => "/events/q/v2?q=Greece+Astronomer+@chetanv_greece_astronomer"}
+          -url_to_use = generate_timeline_view_url("Greece+Astronomer+@chetanv_greece_astronomer",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Greece, Astronomer
     
   %div.span5
@@ -32,23 +38,29 @@
       %h4 Cinema
       %ul
         %li
-          %a{:href => "/events/q/v2?q=Amitabh+Bachchan"}
+          -url_to_use = generate_timeline_view_url("@amolyp_bigb",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Amitabh Bachchan
         %li
-          %a{:href => "/events/q/v2?q=Govinda+Karishma+Kapur"}
+          -url_to_use = generate_timeline_view_url("Govinda+Karishma+Kapur",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Govinda, Karishma Kapur
         %li
-          %a{:href => "/events/q/v2?q=Anurag+Kashyap+@chetanv_anurag_kashyap"}
+          -url_to_use = generate_timeline_view_url("@chetanv_anurag_kashyap",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Anurag Kashyap
     %div.well
       %h4 Technology
       %ul
         %li
-          %a{:href => "/events/q/v2?q=Yahoo+Google"}
+          -url_to_use = generate_timeline_view_url("Yahoo+Google",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Yahoo, Google
         %li
-          %a{:href => "/events/q/v2?q=Android+phone"}
+          -url_to_use = generate_timeline_view_url("Android+phone",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Android phone
         %li
-          %a{:href => "/events/q/v2?q=Ford+General+motors"}
+          -url_to_use = generate_timeline_view_url("Ford+General+motors",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
             %span.label.label-info Ford, General Motors
