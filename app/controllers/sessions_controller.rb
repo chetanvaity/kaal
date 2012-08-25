@@ -89,8 +89,10 @@ class SessionsController < ApplicationController
     #
     # OK ...let's now check user availability and if already signed in , etc checks
     #
-    logger.info("Finding user based on uid and auth-provider")
-    auth_user = User.find_by_authprovider_and_authuid(@authhash[:provider], @authhash[:uid])
+    #logger.info("Finding user based on uid and auth-provider")
+    #auth_user = User.find_by_authprovider_and_authuid(@authhash[:provider], @authhash[:uid])
+    logger.info("Finding user based on email and auth-provider")
+    auth_user = User.find_by_authprovider_and_email(@authhash[:provider], @authhash[:email])
     if auth_user
       # signin existing user
       logger.info("Existing user, sign in him")
@@ -110,6 +112,8 @@ class SessionsController < ApplicationController
         sign_in new_user
         redirect_to root_path
       else
+        logger.error("User creation failed.")
+        logger.error(new_user.errors.full_messages)
         flash[:error] = "Error while creating user for emailid=" + @authhash[:email] + " after " + @authhash[:provider] + "-authentication." 
       end
     end
