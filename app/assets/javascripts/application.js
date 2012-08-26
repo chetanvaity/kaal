@@ -11,15 +11,26 @@
 //= require_tree .
 
 $(document).ready(function(e) {
+
     $('FORM').nestedFields({
-	beforeInsert: function(item) {
-	    tagtext = $('#newtag').val();
-	    item.find(".tagtext").text(tagtext);
-	    item.find(".tagname").val(tagtext);
-	    item.find(".label").addClass("label-success");
-	},
-	afterRemove: function(item) {
-	    console.log(item + ' was removed.');
-	}
+	       beforeInsert: function(item) {
+	         tagtext = $('#newtag').val();
+	         item.find(".tagtext").text(tagtext);
+	         item.find(".tagname").val(tagtext);
+	         item.find(".label").addClass("label-success");
+	       },
+	       afterRemove: function(item) {
+	         console.log(item + ' was removed.');
+	       }
     });
+    
+    
+    /*
+     * Reference : https://github.com/mathiasbynens/jquery-placeholder
+     * IE has problem to render placeholders, hence this plugin is used to take care of it.
+    */
+    $('input,textarea').placeholder();
+    
+    
+    
 });

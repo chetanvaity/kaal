@@ -30,3 +30,10 @@ html, body {
     font-size:x-small;
     color:gray;
 }
+
+/*
+ * Reference : https://github.com/mathiasbynens/jquery-placeholder
+ * IE has problem to render placeholders, hence this plugin is used to take care of it.
+*/
+.placeholder { color: #aaa; }
+
