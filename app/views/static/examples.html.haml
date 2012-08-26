@@ -1,4 +1,4 @@
-%h3 Example Timelines
+%h3 Examples
 %br
 %div.span12
   %div.span5
@@ -10,9 +10,9 @@
           %a{:href => "#{url_to_use}"}
             %span.label.label-info Ashoka
         %li
-          -url_to_use = generate_timeline_view_url("Buddha+@chetanv_buddha",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("Shivaji+Aurangzeb+@chetanv_shivaji_aurangzeb",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
-            %span.label.label-info Buddha
+            %span.label.label-info Shivaji, Aurangzeb
         %li
           -url_to_use = generate_timeline_view_url("Satvahana+@chetanv_satvahana",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
@@ -21,17 +21,32 @@
       %h4 Science
       %ul
         %li
-          -url_to_use = generate_timeline_view_url("India+Medicine+@chetanv_india_medicine",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("India+Astronomy+@chetanv_india_astronomy",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
-            %span.label.label-info India, Medicine
+            %span.label.label-info India, Astronomy
         %li
           -url_to_use = generate_timeline_view_url("DNA+@chetanv_dna",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
             %span.label.label-info DNA
         %li
-          -url_to_use = generate_timeline_view_url("Greece+Astronomer+@chetanv_greece_astronomer",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("USA+Space+programme+@chetanv_usa_space",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
-            %span.label.label-info Greece, Astronomer
+            %span.label.label-info USA, Space programme
+    %div.well
+      %h4 Music
+      %ul
+        %li
+          -url_to_use = generate_timeline_view_url("R+D+Burman+@amolyp_pancham",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
+            %span.label.label-info R D Burman
+        %li
+          -url_to_use = generate_timeline_view_url("Pink+Floyd+@chetanv_pink_floyd",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
+            %span.label.label-info Pink Floyd
+        %li
+          -url_to_use = generate_timeline_view_url("Sonu+Nigam+@amolyp_sonu_nigam",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
+            %span.label.label-info Sonu Nigam
     
   %div.span5
     %div.well
@@ -42,7 +57,7 @@
           %a{:href => "#{url_to_use}"}
             %span.label.label-info Amitabh Bachchan
         %li
-          -url_to_use = generate_timeline_view_url("Govinda+Karishma+Kapur",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("Govinda+Karishma+Kapur+@chetanv_govinda_karishma",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
             %span.label.label-info Govinda, Karishma Kapur
         %li
@@ -53,14 +68,29 @@
       %h4 Technology
       %ul
         %li
-          -url_to_use = generate_timeline_view_url("Yahoo+Google",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("Yahoo+Google+@chetanv_yahoo_google",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
             %span.label.label-info Yahoo, Google
         %li
-          -url_to_use = generate_timeline_view_url("Android+phone",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("Android+phone+@chetanv_android",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
             %span.label.label-info Android phone
         %li
-          -url_to_use = generate_timeline_view_url("Ford+General+motors",@tlid, @fromdate, @todate, false,  "??")
+          -url_to_use = generate_timeline_view_url("Tata+motors+@chetanv_tata_motors",@tlid, @fromdate, @todate, false,  "??")
           %a{:href => "#{url_to_use}"}
-            %span.label.label-info Ford, General Motors
+            %span.label.label-info Tata Motors
+    %div.well
+      %h4 Sports
+      %ul
+        %li
+          -url_to_use = generate_timeline_view_url("India+Olympics+@chetanv_india_olympics",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
+            %span.label.label-info India, Olympics
+        %li
+          -url_to_use = generate_timeline_view_url("Sachin+Tendulkar+@amolyp_sachin",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
+            %span.label.label-info Sachin Tendulkar
+        %li
+          -url_to_use = generate_timeline_view_url("Saina+Nehwal+@amolyp_saina_nehwal",@tlid, @fromdate, @todate, false,  "??")
+          %a{:href => "#{url_to_use}"}
+            %span.label.label-info Saina Nehwal

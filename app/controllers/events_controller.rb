@@ -221,7 +221,7 @@ class EventsController < ApplicationController
       return
     end
 
-    @query = "Katrina Kaif Akshay Kumar" if @query.nil? or @query.empty?
+    @query = "Ashoka @chetanv_ashoka" if @query.nil? or @query.empty?
     query_key = @util.get_query_key(from_jd, to_jd, @query, @events_on_a_page)
     @json_resource_path = "/tmpjson/#{query_key}.json"
 

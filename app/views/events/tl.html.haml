@@ -32,8 +32,8 @@
               %i.icon-exclamation-sign
               = flash[:warning]
   
-          = text_field_tag :from, nil, {:class => "input-small", :placeholder => "From: (eg: 1947)"}
-          = text_field_tag :to, nil, {:class => "input-small", :placeholder => "To: (eg: 1977)"}
+          = text_field_tag :from, nil, {:class => "input-small", :placeholder => "From: (eg: 1984)"}
+          = text_field_tag :to, nil, {:class => "input-small", :placeholder => "To: (eg: 2011)"}
           = text_field_tag :q, nil, {:class => "input-medium", :placeholder => "eg: india prime minister"}
           = button_tag(:type => "submit", :class => "btn btn-primary") do
             %i.icon-search.icon-white
@@ -42,15 +42,15 @@
           %span.pull-right
             %i.icon-check
             Check out:
-            -url_to_use_here = generate_timeline_view_url("R+D+Burman",@tlid, @fromdate, @todate, false,  "??")
+            -url_to_use_here = generate_timeline_view_url("R+D+Burman+@amolyp_pancham",@tlid, @fromdate, @todate, false,  "??")
             %a{:href => "#{url_to_use_here}"}
               %span.label.label-info R D Burman
             &nbsp;
-            -url_to_use_here = generate_timeline_view_url("Shivaji+Aurangzeb",@tlid, @fromdate, @todate, false,  "??")
+            -url_to_use_here = generate_timeline_view_url("Shivaji+Aurangzeb+@chetanv_shivaji_aurangzeb",@tlid, @fromdate, @todate, false,  "??")
             %a{:href => "#{url_to_use_here}"}
               %span.label.label-info Shivaji Aurangzeb
             &nbsp;
-            -url_to_use_here = generate_timeline_view_url("India+Astronomer",@tlid, @fromdate, @todate, false,  "??")
+            -url_to_use_here = generate_timeline_view_url("India+Astronomer+@chetanv_india_astronomer",@tlid, @fromdate, @todate, false,  "??")
             %a{:href => "#{url_to_use_here}"}
               %span.label.label-info India Astronomer
             %span#status-line
