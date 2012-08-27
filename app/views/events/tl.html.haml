@@ -32,9 +32,9 @@
               %i.icon-exclamation-sign
               = flash[:warning]
   
-          = text_field_tag :from, nil, {:class => "input-small", :placeholder => "From: (eg: 1984)"}
-          = text_field_tag :to, nil, {:class => "input-small", :placeholder => "To: (eg: 2011)"}
-          = text_field_tag :q, nil, {:class => "input-medium", :placeholder => "eg: india prime minister"}
+          = text_field_tag :from, nil, {:class => "input-small", :placeholder => "From: (eg: 1500)"}
+          = text_field_tag :to, nil, {:class => "input-small", :placeholder => "To: (eg: 1900)"}
+          = text_field_tag :q, nil, {:class => "input-medium", :placeholder => "eg: mughal empire"}
           = button_tag(:type => "submit", :class => "btn btn-primary") do
             %i.icon-search.icon-white
             = p " Search"
@@ -42,17 +42,17 @@
           %span.pull-right
             %i.icon-check
             Check out:
-            -url_to_use_here = generate_timeline_view_url("R+D+Burman+@amolyp_pancham",@tlid, @fromdate, @todate, false,  "??")
+            -url_to_use_here = generate_timeline_view_url("@amolyp_bigb",@tlid, @fromdate, @todate, false,  "??")
             %a{:href => "#{url_to_use_here}"}
-              %span.label.label-info R D Burman
+              %span.label.label-info Amitabh Bachchan
             &nbsp;
-            -url_to_use_here = generate_timeline_view_url("Shivaji+Aurangzeb+@chetanv_shivaji_aurangzeb",@tlid, @fromdate, @todate, false,  "??")
+            -url_to_use_here = generate_timeline_view_url("Pink+Floyd+@chetanv_pink_floyd",@tlid, @fromdate, @todate, false,  "??")
             %a{:href => "#{url_to_use_here}"}
-              %span.label.label-info Shivaji Aurangzeb
+              %span.label.label-info Pink Floyd
             &nbsp;
-            -url_to_use_here = generate_timeline_view_url("India+Astronomer+@chetanv_india_astronomer",@tlid, @fromdate, @todate, false,  "??")
+            -url_to_use_here = generate_timeline_view_url("India+Astronomy+@chetanv_india_astronomy",@tlid, @fromdate, @todate, false,  "??")
             %a{:href => "#{url_to_use_here}"}
-              %span.label.label-info India Astronomer
+              %span.label.label-info India Astronomy
             %span#status-line
               %a{:href => "/examples/"}
                 More...
