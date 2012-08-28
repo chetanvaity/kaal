@@ -1,5 +1,5 @@
 class StaticController < ApplicationController
-  caches_page :home
+  caches_page :credits, :about_us, :examples, :faq
 
   def credits
   end
@@ -11,6 +11,9 @@ class StaticController < ApplicationController
   end
   
   def examples
+  end
+
+  def faq
   end
 
 end

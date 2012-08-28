@@ -16,7 +16,6 @@ Kaal::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :events
-  match 'events/q/search' => 'events#search'  
 
   #This is our search function
   #Note: Here we have given 'tlsearch' as alias, so that we can use 
@@ -24,12 +23,11 @@ Kaal::Application.routes.draw do
   #And there, we do not need to change our code to adjust the calling function.
   # SO ...keep 'tlsearch' as it is even if you change actual route.
   match 'tl' => 'events#query2', :as=> :tlsearch
-  #match 'events/q/v2' => 'events#query2'
   
-  match 'events/myhome/myhome' => 'events#myhome'
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'
   match 'examples' => 'static#examples'
+  match 'faq' => 'static#faq'
   
   match '/auth/:service/callback' => 'sessions#create' 
   match '/auth/failure' => 'sessions#failure'
