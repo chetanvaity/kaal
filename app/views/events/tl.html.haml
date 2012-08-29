@@ -14,6 +14,16 @@
     /        = escape_once('<iframe src="http://localhost:3000/events/q/v2?embview=true&q=')
     /= escape_once(haml_indent())
     = generate_complete_embedview_url(@query,@tlid, @fromdate, @todate)
+/ ====================================================================================================
+/
+/ This is popup for 'share-url' function
+%div{:class => "modal hide", :id => "modal-shareurl"}
+  %div{:class => "modal-header"}
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
+    %strong Copy following url of this timeline and share with intended audience.
+  %div{:class => "modal-body"}
+    = generate_complete_default_url_for_timeline_view(@query,@tlid, @fromdate, @todate)  
+    
     
 
 %div.container
@@ -87,6 +97,8 @@
       -if @events_size > 0
         -if @embeddedview == 'false'
           %div.pull-right
+            %a.btn.btn-primary{:href => "#modal-shareurl", "data-toggle" => "modal", :title => "Share url", :rel => "tooltip"}
+              %i.icon-share-alt.icon-white
             %a.btn.btn-primary{:href => "#modal-popup", "data-toggle" => "modal", :title => "Get html embed code", :rel => "tooltip"}
               %i.icon-share.icon-white
             -if @viewstyle == "tl"

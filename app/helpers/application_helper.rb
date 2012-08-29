@@ -86,8 +86,22 @@ module ApplicationHelper
   end
   
   
+  #
+  # To get complete url for default timeline view
+  #
+  def generate_complete_default_url_for_timeline_view(given_tags, given_timeline_id,
+                                                      given_from_date, given_to_date)
+                                                      
+    partail_timeline_view_url = generate_timeline_view_url(given_tags, given_timeline_id, 
+                               given_from_date, given_to_date,
+                               false, 
+                               "??")
+    return "#{request.protocol}#{request.host_with_port}#{partail_timeline_view_url}"
+  end
   
-  # TBD
+  
+  
+  
   def generate_complete_embedview_url(given_tags, given_timeline_id,
                                       given_from_date, given_to_date)
     
