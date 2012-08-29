@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120812132622) do
+ActiveRecord::Schema.define(:version => 20120829164850) do
+
+  create_table "activity_logs", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "user"
+    t.string   "controller"
+    t.string   "action"
+    t.string   "params"
+    t.string   "extra"
+    t.string   "ip"
+    t.string   "browser"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "babels", :force => true do |t|
     t.string  "term",         :null => false

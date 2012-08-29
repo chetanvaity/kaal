@@ -1,0 +1,24 @@
+%h3 Activity Log
+
+= paginate(@activity_logs)
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th When
+      %th Who
+      %th Action
+      %th Extra
+      %th IP
+  %tbody
+    - @activity_logs.each do |al|
+      %tr
+        %td= al.id
+        %td= al.created_at
+        %td= al.user
+        %td= al.action
+        %td= al.extra
+        %td= al.ip
+
+= page_entries_info(@activity_logs).html_safe

@@ -70,3 +70,6 @@ gem 'progress_bar'
 group :production do
   gem 'rack-google-analytics', :require => 'rack/google-analytics'
 end 
+
+# For Pagination
+gem 'kaminari'

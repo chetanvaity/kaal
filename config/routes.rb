@@ -1,4 +1,6 @@
 Kaal::Application.routes.draw do
+  get "activity_log/index"
+
   get "users/new"
 
   # The priority is based upon order of creation:
@@ -36,6 +38,9 @@ Kaal::Application.routes.draw do
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
+  resources :activity_log do
+    get 'page/:page', :action => :index, :on => :collection
+  end
 
   # Sample resource route with options:
   #   resources :products do

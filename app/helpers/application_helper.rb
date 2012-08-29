@@ -81,7 +81,6 @@ module ApplicationHelper
       #url_to_return += "&pgevts=default"
     end
     
-    logger.debug("URL: " + url_to_return)
     return url_to_return
   end
   
@@ -126,12 +125,10 @@ module ApplicationHelper
     if !given_to_date.nil?  &&  !given_to_date.blank?
       main_url += "&to=" + given_to_date.to_s 
     end
-    
-        
+            
     url_to_return = '<iframe src="'
     url_to_return += URI::encode(main_url) + '" frameborder="yes" scrolling="no" width="84%" height="500">Test</iframe>'
         
-    logger.debug("URL: " + url_to_return)
     return url_to_return
     
   end

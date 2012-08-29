@@ -1,0 +1,2 @@
+module ActivityLogHelper
+end

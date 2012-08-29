@@ -41,6 +41,7 @@ class EventsController < ApplicationController
     if @event.save
       flash.now[:notice] =
         "<strong>#{@event.title}</strong> was successfully created".html_safe
+      record_activity("t=#{@event.title}")
       redirect_to event_path(@event)
     else
       render :action => "new"
@@ -66,6 +67,7 @@ class EventsController < ApplicationController
     @editfromlistview = params[:editfromlistview]
       
     if @event.update_attributes(params[:event])
+      record_activity("t=#{@event.title}")
       if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
         #This is edit from list view. 
         #Let's show success notification and let's show the refreshed listview page
@@ -104,6 +106,7 @@ class EventsController < ApplicationController
     @event = Event.find params[:id]
     @event.destroy
     flash[:notice] = "<strong>#{@event.title}</strong> deleted".html_safe
+    record_activity("t=#{@event.title}")
     if (!del_from_listview.nil?) && (del_from_listview == 'true')
       
       #cache update
@@ -164,7 +167,6 @@ class EventsController < ApplicationController
     if @viewstyle != "tl" && @viewstyle != "list"
       @viewstyle = "tl"
     end
-    # 
     
     # We'll default to 'no fullscreen' view if not found.
     @fullscr = params[:fullscr]
@@ -174,7 +176,6 @@ class EventsController < ApplicationController
     if @fullscr != "false" && @fullscr != "true"
       @fullscr = "false"
     end
-    #
     
     # We'll default to 'non-embedded' view if not found.
     @embeddedview = params[:embview]
@@ -188,7 +189,6 @@ class EventsController < ApplicationController
       @viewstyle = "tl"
       @fullscr = "false"
     end
-    #
     
     # We'll default to 'default' events per page if not found.
     @events_on_a_page = params[:pgevts] # Allowed values are 'default' and 'more'
@@ -196,7 +196,6 @@ class EventsController < ApplicationController
        ( (@events_on_a_page != "default") && (@events_on_a_page != "more"))
       @events_on_a_page = "default"
     end
-    #
     
     #local var
     numevents_on_a_page = DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
@@ -204,13 +203,6 @@ class EventsController < ApplicationController
       numevents_on_a_page= MORE_NUM_OF_EVENTS_TOBE_DISPLAYED
     end
     
-    #local var
-    #cache_refresh = false;
-    #tmp_cache_refresh = params[:cacherefresh]
-    #if(!tmp_cache_refresh.nil? && tmp_cache_refresh == "true")
-    #  cache_refresh = true;
-    #end
-
     logger.info("query2() entry - from=#{@fromdate}, to=#{@todate}, q=#{@query}, viewstyle=#{@viewstyle}, embeddedview=#{@embeddedview}")
     
     begin
@@ -254,24 +246,20 @@ class EventsController < ApplicationController
     if @total_search_size <= DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
       @total_search_size = -1 # no more data
     end
-    
-    
-    if signed_in?
-      if !current_user.nil?
         
+    if signed_in?
+      if !current_user.nil?    
         # remember query key in session. We'll need if user edits/delets event
         session[:qkey] = query_key
-      
         # Remember listviewurl , we need it in edit func.
         if @viewstyle == 'list'
           tmp_list_url = generate_list_view_url(@query,nil, @fromdate, @todate, @fullscr== 'true'?true:false, @events_on_a_page)
-          #puts "Amol ..saving listviewurl in session: " + tmp_list_url
           session[:listviewurl] = tmp_list_url
         end
       end
     end
-    
-    
+        
+    record_activity("q=#{@query}")
     if @fullscr == "false"
       render :template => "events/tl", :formats => [:html], :handlers => :haml,
        :layout => "tl"
