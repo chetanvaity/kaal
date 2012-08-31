@@ -50,6 +50,11 @@ namespace :deploy do
     run "mkdir #{release_path}/public/tmpjson"
   end
 
+  desc "Create a dummy empty timeline.css to get rid of spurious error from within timeline-embed.js"
+  task :create_dummy_timeline_css do
+    run "touch #{release_path}/public/assets/timeline.css"
+  end
+
   namespace :web do
     desc <<-DESC
       Present a maintenance page to visitors. Disables your application's web \
@@ -89,4 +94,5 @@ after 'deploy:setup', 'deploy:chown'
 after 'deploy:update_code', 'deploy:symlink_shared'
 after 'deploy:symlink_shared', 'deploy:create_tmpjson'
 load "deploy/assets"
-after 'deploy:create_tmpjson', 'deploy:chown'
+after 'deploy:create_tmpjson', 'deploy:create_dummy_timeline_css'
+after 'deploy:create_dummy_timeline_css', 'deploy:chown'
