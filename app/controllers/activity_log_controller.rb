@@ -8,8 +8,9 @@ class ActivityLogController < ApplicationController
 
   private
   def require_admin
-    if (current_user.nil?) or
-        ((not current_user.nil?) and (not current_user.isadmin))
+    if (not current_user.nil?) and (current_user.isadmin)
+      # Its admin. Cool.
+    else
       flash[:warning] = "You must be admin to access activity logs"
       redirect_to :root
     end
