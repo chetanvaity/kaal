@@ -257,8 +257,8 @@ check process mysql with pidfile /var/run/mysqld/mysqld.pid
   group server
 
 check process apache with pidfile /var/run/apache2.pid
-  start program = "/usr/sbin/service apache start" with timeout 60 seconds
-  stop program  = "/usr/sbin/service apache stop"
+  start program = "/usr/sbin/apachectl start" with timeout 60 seconds
+  stop program  = "/usr/sbin/apachectl stop"
   if cpu > 60% for 2 cycles then alert
   if cpu > 80% for 5 cycles then restart
   if loadavg(5min) greater than 10 for 8 cycles then stop
