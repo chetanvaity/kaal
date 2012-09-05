@@ -45,6 +45,7 @@
           %a.btn-large{:href => "/faq/"}
             %i.icon-question-sign.icon-white
             FAQ
+        
 
         -if !signed_in?
           %li
@@ -56,6 +57,16 @@
             %a.btn-large{:href => "/events/new"}
               %i.icon-pencil.icon-white
               New event
+
+          - if current_user.isadmin
+            %li{:class => "dropdown"}
+              %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
+                Admin
+                %b.caret
+              %ul.dropdown-menu
+                %li
+                  = link_to "Activity Log", activity_log_index_path, method: "get"
+                
           %li{:id => "fat-menu", :class => "dropdown"}
             %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
               -if current_user.authprovider == "google"
