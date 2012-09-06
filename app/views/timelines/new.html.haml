@@ -1,12 +1,16 @@
 %h2 Create new timeline
 
-%div.span4
-  = form_tag(search_events_path, :remote => true) do
-    %div
-      = text_field_tag('query', nil, :placeholder => 'Search for events', :class => "span2 search-query")
-      = button_tag(:type => "submit", :class => "btn btn-primary") do
-        %i.icon-search.icon-white
-        = content_tag(:span, "Search")
+%div.row.span12
+  %div.span4
+    = form_tag(search_events_path, :remote => true) do
+      %div
+        = text_field_tag('query', nil, :placeholder => 'Search for events',
+        :class => "span2 search-query")
+        = button_tag(:type => "submit", :class => "btn btn-primary") do
+          %i.icon-search.icon-white
+          = content_tag(:span, "Search")
 
-  %div#search_results.well
-    Nothing here
+    %div#search_results.well
+      Nothing here
+
+  %div#gathered_events.span4.pull-right

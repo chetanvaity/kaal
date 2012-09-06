@@ -1,9 +1,10 @@
 %ul.nav.nav-list
   - for event in @events do
     %li
-      %a{:href => "#"}
-        %div
-          = event.title
-        %div.muted
-          = event.date_str
+      %a{:href => "#", :onclick => "moveEvent(#{event.id})"}
+        %div{:id => "#{event.id}"}
+          %div
+            = event.title
+          %div.muted
+            = event.date_str
     %li.divider

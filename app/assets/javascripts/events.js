@@ -19,3 +19,8 @@ jQuery(function($) {
       
   
 });
+
+moveEvent = function(id) {
+    eid = "#" + id;
+    $(eid).appendTo("#gathered_events");
+};
