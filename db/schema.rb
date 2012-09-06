@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829164850) do
+ActiveRecord::Schema.define(:version => 20120906102928) do
 
   create_table "activity_logs", :force => true do |t|
     t.integer  "user_id"
@@ -53,6 +53,17 @@ ActiveRecord::Schema.define(:version => 20120829164850) do
 
   add_index "tags", ["event_id"], :name => "index_tags_on_event_id"
   add_index "tags", ["name"], :name => "name_of_tags"
+
+  create_table "timelines", :force => true do |t|
+    t.string   "title"
+    t.text     "desc"
+    t.integer  "owner_id"
+    t.string   "imgurl"
+    t.string   "events"
+    t.string   "tags"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"

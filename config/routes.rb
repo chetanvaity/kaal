@@ -25,7 +25,8 @@ Kaal::Application.routes.draw do
   #And there, we do not need to change our code to adjust the calling function.
   # SO ...keep 'tlsearch' as it is even if you change actual route.
   match 'tl' => 'events#query2', :as=> :tlsearch
-  
+  match 'search_events' => 'events#search'
+
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'
   match 'examples' => 'static#examples'
@@ -42,6 +43,8 @@ Kaal::Application.routes.draw do
   resources :activity_log do
     get 'page/:page', :action => :index, :on => :collection
   end
+
+  resources :timelines
 
   # Sample resource route with options:
   #   resources :products do

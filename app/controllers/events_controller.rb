@@ -271,7 +271,29 @@ class EventsController < ApplicationController
   end
 
   # ----- Util functions -----
-  
+
+  # Test AJAX
+  def search()
+    query = params[:query]
+    if query.nil?
+      return
+    end
+    
+    search_res = Event.search() do
+      keywords query, :fields => [:title, :tags, :extra_words]
+      paginate :page => 1, :per_page => 10
+    end
+
+    @events = []
+    search_res.each_hit_with_result do |hit, event|
+      event.score = hit.score
+      @events.push(event)
+    end
+
+    render :template => "events/search_results", :formats => [:js],
+           :handlers => :haml
+  end
+    
   # Get events from the Solr index
   # Either from_jd and to_jd should both be nil or they should both be valid
   def get_events(from_jd, to_jd, query_str,numevents_on_a_page)
@@ -414,7 +436,7 @@ END
     render :template => "events/myhome", :formats => [:html], :handlers => :haml
   end
 
-  def search
+  def search2
     searchkey = params[:searchkey]
     if searchkey.nil?
       return
