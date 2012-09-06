@@ -1,0 +1,58 @@
+%div{:id => "popover_content_wrapper", :style => "display: none"}
+  %div.ellipsis
+    %b Sachin: 100 hundreds
+    %br
+    %b By:
+    Amol Potnis
+    %br  
+    %b Date:
+    17/Dec/2017
+    %p
+      This timeline covers Sachin's magnificent innings where he scrored 100 or more runs. AAAAAAAAA BBBBBBBBBBBB
+    
+
+
+%div.span12
+  %h1 Welcome to #{PRODUCT_DISPLAY_NAME}!
+  %h2 Here you will find various timelines which you can enjoy and further share with others. You can also create new timelines of your choice after login to the site.
+
+&nbsp;
+%br
+%h3 Featured timelines
+%br 
+%div.span12
+  %ul.thumbnails
+    %li
+      %a.thumbnail{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
+        %img{  :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+      %b Sachin and his 100 hundreds.
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://katrinakaif.in/wp-content/uploads/2012/04/Katrina-Kaif-Wiki.jpg",  :width => "190px",  :height => "190px", "max-height" => "190px", "max-width" => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+    %li
+      %a.thumbnail{ :href => "#"}
+        %img{ :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg",  :width => "190px",  :height => "190px", :alt => ""}
+        
+%script{:type => "text/javascript"}
+  $(function ()  
+  { 
+  $("#tl1").popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner homepage-class"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>', placement:"right",html : true, content: function() { return $('#popover_content_wrapper').html();}  });   
+  });                                                           
