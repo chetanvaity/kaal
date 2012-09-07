@@ -1,8 +1,9 @@
 %ul.nav.nav-list
   - for event in @events do
     %li
-      %a{:href => "#", :onclick => "moveEvent(#{event.id})"}
+      %a{:href => "#", :onclick => "copyEventDiv(#{event.id})"}
         %div{:id => "#{event.id}"}
+          %button.close.hide{:onclick => "removeEventDiv(#{event.id})"} &times;
           %div
             = event.title
           %div.muted
