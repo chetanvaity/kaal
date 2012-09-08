@@ -20,13 +20,9 @@ class TimelinesController < ApplicationController
     end
 
     if @timeline.save
-      flash.now[:notice] =
-        "<strong>#{@timeline.title}</strong> was successfully created".html_safe
       record_activity("t=#{@timeline.title}")
-      redirect_to root_path
-    else
-      render :action => "new"
-    end                             
+    end
+    render :template => "timelines/create", :formats => [:js], :handlers => :haml
   end
 
 end

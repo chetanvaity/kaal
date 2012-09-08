@@ -24,8 +24,9 @@
           = text_field :event, :title, :class => "span2"
 
   %div.row.span8.pull-right.well
-    = form_for(@timeline, :url => timelines_path, :method => :post) do |tf|
-      = tf.error_messages
+    = form_for(@timeline, :url => timelines_path, :method => :post, :remote => true, :html => {:id => "timeline-form"}) do |tf|
+      %div#errorExplanation.errorExplanation.hide
+      %div#successMessage.alert.alert-success.hide      
       %div.span4
         = label :timeline, :title, 'Title'
         = text_field :timeline, :title, :class => "span3"

@@ -1,0 +1,15 @@
+var tf = $('#timeline-form');
+
+- if @timeline.errors.any?
+  var errors = $("<ul />");
+  - @timeline.errors.full_messages.each do |error|
+    errors.append("<li>#{ j(error) }</li>");
+ 
+  tf.find("#errorExplanation").html(errors);
+  tf.find("#errorExplanation").removeClass("hide");
+
+- else
+  tf.find("#successMessage").html('<i class="icon-ok-sign"></i> <strong>#{ j(@timeline.title) }</strong> saved successfully. <a href="/timelines/#{ @timeline.id }">View now</a>');
+  tf.find("#successMessage").removeClass("hide");
+  tf.find("#errorExplanation").empty();
+  tf.find("#errorExplanation").addClass("hide");
