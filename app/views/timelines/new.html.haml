@@ -1,16 +1,55 @@
 %h2 Create new timeline
 
 %div.row.span12
-  %div.span4
-    = form_tag(search_events_path, :remote => true) do
-      %div
-        = text_field_tag('query', nil, :placeholder => 'Search for events',
-        :class => "span2 search-query")
-        = button_tag(:type => "submit", :class => "btn btn-primary") do
-          %i.icon-search.icon-white
-          = content_tag(:span, "Search")
+  %div.tabbable.span3
+    %ul.nav.nav-tabs
+      %li.active
+        %a{:href => "#tab1", :"data-toggle" => "tab"} Search
+      %li
+        %a{:href => "#tab2", :"data-toggle" => "tab"} New event
 
-    %div#search_results.well
-      Nothing here
+    %div.tab-content
+      %div#tab1.tab-pane.active
+        = form_tag(search_events_path, :remote => true) do
+          %div
+            = text_field_tag('query', nil, :placeholder => 'Search for events',
+            :class => "span2 search-query")
+            = button_tag(:type => "submit", :class => "btn btn-primary") do
+              %i.icon-search.icon-white
+        %div#search_results.well
+          Search to get events here
+      %div#tab2.tab-pane
+        = form_tag(:url => events_path, :method => :post) do |ef|
+          = label :event, :title, 'Title'
+          = text_field :event, :title, :class => "span2"
 
-  %div#gathered_events.span4.pull-right
+  %div.row.span8.pull-right.well
+    = form_for(@timeline, :url => timelines_path, :method => :post) do |tf|
+      = tf.error_messages
+      %div.span4
+        = label :timeline, :title, 'Title'
+        = text_field :timeline, :title, :class => "span3"
+
+        = label :timeline, :desc, 'Description'
+        = text_area :timeline, :desc, :class => "span3", :size => "80x4", :placeholder => "Describe the timeline here."
+
+        = label :timeline, :imgurl, 'Image'
+        = text_field :timeline, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
+
+        = label :timeline, :tags, 'Tags'
+        = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
+
+      %div.span3
+        = label_tag 'Events'
+        = hidden_field :timeline, :events, :id => "gathered_event_ids"
+        %div#gathered_events
+
+      %div.row
+        %div.span8
+          %div.pull-right
+            = button_tag(:type => "cancel", :class => "btn") do
+              = p " Cancel"
+            = button_tag(:type => "submit", :class => "btn btn-primary") do
+              %i.icon-ok.icon-white
+              = p " Save"
+

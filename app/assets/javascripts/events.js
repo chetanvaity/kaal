@@ -23,6 +23,7 @@ jQuery(function($) {
 // Copy div with given id to gathered_events div
 // Change the id of the new div to "gdiv_" + id
 // Remove the hide class - so that the "close" button becomes visible
+// Also add the event_id to the gathered_event_ids hidden field
 copyEventDiv = function(id) {
     newdiv = $("#" + id).clone();
     newdiv_id = "gdiv_" + id;
@@ -31,11 +32,22 @@ copyEventDiv = function(id) {
 
     btn = $("#" + newdiv_id).children("button:first");
     btn.removeClass("hide");
+
+    g_ev_ids = $("#gathered_event_ids");
+    old_value = g_ev_ids.attr("value");
+    new_value = old_value + id + ",";
+    g_ev_ids.attr("value", new_value);
 };
 
 // Remove div with id = "gdiv_" + id
+// Also remove event_id from gathered_event_ids hidden field
 removeEventDiv = function(id) {
     eid = "#gdiv_" + id;
     $(eid).remove();
+
+    g_ev_ids = $("#gathered_event_ids");
+    old_value = g_ev_ids.attr("value");
+    new_value = old_value.replace(id + ",", "");
+    g_ev_ids.attr("value", new_value);
 };
 
