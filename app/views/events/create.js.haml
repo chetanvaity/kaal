@@ -1,0 +1,18 @@
+var ef = $('#event-form');
+
+- if @event.errors.any?
+  var errors = $("<ul />");
+  - @event.errors.full_messages.each do |error|
+    errors.append("<li>#{ j(error) }</li>");
+ 
+  ef.find("#eventErrorExplanation").html(errors);
+  ef.find("#eventErrorExplanation").removeClass("hide");
+
+- else
+  ef.find("#eventSuccessMessage").html('<i class="icon-ok-sign"></i> <strong>#{ j(@event.title) }</strong> saved.');
+  ef.find("#eventSuccessMessage").removeClass("hide");
+  ef.find("#eventErrorExplanation").empty();
+  ef.find("#eventErrorExplanation").addClass("hide");
+  
+  $('#new_created_event').html('#{ j(render(:partial => "new_created_event")) }');
+  copyEventDiv(#{ @event.id } );

@@ -32,19 +32,23 @@ class EventsController < ApplicationController
     @event = Event.new(params[:event])
     
     #Assign ownerid  
-    if signed_in?
-      if !current_user.nil?
-        @event.ownerid = current_user.id
-      end
+    if signed_in? and !current_user.nil?
+      @event.ownerid = current_user.id
     end
-    
-    if @event.save
-      flash.now[:notice] =
-        "<strong>#{@event.title}</strong> was successfully created".html_safe
-      record_activity("t=#{@event.title}")
-      redirect_to event_path(@event)
-    else
-      render :action => "new"
+
+    respond_to do |format|
+      if @event.save
+        flash.now[:notice] =
+          "<strong>#{@event.title}</strong> was successfully created".html_safe
+        record_activity("t=#{@event.title}")
+        format.html { redirect_to event_path(@event) }
+        format.js { render :template => "events/create", :formats => [:js],
+          :handlers => :haml}
+      else
+        format.html { render :action => "new" }
+        format.js { render :template => "events/create", :formats => [:js],
+          :handlers => :haml}
+      end
     end
   end
 

@@ -51,3 +51,8 @@ removeEventDiv = function(id) {
     g_ev_ids.attr("value", new_value);
 };
 
+// Remove all the divs with id = "gdiv_*"
+// Empty the value of the gathered_event_ids hidden field
+removeAllEventDivs = function() {
+    g_ev_ids.attr("value", "");
+};
