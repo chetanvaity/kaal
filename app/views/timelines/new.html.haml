@@ -43,7 +43,7 @@
           = label :event, :desc, 'Description'
           = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
 
-          %div.pull-right{:style => "top-margin: 20px"}
+          %div.pull-right
             = button_tag(:type => "reset", :class => "btn") do
               = p " Cancel"
             = button_tag(:type => "submit", :class => "btn btn-primary") do
@@ -67,10 +67,10 @@
         = label :timeline, :tags, 'Tags'
         = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
 
-      %div.span3
+      %div.span3.well
         %div.row
           %div.span1.pull-left
-            = label_tag 'Events'
+            = label_tag 'Events', nil, :class => "bold-text"
           %div.span1.pull-right
             %a.small-text{:href => "#", :onclick => "removeAllEventDivs()"}
               Remove all

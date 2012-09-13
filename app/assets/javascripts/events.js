@@ -37,6 +37,8 @@ copyEventDiv = function(id) {
     old_value = g_ev_ids.attr("value");
     new_value = old_value + id + ",";
     g_ev_ids.attr("value", new_value);
+
+    newdiv.removeClass("hide");
 };
 
 // Remove div with id = "gdiv_" + id

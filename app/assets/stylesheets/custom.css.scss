@@ -226,6 +226,10 @@ body #modal-contact {
   font-size: 9px;
 }
 
+.bold-text {
+  font-weight: bold;
+}
+
 .popover-content {
   background-color: $grayLighter;
 }
@@ -255,3 +259,8 @@ div#hpsentence.well {
   /* background-color: #000; */ 
 }
 
+div.border {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
