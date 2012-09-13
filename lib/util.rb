@@ -270,7 +270,76 @@ class Util
     return Digest::MD5.hexdigest("#{f_jd_str}-#{t_jd_str}-#{tags}-#{events_on_a_page}")
   end
   
-  
+  #
+  # USing given set of events and filename, create ouput jason
+  #
+  def make_json(events, json_fname, query_str, from_jd, to_jd)
+    # Make nice looking main frame for the timeline
+    # Drop the tokens begining with '@'
+    headline_str = query_str.split.delete_if {|t| t[0] == '@'}.join(' ')
+    headline = ActiveSupport::JSON.encode(headline_str.titlecase)
+    if (from_jd.nil? or to_jd.nil?)
+      text = " "
+    else
+      text = "Events from " + Date.jd(from_jd).strftime("%d %b %Y") + " - " +
+        Date.jd(to_jd).strftime("%d %b %Y")
+    end
+
+    header_json = <<END
+{"timeline":
+  {
+  "headline":#{headline},
+  "type":"default",
+  "startDate":"2011,9,1",
+  "text":"#{text}",
+  "date": [
+END
+
+    date_json_array = []
+    events.each do |e|
+      d = Date.jd(e.jd).strftime("%m/%d/%Y")
+      text = e.desc.blank? ? " " : e.desc
+      text = ActiveSupport::JSON.encode(text)
+      title = ActiveSupport::JSON.encode(e.title)
+      media_url = e.url
+      media_caption = e.url
+      cur_imgurl = nil
+      if !e.imgurl.nil?  &&  !e.imgurl.blank?
+        cur_imgurl = URI::encode(e.imgurl)
+      end
+
+      date_json = <<END
+        {
+        "startDate":"#{d}",
+        "headline":#{title},
+        "text":#{text},
+        "id":"#{e.id}",
+        "importance":"#{e.importance}",
+        "imgurl":"#{cur_imgurl}",
+        "asset":
+          {
+          "media":"#{media_url}",
+          "credit":"",
+          "caption":"#{media_caption}"
+          }
+        }
+END
+      date_json_array.push(date_json)
+    end
+    all_date_json = date_json_array.join(",\n")
+    
+    footer_json = <<END
+        ]
+    }
+}
+END
+    
+    File.open(json_fname, "w") do |f|
+      f.puts(header_json)
+      f.puts(all_date_json)
+      f.puts(footer_json)
+    end
+  end
   
 
 end

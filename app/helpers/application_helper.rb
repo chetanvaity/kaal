@@ -33,7 +33,7 @@ module ApplicationHelper
                                     
     #base_search_url = "/tl?"
     base_search_url = "#{tlsearch_path}?"
-    
+        
     url_to_return = base_search_url 
     
     # fullscreen param

@@ -1,11 +1,24 @@
 # encoding: UTF-8
+require 'util.rb'
 
 class TimelinesController < ApplicationController
 
+  # Constructor
+  def initialize(*params)
+    super(*params)
+    @util = Util.instance
+  end
+    
   def index
     @timelines = Timeline.limit(10)
   end
 
+  def show
+    id = params[:id]
+    init_core_tl_display_vars()
+    get_timeline_data_for_display(id)
+  end
+  
   def new
     @timeline = Timeline.new
     render :template => "timelines/new", :formats => [:html], :handlers => :haml
@@ -54,6 +67,53 @@ class TimelinesController < ApplicationController
       @total_search_size = 0
       @events_size = 0
       @json_resource_path = nil
+    end
+    
+    
+    def get_timeline_data_for_display(given_tl_id)
+      @tlentry = Timeline.find(given_tl_id)
+      event_id_str = @tlentry.events
+      idstr_array = event_id_str.split(",")
+      id_array = [] #empty array
+      if idstr_array != nil
+        idstr_array.each { |eventid|
+          tmp_str = eventid.strip
+          if !tmp_str.empty?
+            begin
+              id_array.push(Integer(tmp_str))
+            rescue
+            end
+          end 
+        }
+        logger.debug("Length of Integer array of event ids: " + id_array.length().to_s)
+        if id_array.length() > 0
+          @fetchedevents = Event.find(id_array)
+          @fetchedevents.each { |each_event| each_event.importance = 3 }
+          @fetchedevents.sort!{ |a,b| a.jd <=> b.jd }
+        end
+        
+        if !@fetchedevents.nil?
+          @events_size = @fetchedevents.size
+          logger.info("Number of fetched events: #{@fetchedevents.size}")
+          query_key = @util.get_query_key(nil, nil, "#{given_tl_id}", "default")
+          @json_resource_path = "/tmpjson/#{query_key}.json"
+          
+          if @viewstyle == "tl"
+            #This is for timeline display
+            json_fname = "#{Rails.root}/public/#{@json_resource_path}"
+            @util.make_json(@fetchedevents, json_fname, given_tl_id, nil, nil)
+          else
+            #This is for tabular display
+            # @fetchedevents should be used by the view for display purpose
+            #logger.info("Size of @fetchedevents is #{@events_size}")
+          end
+        else
+          logger.info("Could not fetch events from DB.")
+        end
+        
+        
+      end
+      
     end
   
   

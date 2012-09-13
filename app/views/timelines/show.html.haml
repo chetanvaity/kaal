@@ -1,0 +1,17 @@
+%h3
+  Timeline: 
+  %strong #{@tlentry.title}
+%br
+  
+%div.row
+  %div.span3
+    %img{ :class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => ""}
+  %div.span8
+    %div.span7
+      %p.lead
+        = @tlentry.desc
+    %div.span7
+      %strong Tags:
+      = @tlentry.tags 
+
+= render 'timelines/timeline_core'           
