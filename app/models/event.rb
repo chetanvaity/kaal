@@ -3,7 +3,7 @@
 require 'date'
 
 class Event < ActiveRecord::Base
-    
+
   has_many :tags, :dependent => :destroy
   # Look at http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html
   accepts_nested_attributes_for :tags, :allow_destroy => true
@@ -58,6 +58,21 @@ class Event < ActiveRecord::Base
     errors.add(:date_str, "^Date (" + @bad_date_str + ") is invalid") if @date_str_invalid
   end
   ### end virtual attribute - date_str
+
+  ### Virtual attribute - tags_str - for easy tags entry
+  # Used in the New timeline form
+  attr_reader :tags_str
+  
+  def tags_str=(s)
+    unless s.nil?
+      # Build foreign key relationship *before* saving the model
+      # http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
+      for tag_name in s.split(",")
+        self.tags.build(:name => tag_name)
+      end
+    end
+  end
+  ### end virtual attribute - tag_str
 
   ### virtual attributes - score, importance (used when treating event as a search result)
   # score is as returned by Solr

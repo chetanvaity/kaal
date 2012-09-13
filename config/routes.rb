@@ -26,6 +26,7 @@ Kaal::Application.routes.draw do
   # SO ...keep 'tlsearch' as it is even if you change actual route.
   match 'tl' => 'events#query2', :as=> :tlsearch
   match 'search_events' => 'events#search'
+  match 'ac_search' => 'tags#ac_search'
 
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'

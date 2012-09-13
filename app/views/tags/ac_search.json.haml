@@ -1,0 +1,9 @@
+[
+- i = -1
+- for tag in @tags
+  - i = i + 1 
+  - if (i == 0)
+    {"id": "#{ tag.id}", "name": "#{ j(tag.name) }"}
+  - else
+    , {"id": "#{ tag.id}", "name": "#{ j(tag.name) }"}
+]

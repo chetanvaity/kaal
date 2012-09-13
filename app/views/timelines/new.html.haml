@@ -31,6 +31,9 @@
           = label :event, :date, 'Date'
           = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
 
+          = label :event, :tags, 'Tags'
+          = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
+
           = label :event, :url, 'URL'
           = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
 
@@ -40,10 +43,7 @@
           = label :event, :desc, 'Description'
           = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
 
-          //= label :event, :tags, 'Tags'
-          //= text_field :event, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
-
-          %div.pull-right
+          %div.pull-right{:style => "top-margin: 20px"}
             = button_tag(:type => "cancel", :class => "btn") do
               = p " Cancel"
             = button_tag(:type => "submit", :class => "btn btn-primary") do
