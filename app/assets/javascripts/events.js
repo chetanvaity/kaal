@@ -56,5 +56,6 @@ removeEventDiv = function(id) {
 // Remove all the divs with id = "gdiv_*"
 // Empty the value of the gathered_event_ids hidden field
 removeAllEventDivs = function() {
+    $('div[id^="gdiv_"]').remove();
     g_ev_ids.attr("value", "");
 };
