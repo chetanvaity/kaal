@@ -28,6 +28,7 @@ copyEventDiv = function(id) {
     newdiv = $("#" + id).clone();
     newdiv_id = "gdiv_" + id;
     newdiv.attr("id", newdiv_id);
+    newdiv.css("opacity", 0.25);
     newdiv.appendTo("#gathered_events");
 
     btn = $("#" + newdiv_id).children("button:first");
@@ -39,6 +40,12 @@ copyEventDiv = function(id) {
     g_ev_ids.attr("value", new_value);
 
     newdiv.removeClass("hide");
+
+    newdiv.animate({
+	opacity: 1.0,
+    }, 1000, function() {
+	// Animation complete.
+    });
 };
 
 // Remove div with id = "gdiv_" + id
