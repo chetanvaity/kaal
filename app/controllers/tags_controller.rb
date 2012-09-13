@@ -10,7 +10,8 @@ class TagsController < ApplicationController
       return
     end
 
-    @tags = Tag.where("name like ?", "%#{query}%").limit(10)
+    @tags = Tag.where("name like ?", "%#{query}%").limit(10).uniq { |t| t.name }
+    @tags << Tag.new(:name => "Add: #{query}", :id => "")
 
     render :template => "tags/ac_search", :formats => [:json],
            :handlers => :haml

@@ -16,3 +16,4 @@ var ef = $('#event-form');
   
   $('#new_created_event').html('#{ j(render(:partial => "new_created_event")) }');
   copyEventDiv(#{ @event.id } );
+  ef[0].reset();

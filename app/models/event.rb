@@ -65,6 +65,7 @@ class Event < ActiveRecord::Base
   
   def tags_str=(s)
     unless s.nil?
+      s.gsub!(/Add: /, '')
       # Build foreign key relationship *before* saving the model
       # http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
       for tag_name in s.split(",")
@@ -72,7 +73,7 @@ class Event < ActiveRecord::Base
       end
     end
   end
-  ### end virtual attribute - tag_str
+  ### end virtual attribute - tags_str
 
   ### virtual attributes - score, importance (used when treating event as a search result)
   # score is as returned by Solr
