@@ -24,5 +24,38 @@ class TimelinesController < ApplicationController
     end
     render :template => "timelines/create", :formats => [:js], :handlers => :haml
   end
+  
+  
+  def homepage
+    init_core_tl_display_vars()
+    render :template => "timelines/tlhome", :formats => [:html], :handlers => :haml,
+        :layout => "tl"
+  end
+  
+  # ========================= private functions =================================
+  private
+    # Call this method in the beginning of every function which produces timeline data
+    def init_core_tl_display_vars
+      #cleanup of session vars ..if any
+      if signed_in?
+        if !current_user.nil?
+          session.delete(:qkey)
+          session.delete(:listviewurl)
+        end
+      end
+          
+      @query = nil # temporay needed
+      @tlid = nil
+      @fetchedevents = nil
+      @viewstyle = "tl"
+      @fullscr = "false"
+      @embeddedview = "false"
+      @events_on_a_page = "default"
+      @total_search_size = 0
+      @events_size = 0
+      @json_resource_path = nil
+    end
+  
+  
 
 end

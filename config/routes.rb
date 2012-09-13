@@ -31,7 +31,7 @@ Kaal::Application.routes.draw do
   match 'about' => 'static#about_us'
   match 'examples' => 'static#examples'
   match 'faq' => 'static#faq'
-  match 'samplehome' => 'static#samplehome'
+  
   
   match '/auth/:service/callback' => 'sessions#create' 
   match '/auth/failure' => 'sessions#failure'
@@ -45,6 +45,7 @@ Kaal::Application.routes.draw do
   end
 
   resources :timelines
+  match 'tlhome' => 'timelines#homepage', :as=> :tlhome
 
   # Sample resource route with options:
   #   resources :products do

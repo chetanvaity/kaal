@@ -32,32 +32,14 @@
         %li
           %a.btn-large{:href => "/about"}
             #{PRODUCT_TAG_LINE}
+      
       %ul.nav.pull-right
-        %li
-          %a.btn-large{:href => root_path}
-            %i.icon-home.icon-white
-            Home
-        %li
-          %a.btn-large{:href => "/examples/"}
-            %i.icon-check.icon-white
-            Examples
-        %li
-          %a.btn-large{:href => "/faq/"}
-            %i.icon-question-sign.icon-white
-            FAQ
-        
-
         -if !signed_in?
           %li
             %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
               %i.icon-user.icon-white
               Login
         -else
-          %li
-            %a.btn-large{:href => "/events/new"}
-              %i.icon-pencil.icon-white
-              New event
-
           - if current_user.isadmin
             %li{:class => "dropdown"}
               %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
@@ -81,6 +63,29 @@
             %ul.dropdown-menu
               %li
                 = link_to "Sign out", signout_path, method: "delete"
-          
+      %form{:class => "navbar-search pull-right", :action => ""}
+        %input{ :type => "text",  :class => "search-query span4", :placeholder => "Search ready timelines"}
+  /
+  /
+  /
+  /%div.container
+  %div.navbar-inner{ :id => "lowerinnerbar"}
+    %div.well{:id => "lowermenubar"}
+      %div.container
+        %div.nav.pull-right
+          %a.btn-large{:href => root_path}
+            %i.icon-home
+            Home    
+          -if signed_in?
+            %a.btn-large{:href => "/events/new"}
+              %i.icon-pencil
+              New event
+          %a.btn-large{:href => "/examples/"}
+            %i.icon-time
+            Ready timelines
+          %a.btn-large{:href => "/faq/"}
+            %i.icon-question-sign
+            FAQ           
+              
           
         

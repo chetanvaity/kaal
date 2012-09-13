@@ -16,7 +16,4 @@ class StaticController < ApplicationController
   def faq
   end
   
-  def samplehome
-  end
-
 end
