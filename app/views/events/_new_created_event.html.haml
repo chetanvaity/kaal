@@ -1,4 +1,4 @@
-%div{:id => "#{@event.id}"}
+%div.hide{:id => "#{@event.id}"}
   %button.close.hide{:onclick => "removeEventDiv(#{@event.id});"} &times;
   %div
     = @event.title

@@ -31,6 +31,10 @@ $(document).ready(function(e) {
     */
     $('input,textarea').placeholder();
     
-    
+
+    $('#event_tags_str').tokenInput("/ac_search", {
+	crossDomain: false,
+	theme: "facebook"
+    });
     
 });

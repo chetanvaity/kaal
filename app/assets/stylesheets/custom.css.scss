@@ -226,6 +226,10 @@ body #modal-contact {
   font-size: 9px;
 }
 
+.bold-text {
+  font-weight: bold;
+}
+
 .popover-content {
   background-color: $grayLighter;
 }
@@ -255,6 +259,7 @@ div#hpsentence.well {
   /* background-color: #000; */ 
 }
 
+
 /* Wanted some changes for link color and hover behavior for text inside thumbnail div */
 div.thumbnail {
   a.tlimageblock {
@@ -264,5 +269,12 @@ div.thumbnail {
     text-decoration: none;
     color: #000; 
   } 
+}
+
+
+div.border {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 

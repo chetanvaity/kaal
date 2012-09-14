@@ -28,6 +28,7 @@ copyEventDiv = function(id) {
     newdiv = $("#" + id).clone();
     newdiv_id = "gdiv_" + id;
     newdiv.attr("id", newdiv_id);
+    newdiv.css("opacity", 0.25);
     newdiv.appendTo("#gathered_events");
 
     btn = $("#" + newdiv_id).children("button:first");
@@ -37,6 +38,14 @@ copyEventDiv = function(id) {
     old_value = g_ev_ids.attr("value");
     new_value = old_value + id + ",";
     g_ev_ids.attr("value", new_value);
+
+    newdiv.removeClass("hide");
+
+    newdiv.animate({
+	opacity: 1.0,
+    }, 1000, function() {
+	// Animation complete.
+    });
 };
 
 // Remove div with id = "gdiv_" + id
@@ -54,5 +63,6 @@ removeEventDiv = function(id) {
 // Remove all the divs with id = "gdiv_*"
 // Empty the value of the gathered_event_ids hidden field
 removeAllEventDivs = function() {
+    $('div[id^="gdiv_"]').remove();
     g_ev_ids.attr("value", "");
 };
