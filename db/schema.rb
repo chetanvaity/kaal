@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906102928) do
+ActiveRecord::Schema.define(:version => 20120914083101) do
 
   create_table "activity_logs", :force => true do |t|
     t.integer  "user_id"
@@ -33,14 +33,21 @@ ActiveRecord::Schema.define(:version => 20120906102928) do
 
   add_index "babels", ["term"], :name => "index_babels_on_term"
 
+  create_table "configvalues", :force => true do |t|
+    t.string   "paramname"
+    t.string   "paramvalue"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "events", :force => true do |t|
     t.text    "title",                     :null => false
     t.integer "jd",                        :null => false
     t.string  "source",      :limit => 10
     t.text    "desc"
     t.string  "url"
-    t.integer "wiki_id"
     t.integer "ownerid"
+    t.integer "wiki_id"
     t.text    "extra_words"
     t.string  "imgurl"
   end

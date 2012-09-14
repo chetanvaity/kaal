@@ -44,27 +44,35 @@
       %span.label.label-info Featured Timelines:
       %a{:href => "/examples/"}
         More...
-      %ul.thumbnails
-        %li.span4
-          %div.thumbnail
-            /%a.thumbnail.tlimageblock{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-            %a.thumbnail.tlimageblock{ :href => "#"}
-              %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
-              %h3 Experience &nbsp test
-              %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-        %li.span4
-          %div.thumbnail
-            %a.thumbnail.tlimageblock{ :href => "#"}
-              %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
-              %h3 Experience &nbsp test
-              %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-        %li.span4
-          %div.thumbnail
-            %a.thumbnail.tlimageblock{ :href => "#"}
-              %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
-              %h3 Experience &nbsp test
-              %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      
+      %div.span11.offset1
+        - if @featuted_timelines != nil
+          %ul.thumbnails
+            - @featuted_timelines.each do |featured_tl|
+              %li.span3
+                %div.thumbnail
+                  /%a.thumbnail.tlimageblock{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
+                  %a.thumbnail.tlimageblock{ :href => "#{timeline_path(featured_tl)}"}
+                    -if featured_tl.imgurl == ""
+                      /%img{ :style => "float:left", :class => "homepagethumb", :src => "/assets/default_tlimg.png"}
+                      %img{ :class => "homepagethumb thumnailgrid", :src => "/assets/default_tlimg.png"}
+                    -else
+                      /%img{ :style => "float:left", :class => "homepagethumb", :src => "#{featured_tl.imgurl}"}
+                      %img{:class => "homepagethumb thumnailgrid", :src => "#{featured_tl.imgurl}"}
+                    %h3 #{featured_tl.title}
+                    %p 
+                      #{featured_tl.desc}
+      /
+      / Hardcoded featured list                  
+      /     
+      /%ul.thumbnails
+      /  %li.span4
+      /    %div.thumbnail
+      /      /%a.thumbnail.tlimageblock{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
+      /      %a.thumbnail.tlimageblock{ :href => "#"}
+      /        %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
+      /        %h3 Experience &nbsp test
+      /        %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+       
       
           
   /
