@@ -26,16 +26,19 @@
   
   %br  
   %div.row     
-    %div.span1
-      %img{:style => "float: left", :src => "/assets/black_thumbs_up.png", :height => "50px", :width => "50px", :border => "2"}
-    %div.span11
-      %img{:style => "float: left", :src => "#{@tlentry.imgurl}", :height => "80px", :width => "60px", :border => "2"}
-      %h3 &nbsp; #{@tlentry.title}
-      %p
-        &nbsp; #{@tlentry.desc}
+    -if @tlentry != nil
+      %div.span1
+        %img{:style => "float: left", :src => "/assets/black_thumbs_up.png", :height => "50px", :width => "50px", :border => "2"}
+      %div.span11
+        %img{:style => "float: left", :src => "#{@tlentry.imgurl}", :height => "80px", :width => "60px", :border => "2"}
+        %h3 &nbsp; #{@tlentry.title}
+        %p
+          &nbsp; #{@tlentry.desc}
+    -else
+      %h1 Please set default timeline in database.
       
-            
-  = render 'timelines/timeline_core'     
+  -if @tlentry != nil          
+    = render 'timelines/timeline_core'     
   
   %br
   %br
@@ -45,7 +48,9 @@
       %a{:href => "/examples/"}
         More...
       %div.span11.offset1
-        - if @featuted_timelines != nil
+        - if @featuted_timelines == nil
+          %h1 Please set featured timelines in database.
+        - else
           %ul.thumbnails
             - @featuted_timelines.each do |featured_tl|
               %li.span3

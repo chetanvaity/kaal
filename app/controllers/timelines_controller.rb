@@ -44,25 +44,32 @@ class TimelinesController < ApplicationController
   def homepage
     #GEt id of default timeline from DB. HArdcoded to the Id=1 for timebeing.
     default_tl_id = @configvalues.get_value("default_tl_id")
-    logger.debug("default timeline id is :" + default_tl_id)
-    
     init_core_tl_display_vars()
-    get_timeline_data_for_display(default_tl_id)
+    
+    if !default_tl_id.nil?
+      logger.debug("default timeline id is : " +  default_tl_id)
+      get_timeline_data_for_display(default_tl_id)
+    else
+      logger.info("default timeline id is NIL.")
+    end
     
     # Featured timelines
-    tl_ids_str = @configvalues.get_value("featured_tl_ids")
-    tlids_str_array = tl_ids_str.split(",")
-    tlids_array = [] #empty array
-    if tlids_str_array != nil
-      tlids_str_array.each { |tlid|
-        begin
-          tlids_array.push(Integer(tlid))
-        rescue
-        end
-        
-      }
-    end
     @featuted_timelines = nil
+    tlids_array = [] #empty array
+    tl_ids_str = @configvalues.get_value("featured_tl_ids")
+    if !tl_ids_str.nil?
+      tlids_str_array = tl_ids_str.split(",")
+      if tlids_str_array != nil
+        tlids_str_array.each { |tlid|
+          begin
+            tlids_array.push(Integer(tlid))
+          rescue
+          end
+          
+        }
+      end
+    end
+    
     if tlids_array.length() > 0
       @featuted_timelines = Timeline.find(tlids_array)
     end
@@ -93,6 +100,7 @@ class TimelinesController < ApplicationController
       @total_search_size = 0
       @events_size = 0
       @json_resource_path = nil
+      @tlentry = nil
     end
     
     
