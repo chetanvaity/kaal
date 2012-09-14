@@ -250,6 +250,8 @@ class EventsController < ApplicationController
     if @total_search_size <= DEFAULT_NUM_OF_EVENTS_TOBE_DISPLAYED
       @total_search_size = -1 # no more data
     end
+    
+    @tl_container_page_path = tlsearch_path 
         
     if signed_in?
       if !current_user.nil?    
@@ -257,7 +259,7 @@ class EventsController < ApplicationController
         session[:qkey] = query_key
         # Remember listviewurl , we need it in edit func.
         if @viewstyle == 'list'
-          tmp_list_url = generate_list_view_url(@query,nil, @fromdate, @todate, @fullscr== 'true'?true:false, @events_on_a_page)
+          tmp_list_url = generate_list_view_url(@query,nil, @fromdate, @todate, @fullscr== 'true'?true:false, @events_on_a_page, @tl_container_page_path)
           session[:listviewurl] = tmp_list_url
         end
       end
@@ -268,7 +270,7 @@ class EventsController < ApplicationController
       render :template => "events/tl", :formats => [:html], :handlers => :haml,
        :layout => "tl"
     else
-      render :template => "events/tl-fullscr", :formats => [:html], :handlers => :haml,
+      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
              :layout => "tl"
     end
     

@@ -6,8 +6,9 @@ module ApplicationHelper
                                       given_timeline_id, # IF it is direct search by giving timeline-id ..future
                                       given_from_date, given_to_date, # date conditions
                                       is_fullscreen, # is it fullscreen display? 'true' means yes.
-                                      events_on_page) # Expected values 'default' or 'more'
-    generate_list_or_tl_view_url(true,given_tags,given_timeline_id,given_from_date, given_to_date,is_fullscreen,events_on_page)
+                                      events_on_page, # Expected values 'default' or 'more'
+                                      tl_container_path)
+    generate_list_or_tl_view_url(true,given_tags,given_timeline_id,given_from_date, given_to_date,is_fullscreen,events_on_page,tl_container_path)
   end
   
   
@@ -16,8 +17,9 @@ module ApplicationHelper
                                         given_timeline_id, # IF it is direct search by giving timeline-id ..future
                                         given_from_date, given_to_date, # date conditions
                                         is_fullscreen, # is it fullscreen display? 'true' means yes.
-                                        events_on_page) # Expected values 'default' or 'more'
-      generate_list_or_tl_view_url(false,given_tags,given_timeline_id,given_from_date, given_to_date,is_fullscreen,events_on_page)
+                                        events_on_page, # Expected values 'default' or 'more'
+                                        tl_container_path)
+      generate_list_or_tl_view_url(false,given_tags,given_timeline_id,given_from_date, given_to_date,is_fullscreen,events_on_page,tl_container_path)
   end
   
   
@@ -29,10 +31,12 @@ module ApplicationHelper
                                     given_timeline_id, # IF it is direct search by giving timeline-id ..future
                                     given_from_date, given_to_date, # date conditions
                                     is_fullscreen, # is it fullscreen display? 'true' means yes.
-                                    events_on_page) # Expected values 'default' or 'more'
+                                    events_on_page, # Expected values 'default' or 'more'
+                                    tl_container_path) # The page which holds this timeline at present 
                                     
-    #base_search_url = "/tl?"
-    base_search_url = "#{tlsearch_path}?"
+    
+    #base_search_url = "#{tlsearch_path}?"
+    base_search_url = "#{tl_container_path}?"
         
     url_to_return = base_search_url 
     
@@ -59,9 +63,9 @@ module ApplicationHelper
     
     
     #timeline id
-    #if !given_timeline_id.nil?
-    #  url_to_return += "&tlid=" + given_timeline_id.to_s
-    #end
+    if !given_timeline_id.nil?
+      url_to_return += "&tlid=" + given_timeline_id.to_s
+    end
     
     
     #from-to dates
@@ -90,11 +94,19 @@ module ApplicationHelper
   #
   def generate_complete_default_url_for_timeline_view(given_tags, given_timeline_id,
                                                       given_from_date, given_to_date)
-                                                      
+    
+    target_page_path = nil
+    if !given_timeline_id.nil?
+      target_page_path = timeline_path(given_timeline_id)
+      return "#{request.protocol}#{request.host_with_port}#{target_page_path}"
+    else
+      target_page_path = tlsearch_path
+    end                                                  
     partail_timeline_view_url = generate_timeline_view_url(given_tags, given_timeline_id, 
                                given_from_date, given_to_date,
                                false, 
-                               "??")
+                               "??",
+                               target_page_path)
     return "#{request.protocol}#{request.host_with_port}#{partail_timeline_view_url}"
   end
   
@@ -104,8 +116,15 @@ module ApplicationHelper
   def generate_complete_embedview_url(given_tags, given_timeline_id,
                                       given_from_date, given_to_date)
     
+    target_page_path = nil
+    if !given_timeline_id.nil?
+      target_page_path = timeline_path(given_timeline_id)
+    else
+      target_page_path = tlsearch_path
+    end    
+        
     protocol_host_port = "#{request.protocol}#{request.host_with_port}"
-    main_url = "#{protocol_host_port}#{tlsearch_path}?embview=true"
+    main_url = "#{protocol_host_port}#{target_page_path}?embview=true"
         
     #tags
     if !given_tags.nil?

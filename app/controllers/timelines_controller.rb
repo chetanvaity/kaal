@@ -19,6 +19,11 @@ class TimelinesController < ApplicationController
     id = params[:id]
     init_core_tl_display_vars()
     get_timeline_data_for_display(id)
+    @tl_container_page_path = timeline_path(@tlentry)
+    if @fullscr == "true"
+      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
+              :layout => "tl"
+    end  
   end
   
   def new
@@ -73,9 +78,16 @@ class TimelinesController < ApplicationController
     if tlids_array.length() > 0
       @featuted_timelines = Timeline.find(tlids_array)
     end
-            
-    render :template => "timelines/tlhome", :formats => [:html], :handlers => :haml,
+    
+    @tl_container_page_path = tlhome_path 
+    
+    if @fullscr == "false"        
+      render :template => "timelines/tlhome", :formats => [:html], :handlers => :haml,
         :layout => "tl"
+    else
+      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
+                   :layout => "tl"
+    end  
   end
   
   # ========================= private functions =================================
@@ -105,7 +117,41 @@ class TimelinesController < ApplicationController
     
     
     def get_timeline_data_for_display(given_tl_id)
+      
+      #------------------
+      # We'll default to 'tl' view if not found.
+      @viewstyle = params[:view]
+      if @viewstyle.nil? || @viewstyle.blank? 
+        @viewstyle = "tl"
+      end
+      if @viewstyle != "tl" && @viewstyle != "list"
+        @viewstyle = "tl"
+      end
+          
+      # We'll default to 'no fullscreen' view if not found.
+      @fullscr = params[:fullscr]
+      if @fullscr.nil? || @fullscr.blank? 
+        @fullscr = "false"
+      end
+      if @fullscr != "false" && @fullscr != "true"
+        @fullscr = "false"
+      end
+          
+      # We'll default to 'non-embedded' view if not found.
+      @embeddedview = params[:embview]
+      if @embeddedview.nil? || @embeddedview.blank? 
+        @embeddedview = "false"
+      end
+      if @embeddedview != "false" && @embeddedview != "true"
+        @embeddedview = "false"
+      end
+      if @embeddedview == "true"
+        @viewstyle = "tl"
+        @fullscr = "false"
+      end
+      #------------------
       @tlentry = Timeline.find(given_tl_id)
+      @tlid = @tlentry.id
       
       event_id_str = @tlentry.events
       idstr_array = event_id_str.split(",")
