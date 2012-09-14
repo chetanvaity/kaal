@@ -1,3 +1,7 @@
+/
+/ Popover example. 
+/
+/
 %div{:id => "popover_content_wrapper", :style => "display: none"}
   %div.ellipsis
     %b Sachin: 100 hundreds
@@ -9,61 +13,75 @@
     17/Dec/2017
     %p
       This timeline covers Sachin's magnificent innings where he scrored 100 or more runs. AAAAAAAAA BBBBBBBBBBBB
+/---------------------------------------------------------------------------------------------------      
 
 %div.container
   %br
   %br
   %br
   %br
-  %div.span11.well.border{:id => "hpsentence"}
+  %div.well.border{:id => "hpsentence"}
     %p.lead.center
       View timelines, share with others.  Login to the site and create new timelines of your choice.
-  %br
-  %br
+  
+  %br  
+  %div.row     
+    %div.span1
+      %img{:style => "float: left", :src => "/assets/black_thumbs_up.png", :height => "50px", :width => "50px", :border => "2"}
+    %div.span11
+      %img{:style => "float: left", :src => "#{@tlentry.imgurl}", :height => "80px", :width => "60px", :border => "2"}
+      %h3 &nbsp; #{@tlentry.title}
+      %p
+        &nbsp; #{@tlentry.desc}
+      
+            
+  = render 'timelines/timeline_core'     
+  
   %br
   %br
   %div.row
     %div.span12
-      %h5 Check out:
-      /-url_to_use_here = generate_timeline_view_url("@amolyp_bigb", @tlid, nil, nil, false, "??")
-      /%a{:href => "#{url_to_use_here}", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-      /  %span.label.label-info Amitabh Bachchan
-      /&nbsp;
-      /-url_to_use_here = generate_timeline_view_url("Pink+Floyd+@chetanv_pink_floyd", @tlid, nil, nil, false, "??")
-      /%a{:href => "#{url_to_use_here}"}
-      /  %span.label.label-info Pink Floyd
-      /&nbsp;
-      /-url_to_use_here = generate_timeline_view_url("Shivaji+Aurangzeb+@chetanv_shivaji_aurangzeb",@tlid, nil, nil, false, "??")
-      /%a{:href => "#{url_to_use_here}"}
-      /  %span.label.label-info Shivaji, Aurangzeb
-      /%span#status-line
-      /  %a{:href => "/examples/"}
-      /    More
-      %div.span3.center
-        %a.thumbnail{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-          %img{ :class => "homepagethumb", :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg", :alt => ""}
-        %b Sachin and his 100 hundreds.
-      %div.span3.center
-        %a.thumbnail{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-          %img{ :class => "homepagethumb", :src => "http://2.bp.blogspot.com/-pgTLBSzdW7E/TaWnB4Fxd1I/AAAAAAAAAgs/7G3uMGKXPFk/s1600/sachin-tendulkar-wallpapers-photos-8%5B1%5D_%281%29.jpg", :alt => ""}
-        %b Sachin and his 100 hundreds.
-      %div.span3.center
-        %a.thumbnail{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-          %img{ :class => "homepagethumb", :src => "http://katrinakaif.in/wp-content/uploads/2012/04/Katrina-Kaif-Wiki.jpg", :alt => ""}
-        %b Sachin and his 100 hundreds.
-      %span
-        %br
-        %br
-        %br
-        %br
-        %br
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        %a{:href => "/examples/"}
-          More...
+      %span.label.label-info Featured Timelines:
+      %a{:href => "/examples/"}
+        More...
+      %ul.thumbnails
+        %li.span4
+          %div.thumbnail
+            /%a.thumbnail.tlimageblock{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
+            %a.thumbnail.tlimageblock{ :href => "#"}
+              %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
+              %h3 Experience &nbsp test
+              %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+        %li.span4
+          %div.thumbnail
+            %a.thumbnail.tlimageblock{ :href => "#"}
+              %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
+              %h3 Experience &nbsp test
+              %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+        %li.span4
+          %div.thumbnail
+            %a.thumbnail.tlimageblock{ :href => "#"}
+              %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
+              %h3 Experience &nbsp test
+              %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
       
-  %br &nbsp;
-  %br    
-  = render 'timelines/timeline_core'     
+      
+          
+  /
+  /%div.paragraphs
+  /  %div.row
+  /    %div.span4
+  /      %a{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
+  /        %img{ :style => "float:left",  :src => "#{@tlentry.imgurl}"}
+  /        %div.content-heading
+  /          %h3 Experience &nbsp test
+  /          %p{ :style => "clear:both"} Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+  /    %div.span4
+  /      %img{ :style => "float:left",  :src => "#{@tlentry.imgurl}"}
+  /      %div.content-heading
+  /        %h3 Experience &nbsp test
+  /        %p{ :style => "clear:both"} Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.                    
+  /
           
 %script{:type => "text/javascript"}
   $(function ()  

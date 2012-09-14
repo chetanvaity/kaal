@@ -255,3 +255,14 @@ div#hpsentence.well {
   /* background-color: #000; */ 
 }
 
+/* Wanted some changes for link color and hover behavior for text inside thumbnail div */
+div.thumbnail {
+  a.tlimageblock {
+    color: $grayDark;
+  }
+  .tlimageblock:hover { 
+    text-decoration: none;
+    color: #000; 
+  } 
+}
+

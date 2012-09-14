@@ -1,17 +1,43 @@
-%h3
-  Timeline: 
-  %strong #{@tlentry.title}
+%div
+  %h3.float
+    Timeline: 
+    %strong #{@tlentry.title}
+  /-if @tlentry.imgurl == "" && @tlentry.desc == "" && @tlentry.tags == ""
+  %a{:id => "tlsummaryanchor", :href => "#", "data-toggle" => "collapse", "data-target" => "#tlsummary"}Details..
 %br
   
-%div.row
+%div.row.collapse.in{:id => "tlsummary"}
   %div.span3
-    %img{ :class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => ""}
+    -if @tlentry.imgurl != ""
+      %img{ :class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => ""}
+    -else
+      %img{ :class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => ""}
   %div.span8
     %div.span7
-      %p.lead
-        = @tlentry.desc
+      %h4 Description:
+      -if @tlentry.desc == ""
+        %p
+          Not available.
+      -else
+        %p
+          = @tlentry.desc
     %div.span7
       %strong Tags:
-      = @tlentry.tags 
+      -if @tlentry.tags == ""
+        %p
+          Not available
+      -else
+        = @tlentry.tags 
 
-= render 'timelines/timeline_core'           
+= render 'timelines/timeline_core'
+
+/Let's collapse this section by default if all ements in side it are not available.
+-if @tlentry.imgurl == "" && @tlentry.desc == "" && @tlentry.tags == ""
+  %script{:type => "text/javascript"}
+    $(function ()  
+    { 
+    $("#tlsummary").collapse('hide');   
+    });     
+      
+
+             

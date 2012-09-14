@@ -40,7 +40,11 @@ class TimelinesController < ApplicationController
   
   
   def homepage
+    #GEt id of default timeline from DB. HArdcoded to the Id=1 for timebeing.
+    default_tl_id = "1";
+    
     init_core_tl_display_vars()
+    get_timeline_data_for_display(default_tl_id)
     render :template => "timelines/tlhome", :formats => [:html], :handlers => :haml,
         :layout => "tl"
   end
@@ -52,8 +56,8 @@ class TimelinesController < ApplicationController
       #cleanup of session vars ..if any
       if signed_in?
         if !current_user.nil?
-          session.delete(:qkey)
-          session.delete(:listviewurl)
+          #session.delete(:qkey)
+          #session.delete(:listviewurl)
         end
       end
           
@@ -72,6 +76,7 @@ class TimelinesController < ApplicationController
     
     def get_timeline_data_for_display(given_tl_id)
       @tlentry = Timeline.find(given_tl_id)
+      
       event_id_str = @tlentry.events
       idstr_array = event_id_str.split(",")
       id_array = [] #empty array
