@@ -65,7 +65,6 @@ class Event < ActiveRecord::Base
   
   def tags_str=(s)
     unless s.nil?
-      s.gsub!(/Add: /, '')
       # Build foreign key relationship *before* saving the model
       # http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
       for tag_name in s.split(",")
