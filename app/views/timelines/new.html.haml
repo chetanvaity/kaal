@@ -44,7 +44,7 @@
           = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
 
           %div.pull-right
-            = button_tag(:type => "reset", :class => "btn") do
+            = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
               = p " Cancel"
             = button_tag(:type => "submit", :class => "btn btn-primary") do
               %i.icon-ok.icon-white
@@ -80,7 +80,7 @@
       %div.row
         %div.span8
           %div.pull-right
-            = button_tag(:type => "reset", :class => "btn") do
+            = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("timeline_tags")') do
               = p " Cancel"
             = button_tag(:type => "submit", :class => "btn btn-primary") do
               %i.icon-ok.icon-white

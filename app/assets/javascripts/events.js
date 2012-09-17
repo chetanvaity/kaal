@@ -66,3 +66,8 @@ removeAllEventDivs = function() {
     $('div[id^="gdiv_"]').remove();
     g_ev_ids.attr("value", "");
 };
+
+// Clear a token-input box
+clearTags = function(id) {
+    $("#" + id).tokenInput("clear");
+};
