@@ -16,8 +16,10 @@
             :class => "span2 search-query")
             = button_tag(:type => "submit", :class => "btn btn-primary") do
               %i.icon-search.icon-white
+          %div.muted.small-text
+            Search to get events. Then click on events of your choice to add them to this timeline.
         %div#search_results.well
-          Search to get events. Then click on them to add them to this timeline.
+
       %div#tab2.tab-pane
         - @event = Event.new
         = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
@@ -67,7 +69,7 @@
         = label :timeline, :tags, 'Tags'
         = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
 
-      %div.span3.well
+      %div.span3.well{:title => "Events listed here will be added to the timeline", :rel => "tooltip"}
         %div.row
           %div.span1.pull-left
             = label_tag 'Events', nil, :class => "bold-text"
