@@ -17,7 +17,7 @@
             = button_tag(:type => "submit", :class => "btn btn-primary") do
               %i.icon-search.icon-white
         %div#search_results.well
-          Search to get events here
+          Search to get events. Then click on them to add them to this timeline.
       %div#tab2.tab-pane
         - @event = Event.new
         = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
