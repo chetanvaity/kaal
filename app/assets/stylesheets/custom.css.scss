@@ -256,7 +256,11 @@ div#hpsentence.well {
   min-height: 9px;
   padding: 5px;
   margin-bottom: 5px;
-  /* background-color: #000; */ 
+  background-color: $grayDark;
+  color: #fff;
+  p {
+    font-size: 18px;
+  }
 }
 
 
@@ -264,6 +268,8 @@ div#hpsentence.well {
 div.thumbnail {
   a.tlimageblock {
     color: $grayDark;
+    background-color: $grayLighter;
+    height: 270px;
   }
   .tlimageblock:hover { 
     text-decoration: none;
