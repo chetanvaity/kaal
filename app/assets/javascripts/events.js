@@ -25,6 +25,9 @@ jQuery(function($) {
 // Remove the hide class - so that the "close" button becomes visible
 // Also add the event_id to the gathered_event_ids hidden field
 copyEventDiv = function(id) {
+    // Lets clear the tags from the form
+    clearTags("event_tags_str");
+
     newdiv = $("#" + id).clone();
     newdiv_id = "gdiv_" + id;
     newdiv.attr("id", newdiv_id);
@@ -65,4 +68,9 @@ removeEventDiv = function(id) {
 removeAllEventDivs = function() {
     $('div[id^="gdiv_"]').remove();
     g_ev_ids.attr("value", "");
+};
+
+// Clear a token-input box
+clearTags = function(id) {
+    $("#" + id).tokenInput("clear");
 };

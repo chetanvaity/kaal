@@ -13,3 +13,6 @@ var tf = $('#timeline-form');
   tf.find("#successMessage").removeClass("hide");
   tf.find("#errorExplanation").empty();
   tf.find("#errorExplanation").addClass("hide");
+
+  tf[0].reset();
+  clearTags("timeline_tags");
