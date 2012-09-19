@@ -1,7 +1,7 @@
 %div
   %h3.float
     Timeline: 
-    %strong #{@tlentry.title}
+    %strong #{truncate(@tlentry.title, :length=> 75, :ommission => "...")}
   /-if @tlentry.imgurl == "" && @tlentry.desc == "" && @tlentry.tags == ""
   %a{:id => "tlsummaryanchor", :href => "#", "data-toggle" => "collapse", "data-target" => "#tlsummary"}Details..
 %br
@@ -20,7 +20,7 @@
           Not available.
       -else
         %p
-          = @tlentry.desc
+          = truncate(@tlentry.desc, :length=> 200, :ommission => "...")
     %div.span7
       %strong Tags:
       -if @tlentry.tags == ""
