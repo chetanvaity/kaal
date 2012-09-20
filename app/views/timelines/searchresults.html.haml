@@ -1,4 +1,22 @@
 %div
-  %h3 You fired search for #{@tlquery} 
+  %h3 Timeline search results for query "#{@tlquery}": 
+    
+= paginate @search.hits  
   
-  %h3 This is work in progress.
+%div  
+  - @tlsearch_results.each do |tl_entry|
+    %div.row
+      %div.span1
+        %a{ :href => "#{timeline_path(tl_entry)}"}
+          -if tl_entry.imgurl == ""
+            %img{:style => "float: left", :src => "/assets/default_tlimg.png", :height => "80px", :width => "60px", :border => "2"}
+          -else
+            %img{:style => "float: left", :src => "#{tl_entry.imgurl}", :height => "80px", :width => "60px", :border => "2"}
+      %div.span11
+        %a{ :href => "#{timeline_path(tl_entry)}"}
+          %h4 #{truncate(tl_entry.title, :length=> 75, :ommission => "...")}
+        %p
+          #{truncate(tl_entry.desc, :length=> 135, :ommission => "...")}&nbsp;
+    
+= paginate @search.hits
+

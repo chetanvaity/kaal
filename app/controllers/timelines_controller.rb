@@ -48,6 +48,23 @@ class TimelinesController < ApplicationController
   def search
     @tlquery = params[:tlquery]
     logger.debug("Search got fired for #{@tlquery}")
+    
+    @search = Timeline.search() do
+      keywords @tlquery, :fields => [:title, :tags, :desc]
+      paginate :page => params[:page], :per_page => NUM_OF_TIMELINES_PER_PAGE
+    end
+    
+    if @search.total == 0
+      flash.now[:warning] =
+       "Sorry! we don't know anything like '#{query_str}'."
+    end
+    
+    @tlsearch_results = []
+    @search.each_hit_with_result do |hit, tl_entry|
+      @tlsearch_results.push(tl_entry)
+    end
+    logger.debug("Number of search results: " + @tlsearch_results.length().to_s)
+ 
     render :template => "timelines/searchresults", :formats => [:html], :handlers => :haml
   end
   

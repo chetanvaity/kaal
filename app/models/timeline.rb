@@ -22,5 +22,15 @@ class Timeline < ActiveRecord::Base
     :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
     :message => '^URL (%{value}) is invalid'
   }, :allow_blank => true
+  
+  
+  #
+    # search integration
+    #
+    searchable do
+      text :title, :default_boost => 2
+      text :tags, :boost => 1.5
+      text :desc
+    end
 
 end
