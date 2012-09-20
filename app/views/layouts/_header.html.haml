@@ -65,8 +65,11 @@
                 = link_to "Sign out", signout_path, method: "delete"
         %li.divider.divider-vertical
         %li
-          %form{:class => "navbar-search pull-right", :action => ""}
-            %input{ :type => "text",  :class => "search-query span4", :placeholder => "Search ready timelines"}
+          = form_tag(tlsearch_path, :class => "navbar-search pull-right", :action => "get") do
+            -if @tlquery == ""
+              = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines")
+            -else
+              = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines", :value => "#{@tlquery}")
       
   /
   /
@@ -88,7 +91,6 @@
             Examples
           %a.btn-large{:href => "/faq/"}
             %i.icon-question-sign
-            FAQ           
-              
-          
+            FAQ   
+
         

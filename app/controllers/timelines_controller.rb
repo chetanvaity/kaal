@@ -45,9 +45,15 @@ class TimelinesController < ApplicationController
     render :template => "timelines/create", :formats => [:js], :handlers => :haml
   end
   
+  def search
+    @tlquery = params[:tlquery]
+    logger.debug("Search got fired for #{@tlquery}")
+    render :template => "timelines/searchresults", :formats => [:html], :handlers => :haml
+  end
+  
   
   def homepage
-    #GEt id of default timeline from DB. HArdcoded to the Id=1 for timebeing.
+    #GEt id of default timeline from DB. 
     default_tl_id = @configvalues.get_value("default_tl_id")
     init_core_tl_display_vars()
     
