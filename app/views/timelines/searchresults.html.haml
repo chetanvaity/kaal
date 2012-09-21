@@ -1,9 +1,17 @@
+
 %div
-  %h3 Timeline search results for query "#{@tlquery}": 
-    
+  %h3 Timeline search results for "#{@tlquery}": 
+  -if !@tlsearch_results_length.nil?  && @tlsearch_results_length == 0
+    %br
+    %strong.big Could not find any relevant timeline. Please feel free to create a new timeline by clicking 
+    %a{:href => new_timeline_path}here
+    %strong .
+      
 = paginate @search.hits  
-  
-%div  
+    
+
+%div
+%br  
   - @tlsearch_results.each do |tl_entry|
     %div.row
       %div.span1
@@ -14,9 +22,9 @@
             %img{:style => "float: left", :src => "#{tl_entry.imgurl}", :height => "80px", :width => "60px", :border => "2"}
       %div.span11
         %a{ :href => "#{timeline_path(tl_entry)}"}
-          %h4 #{truncate(tl_entry.title, :length=> 75, :ommission => "...")}
+          %strong #{truncate(tl_entry.title, :length=> 75, :ommission => "...")}
         %p
           #{truncate(tl_entry.desc, :length=> 135, :ommission => "...")}&nbsp;
-    
+  
 = paginate @search.hits
 

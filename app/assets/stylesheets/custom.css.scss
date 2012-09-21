@@ -2,6 +2,7 @@
 
 /* universal */
 
+
 html {
   overflow-y: scroll;
 }
@@ -245,12 +246,23 @@ img.tlpgimg {
 }
 
 
+/* ========== To adjust lower menubar : height color and other styling  START ================ */
 div#lowermenubar.well {
-  min-height: 5px;
-  padding: 4px;
-  margin-bottom: 5px;
-  background-color: #fff; 
+  min-height: 3px;
+  padding: 0px;
+  margin-bottom: 0px; 
+  background-color: $gray; 
 }
+
+div#lowernavdiv {
+   height: 25px;
+   a {
+    padding-top: 2px;
+   }
+   
+}
+
+/* ========== To adjust lower menubar : height color and other styling  END ================ */
 
 div#hpsentence.well {
   min-height: 9px;
