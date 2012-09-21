@@ -54,16 +54,22 @@ class TimelinesController < ApplicationController
       paginate :page => params[:page], :per_page => NUM_OF_TIMELINES_PER_PAGE
     end
     
-    if @search.total == 0
-      flash.now[:warning] =
-       "Sorry! we don't know anything like '#{query_str}'."
-    end
+    #if @search.total == 0
+    #  flash.now[:warning] =
+    #   "Sorry! we don't know anything like '#{query_str}'."
+    #end
     
     @tlsearch_results = []
     @search.each_hit_with_result do |hit, tl_entry|
       @tlsearch_results.push(tl_entry)
     end
-    logger.debug("Number of search results: " + @tlsearch_results.length().to_s)
+    logger.debug("Number of search results: " + @tlsearch_results.length().to_s + " page-num=" + params[:page].to_s)
+    @tlsearch_results_length = @tlsearch_results.length()
+
+    #if @tlsearch_results.length() == 0
+    #  flash.now[:warning] =
+    #   "Sorry! we don't know anything like ."
+    #end
  
     render :template => "timelines/searchresults", :formats => [:html], :handlers => :haml
   end
