@@ -17,7 +17,12 @@ jQuery(function($) {
   //});
   //
       
-  
+    // $(".page a").live("click", function() {
+    // 	$(".pagination").html("Page is loading...");
+    // 	$.getScript(this.href);
+    // 	return false;
+    // });
+ 
 });
 
 // Copy div with given id to gathered_events div
@@ -25,9 +30,6 @@ jQuery(function($) {
 // Remove the hide class - so that the "close" button becomes visible
 // Also add the event_id to the gathered_event_ids hidden field
 copyEventDiv = function(id) {
-    // Lets clear the tags from the form
-    clearTags("event_tags_str");
-
     newdiv = $("#" + id).clone();
     newdiv_id = "gdiv_" + id;
     newdiv.attr("id", newdiv_id);
@@ -74,3 +76,8 @@ removeAllEventDivs = function() {
 clearTags = function(id) {
     $("#" + id).tokenInput("clear");
 };
+
+// When event search results are returned, dynamically change the pagination links
+// See http://railscasts.com/episodes/174-pagination-with-ajax
+// $(function() {
+// });
