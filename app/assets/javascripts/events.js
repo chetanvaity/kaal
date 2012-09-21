@@ -17,12 +17,6 @@ jQuery(function($) {
   //});
   //
       
-    // $(".page a").live("click", function() {
-    // 	$(".pagination").html("Page is loading...");
-    // 	$.getScript(this.href);
-    // 	return false;
-    // });
- 
 });
 
 // Copy div with given id to gathered_events div
@@ -76,8 +70,3 @@ removeAllEventDivs = function() {
 clearTags = function(id) {
     $("#" + id).tokenInput("clear");
 };
-
-// When event search results are returned, dynamically change the pagination links
-// See http://railscasts.com/episodes/174-pagination-with-ajax
-// $(function() {
-// });
