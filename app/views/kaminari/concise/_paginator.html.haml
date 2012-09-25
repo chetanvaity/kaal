@@ -6,7 +6,7 @@
 -#    remote:        data-remote
 -#    paginator:     the paginator that renders the pagination tags inside
 = paginator.render do
-  %nav.concise_pagination.centered
+  %div.concise_pagination.pagination-centered
     = first_page_tag
     = prev_page_tag
     - each_page do |page|

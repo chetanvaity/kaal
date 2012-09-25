@@ -38,10 +38,4 @@ $(document).ready(function(e) {
 	hintText: "Type in a tag"
     });
     
-    $('#timeline_tags').tokenInput("/ac_search", {
-	crossDomain: false,
-	theme: "facebook",
-	hintText: "Type in a tag"
-    });
-    
 });

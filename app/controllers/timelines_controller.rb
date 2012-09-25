@@ -28,6 +28,7 @@ class TimelinesController < ApplicationController
   
   def new
     @timeline = Timeline.new
+    @timeline_tags_json = "[]"
     render :template => "timelines/new", :formats => [:html], :handlers => :haml
   end
 
@@ -40,6 +41,25 @@ class TimelinesController < ApplicationController
     end
 
     if @timeline.save
+      record_activity("t=#{@timeline.title}")
+    end
+    
+    render :template => "timelines/create", :formats => [:js], :handlers => :haml
+  end
+
+  def edit
+    @timeline = Timeline.find(params[:id])
+    event_ids = @timeline.events.split(",").map { |s| s.to_i }
+    @events = event_ids.map { |id| Event.find(id) }
+    @timeline_tags_json = "[" +
+      @timeline.tags.split(",").map {|t| "{id: 1, name: \"#{t.strip}\" }" }.join(",") +
+      "]"    
+    render :template => "timelines/new", :formats => [:html], :handlers => :haml
+  end
+
+  def update
+    @timeline = Timeline.find(params[:id])
+    if @timeline.update_attributes(params[:timeline])
       record_activity("t=#{@timeline.title}")
     end
     render :template => "timelines/create", :formats => [:js], :handlers => :haml
