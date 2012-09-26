@@ -53,7 +53,7 @@
               = p " Add to timeline"
 
   %div.row.span8.pull-right.well
-    = form_for(@timeline, :url => timelines_path, :method => :post, :remote => true, :html => {:id => "timeline-form"}) do |tf|
+    = form_for(@timeline, :remote => true, :html => {:id => "timeline-form"}) do |tf|
       %div#errorExplanation.errorExplanation.hide
       %div#successMessage.alert.alert-success.hide      
       %div.span4
@@ -78,6 +78,14 @@
               Remove all
         = hidden_field :timeline, :events, :id => "gathered_event_ids"
         %div#gathered_events
+          - if @events
+            - @events.each do |event|
+              %div{:id => "gdiv_#{event.id}"}
+                %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
+                %div
+                  = event.title
+                %div.muted
+                  = event.date_str
 
       %div.row
         %div.span8
@@ -88,3 +96,13 @@
               %i.icon-ok.icon-white
               = p " Save"
 
+      :javascript
+        $(document).ready(function() {
+          $('#timeline_tags').tokenInput("/ac_search", {
+            crossDomain: false,
+            theme: "facebook",
+            hintText: "Type in a tag",
+            prePopulate: #{@timeline_tags_json}
+          });
+        });
+    

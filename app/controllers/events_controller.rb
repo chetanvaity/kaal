@@ -289,13 +289,13 @@ class EventsController < ApplicationController
       return
     end
     
-    search_res = Event.search() do
+    @search = Event.search() do
       keywords query, :fields => [:title, :tags, :extra_words]
-      paginate :page => 1, :per_page => 10
+      paginate :page => params[:page], :per_page => 10
     end
 
     @events = []
-    search_res.each_hit_with_result do |hit, event|
+    @search.each_hit_with_result do |hit, event|
       event.score = hit.score
       @events.push(event)
     end

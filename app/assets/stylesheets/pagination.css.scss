@@ -1,0 +1,19 @@
+// Without this the current page is not displayed with the rest of the page links
+// Most likely its a "kaminari" bug
+.pagination .current {
+  float: left;
+  padding: 0 14px;
+  line-height: 34px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-left-width: 0;
+}
+
+.pagination .gap {
+  float: left;
+  padding: 0 14px;
+  line-height: 34px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-left-width: 0;
+}
