@@ -6,18 +6,10 @@
     %button.close{:type => "button", "data-dismiss" => "modal"}×
     %h3 Login to Pollengrain
   %div.modal-body
-    %div.span2.well
-      %a.button{:href => "/auth/google"}
-        %div
-          = image_tag("google_64.png", :size => "64x64", :alt => "Google")
-        %div
-          %strong Login with Google
-    %div.span2.well
-      %a.button{:href => "/auth/facebook"}
-        %div
-          = image_tag("facebook_64.png",:size => "64x64", :alt => "Facebook")
-        %div
-          %strong Login with Facebook
+    -if @ext_signin_on_page.nil?
+      -clear_stored_location()
+    = render "sessions/ext_login_ui"
+    
 
 / ===========================================================================================
 
@@ -40,13 +32,16 @@
               = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines")
             -else
               = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines", :value => "#{@tlquery}")
-        %li.divider.divider-vertical      
         -if !signed_in?
-          %li
-            %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
-              %i.icon-user.icon-white
-              Login
+          -if !@ext_signin_on_page.nil? && @ext_signin_on_page == true
+          -else
+            %li.divider.divider-vertical
+            %li
+              %a.btn-large{:id => "localsigninbtn", :href => "#modal-signin", "data-toggle" => "modal"}
+                %i.icon-user.icon-white
+                Login
         -else
+          %li.divider.divider-vertical
           %li{:id => "fat-menu", :class => "dropdown"}
             %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
               -if current_user.authprovider == "google"

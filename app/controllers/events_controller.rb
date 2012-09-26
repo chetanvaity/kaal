@@ -4,6 +4,10 @@ require 'hashery'
 require 'util.rb'
 
 class EventsController < ApplicationController
+  
+  before_filter :signing_is_must, only: [:new, :edit, :update, :destroy]
+  before_filter :correct_event_owner,   only: [:destroy]
+    
   @@q_keys = Hashery::LRUHash.new(100)
 
   # Constructor
@@ -385,5 +389,39 @@ class EventsController < ApplicationController
     end
     render :template => "events/search", :formats => [:html], :handlers => :haml
   end
+  
+  private
+    def correct_event_owner()
+      @event = Event.find params[:id]
+        
+      if @event == nil
+        #errors.add_to_base("Event not found.")
+        flash[:error] = "Event not found."
+        redirect_to :back
+      end
+      
+      if current_user.nil?
+        #errors.add_to_base("You need to log in.")
+        flash[:error] = "You need to log in."
+        redirect_to :back
+        return
+      end
+      
+      # check if this user is admin user
+      if current_user.isadmin == true
+        return
+      end
+      
+      # this event is owned by this user.  
+      if current_user.id == @event.ownerid
+        return
+      end
+      
+      #For rest all cases
+      #errors.add_to_base("You are allowed to only read this event details.")
+      flash[:error] = "You are allowed to perform this operation"
+      redirect_to :back
+    end
+
 
 end

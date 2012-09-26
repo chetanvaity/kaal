@@ -40,6 +40,9 @@ Kaal::Application.routes.draw do
   resources :sessions, only: [ :new, :create, :destroy ]
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
+  #
+  # This page is used only during redirection.
+  match '/extlogin', to: 'sessions#external_sign_in', :as => :extlogin
 
   resources :activity_log do
     get 'page/:page', :action => :index, :on => :collection

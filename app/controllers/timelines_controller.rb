@@ -3,6 +3,9 @@ require 'util.rb'
 require 'configvalues.rb'
 
 class TimelinesController < ApplicationController
+  
+  before_filter :signing_is_must, only: [:new, :edit, :update]
+
 
   # Constructor
   def initialize(*params)

@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   
-  before_filter :authenticate_user!, :except => [:new, :create, :failure]
+  before_filter :authenticate_user!, :except => [:new, :create, :failure, :external_sign_in]
   protect_from_forgery :except => :create     # see https://github.com/intridea/omniauth/issues/203
 
   
@@ -97,7 +97,9 @@ class SessionsController < ApplicationController
       # signin existing user
       logger.info("Existing user, sign in him")
       sign_in(auth_user)
-      redirect_to root_url
+      
+      #redirect_to root_url
+      redirect_back_or root_url
     else
       # create new user and sign in him
       logger.info("New user, create him and sign in him")
@@ -110,7 +112,9 @@ class SessionsController < ApplicationController
       new_user.password_confirmation = "test123"
       if new_user.save
         sign_in new_user
-        redirect_to root_path
+        
+        #redirect_to root_path
+        redirect_back_or root_path
       else
         logger.error("User creation failed.")
         logger.error(new_user.errors.full_messages)
@@ -129,6 +133,10 @@ class SessionsController < ApplicationController
   def failure
     flash[:error] = 'There was an error at the remote authentication service. You have not been signed in.'
     redirect_to root_url
+  end
+  
+  def external_sign_in
+    @ext_signin_on_page = true
   end
   
 end

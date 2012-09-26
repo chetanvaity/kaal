@@ -37,4 +37,36 @@ module SessionsHelper
     end
   end   
   
+  def current_user?(user)
+    user == self.current_user
+  end
+  
+  #
+  # Used to protect certain pages which user can access only after login.
+  #
+  def signing_is_must
+    if !signed_in?
+      store_location()
+      flash[:notice] = 'Please log in before proceeding further!'
+      redirect_to extlogin_path
+    end
+  end
+  
+  #
+  # HElper methods for friendly url forwrding during login
+  #
+  def store_location
+    session[:return_to] = request.url
+  end
+  
+  def clear_stored_location
+    session.delete(:return_to)
+  end
+  
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    clear_stored_location
+  end
+  # ---------------------------------------
+  
 end
