@@ -10,6 +10,13 @@
       %i.icon-arrow-down
     -else
       %i.icon-arrow-up
+  -if !current_user.nil? && @tlentry.owner_id == current_user.id
+    %span.offset4
+      %a{:href => edit_timeline_path(@tlentry), :style => "padding-right: 15px", :title => "Edit timeline", :rel => "tooltip"}
+        %i.icon-edit
+        Edit
+      %i.icon-remove
+      = link_to "Delete", timeline_path(@tlentry), :title => "Delete timeline", :rel => "tooltip", :method=> :delete, :confirm => 'Are you sure you want to delete this event?'
 %br
   
 %div.row.collapse.in{:id => "tlsummary"}
