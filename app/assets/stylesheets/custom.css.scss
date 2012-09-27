@@ -235,15 +235,17 @@ body #modal-contact {
   background-color: $grayLighter;
 }
 
-img.homepagethumb {
-  width: 120px;
+img.tl_fixed_block_imgthumb {
+  max-width: 120px;
   height: 90px;
 }
+
 
 img.tlpgimg {
   width: 160px;
   height: 120px;
 }
+
 
 
 /* ========== To adjust lower menubar : height color and other styling  START ================ */
