@@ -17,9 +17,9 @@
       %div.span1
         %a{ :href => "#{timeline_path(tl_entry)}"}
           -if tl_entry.imgurl == ""
-            %img{:style => "float: left", :src => "/assets/default_tlimg.png", :height => "80px", :width => "60px", :border => "2"}
+            %img.tl_searchresults_imgthumb{:src => "/assets/default_tlimg.png"}
           -else
-            %img{:style => "float: left", :src => "#{tl_entry.imgurl}", :height => "80px", :width => "60px", :border => "2"}
+            %img.tl_searchresults_imgthumb{:src => "#{tl_entry.imgurl}"}
       %div.span11
         %a{ :href => "#{timeline_path(tl_entry)}"}
           %strong #{truncate(tl_entry.title, :length=> 75, :ommission => "...")}
