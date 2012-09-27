@@ -30,6 +30,19 @@
 
 
   %body.fabric
+    - if flash[:notice]
+      %div.alert.alert-success
+        %i.icon-ok-sign
+        = flash[:notice]
+    - elsif flash[:warning]
+      %div.alert.alert-error
+        %i.icon-exclamation-sign
+        = flash[:warning]
+    - elsif flash[:error]
+      %div.alert.alert-error
+        %i.icon-exclamation-sign
+        = flash[:error]
+
     -if @embeddedview == 'false' && @fullscr == 'false'
       = render 'layouts/header'
       

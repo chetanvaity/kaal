@@ -1,10 +1,10 @@
 %div.row.span12
   %div.row.span8.pull-left
-    = form_for(@timeline, :remote => true, :html => {:id => "timeline-form"}) do |tf|
-      %div#errorExplanation.errorExplanation.hide
-      %div#successMessage.alert.alert-success.hide      
+    %h2 Create new timeline
+    = form_for(@timeline, :html => {:id => "timeline-form"}) do |tf|
+      = tf.error_messages
       %div.span4.pull-left
-        %h2{:style => "margin-bottom: 10px"} Create new timeline
+        %h4{:style => "margin-bottom: 10px"} Timeline summary
         %div.well
           = label :timeline, :title, 'Title'
           = text_field :timeline, :title, :class => "span3"
@@ -19,7 +19,7 @@
           = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
 
       %div.span3{:title => "Events listed here will be added to the timeline", :rel => "tooltip"}
-        %h2{:style => "margin-bottom: 10px"} Events in this timeline
+        %h4{:style => "margin-bottom: 10px"} Events in this timeline
         %div.well
           %div.row
             %div.span1.pull-left
@@ -41,8 +41,8 @@
       %div.row.span8
         %hr
         %div.center
-          = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("timeline_tags")') do
-            = p " Cancel"
+          %a.btn{:href => root_path}
+            = p "Cancel"
           %span
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           = button_tag(:type => "submit", :class => "btn btn-primary") do
@@ -59,18 +59,16 @@
           %a{:href => "#tab2", :"data-toggle" => "tab"} New event
 
       %div.tab-content
-        %div#tab1.tab-pane.active
+        %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
           = form_tag(search_events_path, :remote => true) do
             %div
               = text_field_tag('query', nil, :placeholder => 'Search for events',
               :class => "span2 search-query")
               = button_tag(:type => "submit", :class => "btn btn-primary") do
                 %i.icon-search.icon-white
-            %div.muted.small-text
-              Search to get events. Then click on events of your choice to add them to this timeline.
           %div#search_results.well
 
-        %div#tab2.tab-pane
+        %div#tab2.tab-pane{:title => "Enter details of a new event to be added to this timeline", :rel => "tooltip"}
           - @event = Event.new
           = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
             %div#new_created_event          
@@ -99,7 +97,7 @@
               = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
                 = p " Cancel"
               = button_tag(:type => "submit", :class => "btn btn-primary") do
-                %i.icon-ok.icon-white
+                %i.icon-arrow-left.icon-white
                 = p " Add to timeline"
 
 
