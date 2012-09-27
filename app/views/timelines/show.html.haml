@@ -1,3 +1,4 @@
+
 %div
   %h3.float
     Timeline: 
@@ -7,28 +8,27 @@
 %br
   
 %div.row.collapse.in{:id => "tlsummary"}
-  %div.span3
-    -if @tlentry.imgurl != ""
-      %img{ :class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => ""}
+  -if @tlentry.imgurl != ""
+    %img{ :class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => ""}
+  -else
+    %img{ :class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => ""}
+  
+  %h4 Description:
+  -if @tlentry.desc == ""
+    %p
+      Not available.
+  -else
+    %p
+      = truncate(@tlentry.desc, :length=> 200, :ommission => "...")
+  %br
+    %strong Tags:
+    -if @tlentry.tags == ""
+      %p
+        Not available
     -else
-      %img{ :class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => ""}
-  %div.span8
-    %div.span7
-      %h4 Description:
-      -if @tlentry.desc == ""
-        %p
-          Not available.
-      -else
-        %p
-          = truncate(@tlentry.desc, :length=> 200, :ommission => "...")
-    %div.span7
-      %strong Tags:
-      -if @tlentry.tags == ""
-        %p
-          Not available
-      -else
-        = @tlentry.tags 
+      = @tlentry.tags 
 
+%br
 = render 'timelines/timeline_core'
 
 /Let's collapse this section by default if all ements in side it are not available.
@@ -38,6 +38,6 @@
     { 
     $("#tlsummary").collapse('hide');   
     });     
-      
-
-             
+        
+  
+               

@@ -242,8 +242,11 @@ img.tl_fixed_block_imgthumb {
 
 
 img.tlpgimg {
-  width: 160px;
+  float: left;
+  max-width: 160px;
   height: 120px;
+  padding-left: 20px;
+  padding-right: 10px;
 }
 
 
