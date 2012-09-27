@@ -31,6 +31,17 @@ $(document).ready(function(e) {
     */
     $('input,textarea').placeholder();
     
+    
+    /*
+     * USed on individual timeline page..to change icon on collapse/expand function.
+     */
+    $("#tlsummary").on('show hide', function(e) 
+    { 
+      $('#tlsummaryanchor').find('i').toggleClass('icon-arrow-down icon-arrow-up', 200); 
+    });
+    
+    
+    
 
     $('#event_tags_str').tokenInput("/ac_search", {
 	crossDomain: false,
