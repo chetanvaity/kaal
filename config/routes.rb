@@ -33,7 +33,6 @@ Kaal::Application.routes.draw do
   match 'examples' => 'static#examples'
   match 'faq' => 'static#faq'
   
-  
   match '/auth/:service/callback' => 'sessions#create' 
   match '/auth/failure' => 'sessions#failure'
   
@@ -43,6 +42,8 @@ Kaal::Application.routes.draw do
   #
   # This page is used only during redirection.
   match '/extlogin', to: 'sessions#external_sign_in', :as => :extlogin
+
+  match '/my'=> 'users#mycontent'
 
   resources :activity_log do
     get 'page/:page', :action => :index, :on => :collection

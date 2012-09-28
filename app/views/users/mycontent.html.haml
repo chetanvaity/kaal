@@ -1,0 +1,12 @@
+%h2 My Content
+%div.tabbable
+  %ul.nav.nav-tabs
+    %li.active
+      %a{:href => "#tab1", :"data-toggle" => "tab"} Timelines
+    %li
+      %a{:href => "#tab2", :"data-toggle" => "tab"} Events
+  %div.tab-content
+    %div.tab-pane.active#tab1
+      %p You have created N timelines
+    %div.tab-pane#tab2
+      %p You have created N events
