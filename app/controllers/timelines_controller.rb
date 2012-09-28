@@ -6,7 +6,6 @@ class TimelinesController < ApplicationController
   
   before_filter :signing_is_must, only: [:new, :edit, :update]
 
-
   # Constructor
   def initialize(*params)
     super(*params)
@@ -18,6 +17,7 @@ class TimelinesController < ApplicationController
     @timelines = Timeline.limit(10)
   end
 
+  # Display the timeline in its glory
   def show
     id = params[:id]
     init_core_tl_display_vars()
@@ -28,7 +28,8 @@ class TimelinesController < ApplicationController
               :layout => "tl"
     end  
   end
-  
+
+  # Show new timeline page
   def new
     @timeline = Timeline.new
     @timeline_tags_json = "[]"
@@ -45,9 +46,12 @@ class TimelinesController < ApplicationController
 
     if @timeline.save
       record_activity("t=#{@timeline.title}")
+      flash[:notice] =
+        "<strong>#{@timeline.title}</strong> was successfully created".html_safe
+      redirect_to timeline_path(@timeline)
+    else
+      render :action => "new"
     end
-    
-    render :template => "timelines/create", :formats => [:js], :handlers => :haml
   end
 
   def edit
