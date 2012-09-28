@@ -76,6 +76,16 @@ class TimelinesController < ApplicationController
     end
   end
 
+  # Delete the timeline
+  def destroy
+    @timeline = Timeline.find(params[:id])
+    @timeline.destroy
+    record_activity("t=#{@timeline.title}")
+    flash[:notice] =
+      "<strong>#{@timeline.title}</strong> was deleted".html_safe
+    redirect_to(:root)
+  end
+
   def search
     @tlquery = params[:tlquery]
     logger.debug("Search got fired for #{@tlquery}")
