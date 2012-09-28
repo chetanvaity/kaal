@@ -97,6 +97,32 @@ class TimelinesController < ApplicationController
     render :template => "timelines/searchresults", :formats => [:html], :handlers => :haml
   end
   
+  def showcase
+    
+    #TEMP IMPL
+    # Featured timelines
+    @featuted_timelines = nil
+    tlids_array = [] #empty array
+    tl_ids_str = @configvalues.get_value("featured_tl_ids")
+    if !tl_ids_str.nil?
+      tlids_str_array = tl_ids_str.split(",")
+      if tlids_str_array != nil
+        tlids_str_array.each { |tlid|
+          begin
+            tlids_array.push(Integer(tlid))
+          rescue
+          end
+          
+        }
+      end
+    end
+    
+    if tlids_array.length() > 0
+      @featuted_timelines = Timeline.find(tlids_array)
+    end
+    
+  end
+  
   
   def homepage
     #GEt id of default timeline from DB. 
