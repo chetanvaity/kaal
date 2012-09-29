@@ -236,8 +236,8 @@ body #modal-contact {
 }
 
 img.tl_fixed_block_imgthumb {
-  max-width: 120px;
-  height: 90px;
+  max-width: 200px;
+  height: 120px;
 }
 
 
@@ -292,7 +292,7 @@ div.thumbnail {
   a.tlimageblock {
     color: $grayDark;
     background-color: $grayLighter;
-    height: 200px;
+    height: 180px;
   }
   .tlimageblock:hover { 
     text-decoration: none;
@@ -318,3 +318,7 @@ div.border {
   width: 80%;                                                                                                          
   margin: auto;                                                                                                        
 }                                                                                                                      
+
+p.packed {
+  line-height: 10px;
+}
