@@ -1,0 +1,18 @@
+/
+/ This block shows given timelines one after another, in a nicer block form.
+/ It does not decide how many blocks in one row, etc. That has to be done by somebody outside.
+/ In general maximum 4 blocks fit in one row with our selected sizes.
+/
+%ul.thumbnails
+  - selected_timelines.each do |each_tl|
+    %li.span3
+      %div.thumbnail
+        %a.thumbnail.tlimageblock{ :href => "#{timeline_path(each_tl)}"}
+          -if each_tl.imgurl == ""
+            %img{ :class => "tl_fixed_block_imgthumb thumnailgrid", :src => "/assets/default_tlimg.png"}
+          -else
+            %img{:class => "tl_fixed_block_imgthumb thumnailgrid", :src => "#{each_tl.imgurl}"}
+          %div.caption
+            %h3 #{truncate(each_tl.title, :length=> 40, :ommission => "...")}
+            %p 
+              #{truncate(each_tl.desc, :length=> 83, :ommission => "...")}

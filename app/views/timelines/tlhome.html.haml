@@ -54,20 +54,8 @@
       - if @featuted_timelines == nil
         %h1 Please set featured timelines in database.
       - else
-        %ul.thumbnails
-          - @featuted_timelines.each do |featured_tl|
-            %li.span3
-              %div.thumbnail
-                /%a.thumbnail.tlimageblock{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-                %a.thumbnail.tlimageblock{ :href => "#{timeline_path(featured_tl)}"}
-                  -if featured_tl.imgurl == ""
-                    %img{ :class => "tl_fixed_block_imgthumb thumnailgrid", :src => "/assets/default_tlimg.png"}
-                  -else
-                    %img{:class => "tl_fixed_block_imgthumb thumnailgrid", :src => "#{featured_tl.imgurl}"}
-                  %div.caption
-                    %h3 #{truncate(featured_tl.title, :length=> 40, :ommission => "...")}
-                    %p 
-                      #{truncate(featured_tl.desc, :length=> 113, :ommission => "...")}
+        = render :partial => "tl_small_block", :locals => {:selected_timelines => @featuted_timelines}
+        
                       
       /
       / Hardcoded featured list                  
