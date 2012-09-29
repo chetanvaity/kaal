@@ -5,6 +5,7 @@
 /
 %ul.thumbnails
   - selected_timelines.each do |each_tl|
+    - owner_name = User.find(each_tl.owner_id).name
     %li.span3
       %div.thumbnail
         %a.thumbnail.tlimageblock{ :href => "#{timeline_path(each_tl)}"}
@@ -15,4 +16,7 @@
           %div.caption
             %h4 #{truncate(each_tl.title, :length=> 40, :ommission => "...")}
             %p.packed
-              %small #{truncate(each_tl.desc, :length=> 83, :ommission => "...")}
+              %small #{truncate(each_tl.desc, :length=> 70, :ommission => "...")}
+            %p.packed
+              %small
+                %strong #{owner_name}

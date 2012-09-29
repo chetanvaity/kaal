@@ -292,14 +292,13 @@ div.thumbnail {
   a.tlimageblock {
     color: $grayDark;
     background-color: $grayLighter;
-    height: 180px;
+    height: 185px;
   }
   .tlimageblock:hover { 
     text-decoration: none;
     color: #000; 
   } 
 }
-
 
 div.border {
   -webkit-box-sizing: border-box;
@@ -313,11 +312,11 @@ div.border {
   margin-right: 0;
 }
 
-/* http://stackoverflow.com/questions/114543/how-to-center-a-div-in-a-div */                                           
-.centered {                                                                                                            
-  width: 80%;                                                                                                          
-  margin: auto;                                                                                                        
-}                                                                                                                      
+/* http://stackoverflow.com/questions/114543/how-to-center-a-div-in-a-div */
+.centered {
+  width: 80%;
+  margin: auto;
+}
 
 p.packed {
   line-height: 10px;
