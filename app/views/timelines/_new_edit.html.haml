@@ -1,0 +1,112 @@
+%div.row.span12
+  %div.row.span8.pull-left
+    = form_for(@timeline, :html => {:id => "timeline-form"}) do |tf|
+      = tf.error_messages
+      %div.span4.pull-left
+        %h4{:style => "margin-bottom: 10px"} Timeline summary
+        %div.well
+          = label :timeline, :title, 'Title'
+          = text_field :timeline, :title, :class => "span3"
+
+          = label :timeline, :desc, 'Description'
+          = text_area :timeline, :desc, :class => "span3", :size => "80x4", :placeholder => "Describe the timeline here."
+
+          = label :timeline, :imgurl, 'Image'
+          = text_field :timeline, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
+
+          = label :timeline, :tags, 'Tags'
+          = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
+
+      %div.span3{:title => "Events listed here will be added to the timeline", :rel => "tooltip"}
+        %h4{:style => "margin-bottom: 10px"} Events in this timeline
+        %div.well
+          %div.row
+            %div.span1.pull-left
+              = label_tag 'Events', nil, :class => "bold-text"
+            %div.span1.pull-right
+              %a.small-text{:href => "#", :onclick => "removeAllEventDivs()"}
+                Remove all
+          = hidden_field :timeline, :events, :id => "gathered_event_ids"
+          %div#gathered_events
+            - if @events
+              - @events.each do |event|
+                %div{:id => "gdiv_#{event.id}"}
+                  %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
+                  %div
+                    = event.title
+                  %div.muted
+                    = event.date_str
+
+      %div.row.span8
+        %hr
+        %div.center
+          %a.btn{:href => root_path}
+            = p "Cancel"
+          %span
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          = button_tag(:type => "submit", :class => "btn btn-primary") do
+            %i.icon-ok.icon-white
+            = p " Save"
+
+  %div.span3{:title => "Search events or add new events for this timeline", :rel => "tooltip"}
+    %h2{:style => "margin-bottom: 10px"} &nbsp;
+    %div.tabbable
+      %ul.nav.nav-tabs
+        %li.active
+          %a{:href => "#tab1", :"data-toggle" => "tab"} Search
+        %li
+          %a{:href => "#tab2", :"data-toggle" => "tab"} New event
+
+      %div.tab-content
+        %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
+          = form_tag(search_events_path, :remote => true) do
+            %div
+              = text_field_tag('query', nil, :placeholder => 'Search for events',
+              :class => "span2 search-query")
+              = button_tag(:type => "submit", :class => "btn btn-primary") do
+                %i.icon-search.icon-white
+          %div#search_results.well
+
+        %div#tab2.tab-pane{:title => "Enter details of a new event to be added to this timeline", :rel => "tooltip"}
+          - @event = Event.new
+          = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
+            %div#new_created_event          
+            %div#eventErrorExplanation.errorExplanation.hide
+            %div#eventSuccessMessage.alert.alert-success.hide
+
+            = label :event, :title, 'Title'
+            = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
+
+            = label :event, :date, 'Date'
+            = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
+
+            = label :event, :tags, 'Tags'
+            = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
+
+            = label :event, :url, 'URL'
+            = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
+
+            = label :event, :imgurl, 'Image'
+            = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
+
+            = label :event, :desc, 'Description'
+            = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
+
+            %div.pull-right
+              = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
+                = p " Cancel"
+              = button_tag(:type => "submit", :class => "btn btn-primary") do
+                %i.icon-arrow-left.icon-white
+                = p " Add to timeline"
+
+
+      :javascript
+        $(document).ready(function() {
+          $('#timeline_tags').tokenInput("/ac_search", {
+            crossDomain: false,
+            theme: "facebook",
+            hintText: "Type in a tag",
+            prePopulate: #{@timeline_tags_json}
+          });
+        });
+    

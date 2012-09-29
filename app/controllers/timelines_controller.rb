@@ -36,7 +36,7 @@ class TimelinesController < ApplicationController
     render :template => "timelines/new", :formats => [:html], :handlers => :haml
   end
 
-  # Save a timeline
+  # Save a new timeline
   def create
     @timeline = Timeline.new(params[:timeline])
     
@@ -50,28 +50,42 @@ class TimelinesController < ApplicationController
         "<strong>#{@timeline.title}</strong> was successfully created".html_safe
       redirect_to timeline_path(@timeline)
     else
-      render :action => "new"
+      setup_vars_for_edit(@timeline)
+      render :template => "timelines/new", :formats => [:html], :handlers => :haml
     end
   end
 
+  # Show edit timeline page
   def edit
     @timeline = Timeline.find(params[:id])
-    event_ids = @timeline.events.split(",").map { |s| s.to_i }
-    @events = event_ids.map { |id| Event.find(id) }
-    @timeline_tags_json = "[" +
-      @timeline.tags.split(",").map {|t| "{id: 1, name: \"#{t.strip}\" }" }.join(",") +
-      "]"    
-    render :template => "timelines/new", :formats => [:html], :handlers => :haml
+    setup_vars_for_edit(@timeline)
+    render :template => "timelines/edit", :formats => [:html], :handlers => :haml
   end
 
+  # Save the edited timeline
   def update
     @timeline = Timeline.find(params[:id])
     if @timeline.update_attributes(params[:timeline])
       record_activity("t=#{@timeline.title}")
+      flash[:notice] =
+        "<strong>#{@timeline.title}</strong> was successfully updated".html_safe
+      redirect_to timeline_path(@timeline)
+    else
+      setup_vars_for_edit(@timeline)
+      render :template => "timelines/edit", :formats => [:html], :handlers => :haml
     end
-    render :template => "timelines/create", :formats => [:js], :handlers => :haml
   end
-  
+
+  # Delete the timeline
+  def destroy
+    @timeline = Timeline.find(params[:id])
+    @timeline.destroy
+    record_activity("t=#{@timeline.title}")
+    flash[:notice] =
+      "<strong>#{@timeline.title}</strong> was deleted".html_safe
+    redirect_to(:root)
+  end
+
   def search
     @tlquery = params[:tlquery]
     logger.debug("Search got fired for #{@tlquery}")
@@ -279,6 +293,14 @@ class TimelinesController < ApplicationController
       
     end
   
-  
+    # Setup variables needed for editing timeline in the view
+    # Used in create(), edit() and update() above
+    def setup_vars_for_edit(tl)
+      event_ids = tl.events.split(",").map { |s| s.to_i }
+      @events = event_ids.map { |id| Event.find(id) }
+      @timeline_tags_json = "[" +
+        tl.tags.split(",").map {|t| "{id: 1, name: \"#{t.strip}\" }" }.join(",") +
+        "]"   
+    end
 
 end
