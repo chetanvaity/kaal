@@ -1,0 +1,22 @@
+
+ - Check 'configvalues' table for pollengrain configuration.
+ - Values from this table are cached during app-startup. Hence if you change something in DB directly, you need to restart APP.
+
+ - Current configuration picked up from this DB:
+
+    1. Default timeline display on new homepage.
+       - paramname: default_tl_id
+       - paramvalue: id string.
+       - sample: insert into configvalues (paramname,paramvalue) values('default_tl_id', '1');
+
+    2. Four featured timelines on new homepage
+       - paramname: featured_tl_ids
+       - paramvalue: comma separated timeline ids.
+       - sample: insert into configvalues (paramname,paramvalue) values('featured_tl_ids', '1,2,3,10');
+
+    3. Settings for example timelines
+       - paramname: example_row_1 (or example_row_2, example_row_3, example_row_4). We look for only 4 rows max.
+       - paramvalue: comma separated string giving title of the row and then timeline ids on that row.
+       - sample:
+          insert into configvalues (paramname, paramvalue) values('example_row_1', 'History,1,2,3,4');
+          insert into configvalues (paramname, paramvalue) values('example_row_2', 'Cinema,11,12');
