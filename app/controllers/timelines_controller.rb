@@ -117,27 +117,40 @@ class TimelinesController < ApplicationController
   
   def showcase
     
-    #TEMP IMPL
-    # Featured timelines
-    @featuted_timelines = nil
-    tlids_array = [] #empty array
-    tl_ids_str = @configvalues.get_value("featured_tl_ids")
-    if !tl_ids_str.nil?
-      tlids_str_array = tl_ids_str.split(",")
-      if tlids_str_array != nil
-        tlids_str_array.each { |tlid|
-          begin
-            tlids_array.push(Integer(tlid))
-          rescue
+    @example_rows = []
+    # We currently entertain max 4 values ...if present in DB
+    for i in 1..4
+      #
+      # each example row value in db will be in form title,id1.id2,id2   etc.
+      #
+      example_row_values_str = @configvalues.get_value("example_row_#{i}")
+      if !example_row_values_str.nil?
+        row_values_str_array = example_row_values_str.split(",")
+        if row_values_str_array != nil
+          rowhash = Hash.new
+          tlids_array = [] #empty array
+            
+          for index in 0..4 # One title and max 4 timelines-ids
+            if(index == 0)
+              title = row_values_str_array[index]
+              rowhash[:title] = title
+            end
+            
+            begin
+              tlids_array.push(Integer(row_values_str_array[index]))
+            rescue
+            end
+          end #end for
+          
+          if tlids_array.length() > 0
+            selected_timelines = Timeline.find(tlids_array)
+            rowhash[:tl_entries] = selected_timelines
           end
           
-        }
+          @example_rows.push(rowhash)
+        end #end if
       end
-    end
-    
-    if tlids_array.length() > 0
-      @featuted_timelines = Timeline.find(tlids_array)
-    end
+    end #end for
     
   end
   
