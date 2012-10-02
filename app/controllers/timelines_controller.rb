@@ -89,9 +89,19 @@ class TimelinesController < ApplicationController
   def search
     @tlquery = params[:tlquery]
     logger.debug("Search got fired for #{@tlquery}")
+      
+    # We need this local variable for search.
+    local_query_var = params[:tlquery]
+    
     
     @search = Timeline.search() do
-      keywords @tlquery, :fields => [:title, :tags, :desc]
+      #
+      # AMOL: Please use local variable here to give search terms. Don't use class variable
+      # like @tlquery in this block. Somehow it results in to *.* result always.
+      # I did not understand the reason why @tlquery did not work properly.
+      # Chetan, see if you can figure it out.
+      #
+      keywords local_query_var, :fields => [:title, :tags, :desc]
       paginate :page => params[:page], :per_page => NUM_OF_TIMELINES_PER_PAGE
     end
     
