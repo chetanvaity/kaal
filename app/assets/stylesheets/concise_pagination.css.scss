@@ -27,7 +27,7 @@
     border-width: 1px 1px 1px 1px;
     float: left;
     line-height: 20px;
-    padding: 0 4px;
+    padding: 0 6px;
     text-decoration: none;
 }
 .concise_pagination a:hover, .concise_pagination .active a {
@@ -60,7 +60,7 @@
 .concise_pagination .current {
   float: left;
   height: 20px;
-  padding: 0 4px;
+  padding: 0 6px;
   text-decoration: none;
   border: 1px solid #ddd;
 }
@@ -68,7 +68,7 @@
 .concise_pagination .gap {
   float: left;
   height: 20px;
-  padding: 0 4px;
+  padding: 0 6px;
   text-decoration: none;
   border: 1px solid #ddd;
   border-left-width: 0;
