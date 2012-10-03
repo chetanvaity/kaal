@@ -14,7 +14,7 @@
           -else
             %img{:class => "tl_fixed_block_imgthumb thumnailgrid", :src => "#{each_tl.imgurl}"}
           %div.caption
-            %h4 #{truncate(each_tl.title, :length=> 40, :ommission => "...")}
+            %h4 #{truncate(each_tl.title, :length=> 25, :ommission => "...")}
             %p.packed
               %small #{truncate(each_tl.desc, :length=> 70, :ommission => "...")}
             %p.packed
