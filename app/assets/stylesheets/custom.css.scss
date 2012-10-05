@@ -250,11 +250,10 @@ img.tlpgimg {
 }
 
 img.tl_searchresults_imgthumb {
-  max-width: 60px;
-  height: 45px;
+  max-width: 140px;
+  height: 105px;
   float: left;
 }
-
 
 
 /* ========== To adjust lower menubar : height color and other styling  START ================ */
@@ -289,6 +288,8 @@ div#hpsentence.well {
 
 /* Wanted some changes for link color and hover behavior for text inside thumbnail div */
 div.thumbnail {
+
+  /* *** Fixed tl blocks related ****/
   a.tlimageblock {
     color: $grayDark;
     background-color: $grayLighter;
@@ -298,7 +299,32 @@ div.thumbnail {
     text-decoration: none;
     color: #000; 
   } 
+
+  /* ****** timeline search result block related *****/   
+  a.tlsearchblock {
+    color: $grayDark;
+    background-color: $grayLighter;
+    height: 105px;
+    border: none
+  }
+  
+  .tlsearchblock:hover { 
+    text-decoration: none;
+    background-color: #fff; 
+  } 
 }
+
+
+/* ****** timeline search result block related *****/
+p.search_result_tldesc {
+  color: $gray;
+  font-size: 12px;
+}
+p.search_result_tlauthor {
+  font-size: 13px;
+}
+/* -------------------------------*/
+
 
 div.border {
   -webkit-box-sizing: border-box;

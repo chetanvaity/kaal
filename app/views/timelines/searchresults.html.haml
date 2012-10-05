@@ -6,25 +6,31 @@
     %strong.big Could not find any relevant timeline. Please feel free to create a new timeline by clicking 
     %a{:href => new_timeline_path}here
     %strong .
+  -else
+    Total #{@search.total} matching results
       
 = paginate @search.hits  
     
-
-%div
-%br  
-  - @tlsearch_results.each do |tl_entry|
-    %div.row
-      %div.span1
-        %a{ :href => "#{timeline_path(tl_entry)}"}
-          -if tl_entry.imgurl == ""
-            %img.tl_searchresults_imgthumb{:src => "/assets/default_tlimg.png"}
-          -else
-            %img.tl_searchresults_imgthumb{:src => "#{tl_entry.imgurl}"}
-      %div.span11
-        %a{ :href => "#{timeline_path(tl_entry)}"}
-          %strong #{truncate(tl_entry.title, :length=> 75, :ommission => "...")}
-        %p
-          #{truncate(tl_entry.desc, :length=> 135, :ommission => "...")}&nbsp;
-  
+%br
+%ul.thumbnails
+  %li
+    - @tlsearch_results.each do |each_tl|
+      - owner_name = User.find(each_tl.owner_id).name
+      %div.thumbnail
+        %a.thumbnail.tlsearchblock{:href => "#{timeline_path(each_tl)}"}
+          %div.span2
+            -if each_tl.imgurl == ""
+              %img{ :class => "tl_searchresults_imgthumb thumnailgrid", :src => "/assets/default_tlimg.png"}
+            -else
+              %img{:class => "tl_searchresults_imgthumb thumnailgrid", :src => "#{each_tl.imgurl}"}
+          %div.span8
+            %h3 #{truncate(each_tl.title, :length=> 75, :ommission => "...")}
+            %br
+            %p.search_result_tldesc
+              #{truncate(each_tl.desc, :length=> 180, :ommission => "...")}
+            %p.search_result_tlauthor
+              #{owner_name}
+                
+                  
 = paginate @search.hits
 
