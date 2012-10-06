@@ -5,7 +5,7 @@
     %li
       %a{:href => "#", :onclick => "copyEventDiv(#{event.id})"}
         %div{:id => "#{event.id}"}
-          %button.close.hide{:onclick => "removeEventDiv(#{event.id})"} &times;
+          %button.close.hide{:onclick => "removeEventDiv(#{event.id})", :title => "Remove this event from the timeline", :rel => "tooltip"} &times;
           %div
             = event.title
           %div.muted

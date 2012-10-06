@@ -24,7 +24,7 @@
             %div.span1.pull-left
               = label_tag 'Events', nil, :class => "bold-text"
             %div.span1.pull-right
-              %a.small-text{:href => "#", :onclick => "removeAllEventDivs()"}
+              %a.small-text{:href => "#", :onclick => "removeAllEventDivs()", :title => "Remove events listed here from the timeline", :rel => "tooltip"}
                 Remove all
           = hidden_field :timeline, :events, :id => "gathered_event_ids"
           %div#gathered_events
@@ -48,14 +48,14 @@
             %i.icon-ok.icon-white
             = p " Save"
 
-  %div.span3{:title => "Search events or add new events for this timeline", :rel => "tooltip"}
+  %div.span3
     %h2{:style => "margin-bottom: 10px"} &nbsp;
     %div.tabbable
       %ul.nav.nav-tabs
         %li.active
-          %a{:href => "#tab1", :"data-toggle" => "tab"} Search
+          %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"} Existing events
         %li
-          %a{:href => "#tab2", :"data-toggle" => "tab"} New event
+          %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"} New event
 
       %div.tab-content
         %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
