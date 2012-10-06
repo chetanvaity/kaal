@@ -326,6 +326,11 @@ p.search_result_tlauthor {
 /* -------------------------------*/
 
 
+div.fixed_height_tlsummary {
+  min-height: 110px;
+  padding-top: 7px;
+}
+
 div.border {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
