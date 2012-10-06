@@ -29,7 +29,7 @@
   %div.row
     -if @tlentry != nil
       %div.span1
-        %img{:style => "float: left", :src => "/assets/black_thumbs_up.png", :height => "50px", :width => "50px", :border => "2"}
+        %img{:style => "float: left", :src => "/assets/black-star.png", :height => "50px", :width => "50px", :border => "2"}
       %div.span11
         %img.tl_fixed_block_imgthumb{:style => "float: left; padding-right:10px;", :src => "#{@tlentry.imgurl}"}
         %h3 #{truncate(@tlentry.title, :length=> 75, :ommission => "...")}
@@ -47,9 +47,8 @@
   %div.row
     %div.span12
       %span.label.label-info Featured Timelines:
-      %a{:href => "/examples/"}
+      %a{:href => showcase_path, :style => "float: right"}
         More...
-      /%div.span11.offset1
     %div.span12
       - if @featuted_timelines == nil
         %h1 Please set featured timelines in database.
