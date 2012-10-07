@@ -1,0 +1,46 @@
+%div.container
+  %br
+  %br
+  %br
+  %br
+  %div.border
+    %div.hero-unit.mainmessage.border
+      %h3.onhomepage #{PRODUCT_DISPLAY_NAME}, the place for timelines you need!
+      %p.onhomepage Timeline creation was never so easy.
+      %ul
+        %li
+          %p.onhomepage 
+            Quickly  
+            %a{:href => new_timeline_path}create 
+            %strong.onhomepage timelines
+            of your interest.
+        %li
+          %p.onhomepage 
+            %strong.onhomepage Find 
+            existing 
+            %strong.onhomepage timelines 
+            and
+            %strong.onhomepage share 
+            with other people.
+      %p.onhomepage
+        Check out our 
+        %a{:href => showcase_path}
+          showcase 
+        to get a feel of it.
+      %p.onhomepage
+        You go to Youtube for videos.   
+        %strong.onhomepage #{PRODUCT_DISPLAY_NAME} 
+        welcomes you for 
+        %strong.onhomepage timelines. 
+    %hr.onhomepage
+    %div.featured.border
+      %div.row
+        %div.span12
+          %span.label.label-info Featured Timelines:
+          %a{:href => showcase_path, :style => "float: right"}
+            More...
+        %div.span12
+          - if @featuted_timelines == nil
+            %h1 Please set featured timelines in database.
+          - else
+            = render :partial => "tl_small_block", :locals => {:selected_timelines => @featuted_timelines}
