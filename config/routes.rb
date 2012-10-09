@@ -30,7 +30,6 @@ Kaal::Application.routes.draw do
 
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'
-  match 'examples' => 'static#examples'
   match 'faq' => 'static#faq'
   
   match '/auth/:service/callback' => 'sessions#create' 
@@ -52,7 +51,7 @@ Kaal::Application.routes.draw do
   resources :timelines
   match 'tlhome' => 'timelines#homepage', :as=> :tlhome
   match 'tlnsearch' => 'timelines#search', :as=> :tlnsearch
-  match 'showcase' => 'timelines#showcase'
+  match 'examples' => 'timelines#examples'
   match 'newtlhome' => 'timelines#newhomepage', :as=> :newtlhome
 
   # Sample resource route with options:

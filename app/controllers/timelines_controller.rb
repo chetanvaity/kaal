@@ -115,8 +115,8 @@ class TimelinesController < ApplicationController
     render :template => "timelines/searchresults", :formats => [:html], :handlers => :haml
   end
   
-  def showcase
-    
+  # Show some example timelines
+  def examples
     @example_rows = []
     # We currently entertain max 4 values ...if present in DB
     for i in 1..4
@@ -150,8 +150,7 @@ class TimelinesController < ApplicationController
           @example_rows.push(rowhash)
         end #end if
       end
-    end #end for
-    
+    end #end for    
   end
   
   
