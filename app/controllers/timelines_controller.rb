@@ -116,7 +116,7 @@ class TimelinesController < ApplicationController
   end
   
   # Show some example timelines
-  def examples
+  def showcase
     @example_rows = []
     # We currently entertain max 4 values ...if present in DB
     for i in 1..4

@@ -51,7 +51,7 @@ Kaal::Application.routes.draw do
   resources :timelines
   match 'tlhome' => 'timelines#homepage', :as=> :tlhome
   match 'tlnsearch' => 'timelines#search', :as=> :tlnsearch
-  match 'examples' => 'timelines#examples'
+  match 'showcase' => 'timelines#showcase'
   match 'newtlhome' => 'timelines#newhomepage', :as=> :newtlhome
 
   # Sample resource route with options:
