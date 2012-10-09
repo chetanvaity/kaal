@@ -335,7 +335,7 @@ def newhomepage
           if @viewstyle == "tl"
             #This is for timeline display
             json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-            @util.make_json(@fetchedevents, json_fname, given_tl_id, nil, nil)
+            @util.make_json(@fetchedevents, json_fname, @tlentry.title, nil, nil)
           else
             #This is for tabular display
             # @fetchedevents should be used by the view for display purpose
