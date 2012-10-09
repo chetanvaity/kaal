@@ -1,4 +1,5 @@
-%h3 Frequently Asked Questions
+%div.page-header
+  %h1 Frequently Asked Questions
 %br
 %div.span12
   %ul
@@ -6,29 +7,42 @@
     %li
       %strong What is Pollengrain?
       %br
-        Pollengrain is a place where you can see events on a timeline. You can drag the timeline and browse events on it. We have populated it with some events from the Wikipedia, so if you search for any term(s) like "Indira Gandhi" or "Coca Cola", you will get some events on the timeline. You are encouraged to add more events and tag them appropriately.
+        Pollengian is a place where you can find various timelines, view them, use them and share with friends. A timeline is nothing but a series of related events in a chronological order. Pollengrain provides a platform which allows you to easily create such timelines.
     %br
     %li
       %strong How do I view a timeline?
       %br
         First of all, take a look at some
-        %a{:href=> "/examples/"} examples.
-        If you have something in mind - simply type that into the search box on the home page and click "Search". You should get a timeline related to your query. You can also add From and To dates to limit the period of your timeline. Pollengrain shows the top 20 results in the timeline.        
+        %a{:href => examples_path} examples.
+        If you have something in mind - simply search for it from the "Search box" on the top. If you don't get what you want, why not try
+        %a{:href => new_timeline_path} creating
+        the timeline.
     %br
     %li
       %strong Can I create my own timeline?
       %br
-        That's the idea! You can add/edit events so that they appear in the timeline of your search query. You can also tag existing events and then query this tag for the timeline. We are working towards making this as easy as possible.
+        Of course! Login using your Facebook or Google credentials. Then click on 'New timeline' to get started. As the owner of the timeline, you can edit or delete it at any point of time. See this XXX TBD XXX  video. You can quickly find all timelines and events added by you, under
+        %a{:href => my_path} 'My Content'
+        page.        
     %br
     %li
-      %strong How do I edit an event?
+      %strong What is an event and how do I edit it?
       %br
-        Click on the "List view" link. Here you will see the timeline events listed in a tabular format. Click the "Edit" link next to the event to get started. You will need to be logged in to do this.
+        An event is something which happened in the past. A timeline is a set of such related events presented in a chronological order.
+      %br
+        Login and go to
+        %a{:href => my_path} 'My Content'
+        page to see all events added by you. You can edit individual events from here.
+      %br
+        While viewing any timeline, you can also click on the "List view" link. Here you will see the timeline events listed in a tabular format. Click the "Edit" link next to an event to get started. You will need to be logged in for this.
+
     %br
     %li
       %strong How do I share a timeline with friends?
       %br
-        As of now, you can simply share the URL. We are working to make this seamlessly possible with Facebook, Google+, etc.
+        On the timeline page, click on the "Share URL" button. You can send this URL to your friends.
+      %br
+        You can also get the embed code for this timeline by using "Get HTML embed code" button. Paste this embed code on any webpage of your site or blog. We are working to make this seamlessly possible with Facebook, Google+, etc.
     %br
     %li
       %strong What's the significance of the name "Pollengrain"?
