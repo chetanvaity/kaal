@@ -1,0 +1,19 @@
+= form_for(@tl_image) do |f|
+  - if @tl_image.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@tl_image.errors.count, "error")
+        prohibited this tl_image from being saved:
+      %ul
+        - @tl_image.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = f.label :title
+    %br
+    = f.text_field :title
+  .field
+    = f.label :fname
+    %br
+    = f.file_field :fname
+  .actions
+    = f.submit

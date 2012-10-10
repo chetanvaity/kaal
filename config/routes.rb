@@ -1,4 +1,6 @@
 Kaal::Application.routes.draw do
+  resources :tl_images
+
   get "activity_log/index"
 
   get "users/new"

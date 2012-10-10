@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120914083101) do
+ActiveRecord::Schema.define(:version => 20121010162007) do
 
   create_table "activity_logs", :force => true do |t|
     t.integer  "user_id"
@@ -68,6 +68,13 @@ ActiveRecord::Schema.define(:version => 20120914083101) do
     t.string   "imgurl"
     t.string   "events"
     t.string   "tags"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "tl_images", :force => true do |t|
+    t.string   "title"
+    t.string   "fname"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

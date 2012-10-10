@@ -45,6 +45,13 @@ class TimelinesController < ApplicationController
       @timeline.owner_id = current_user.id
     end
 
+    # If no image, put one of the default images randomly
+    if @timeline.imgurl.nil? or @timeline.imgurl == ""
+      offset = rand(TlImage.count)
+      rand_image = TlImage.first(:offset => offset)
+      @timeline.imgurl = "/uploads/#{rand_image.fname}"
+    end
+
     if @timeline.save
       record_activity("t=#{@timeline.title}")
       flash[:notice] =

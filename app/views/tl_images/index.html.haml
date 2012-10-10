@@ -1,0 +1,20 @@
+%h1 Listing tl_images
+%table
+  %tr
+    %th Title
+    %th Fname
+    %th
+    %th
+    %th
+  - @tl_images.each do |tl_image|
+    %tr
+      %td= tl_image.title
+      %td= tl_image.fname
+      %td
+        %img{:src => "/uploads/#{tl_image.fname}"}
+      %td= link_to 'Show', tl_image
+      %td= link_to 'Edit', edit_tl_image_path(tl_image)
+      %td= link_to 'Destroy', tl_image, confirm: 'Are you sure?', method: :delete
+%br
+
+= link_to 'New Tl image', new_tl_image_path

@@ -1,0 +1,11 @@
+%p#notice= notice
+%p
+  %b Title:
+  = @tl_image.title
+%p
+  %b Fname:
+  = @tl_image.fname
+
+= link_to 'Edit', edit_tl_image_path(@tl_image)
+
+= link_to 'Back', tl_images_path

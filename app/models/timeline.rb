@@ -19,7 +19,7 @@ class Timeline < ActiveRecord::Base
 
   # Validation for imgurl
   validates :imgurl,:format => {
-    :with => /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/ix,
+    :with => /(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)|(\/uploads\/[a-z0-9]+)/ix,
     :message => '^URL (%{value}) is invalid'
   }, :allow_blank => true
   
