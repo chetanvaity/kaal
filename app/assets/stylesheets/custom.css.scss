@@ -362,12 +362,86 @@ div.mainmessage {
   box-shadow: 1px;*/
   padding-bottom: 10px;
   margin-bottom: 0px;
+  background-image: url(/assets/tl-image.png);
+  height: 450px;
+}
+
+div.mainbox1 {
+  margin-bottom: 5px;
+  padding-top: 40px;
+  padding-left: 25px;
+  //height: 50px;
+  //width: 300px;
+  height: 150px;
+  width: 380px;
+  background-color: #000;
+  h1 {
+    color: #fff;
+  }
+}
+
+div.mainbox2 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 20px;
+  padding-left: 25px;
+  height: 110px;
+  width: 400px;
+   
+  h1 {
+    color: $gray;
+    font-size: 30px;
+  }
+  
+}
+
+div.mainbox3 {
+  margin-top: 5px;
+  padding-top: 25px;
+  padding-left: 15px;
+  height: 120px;
+  width: 410px;
+  
+  h2 {
+    //float: left;
+    color: $gray;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 15px;
+  }
+  
+}
+
+div.featured_title {
+  padding-top: 5px;
+  padding-left: 25px;
+  margin-left: 1px;
+  background-color: $gray;   
+  h3 {
+    color: #fff;
+    }
+  height: 27px;
+  width: 200px;
+  
 }
 
 div.featured {
   padding-top: 0px;
   margin-top: 0px;
   border: 5px;
+  //background-color: $grayLight;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  ul.thumbnails {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    li {
+      margin-bottom: 5px;
+      //padding-left: 0px;
+      //margin-left: 5px;
+    }
+    
+  }
 }
 
 h3.onhomepage {
@@ -390,6 +464,8 @@ hr.onhomepage {
   margin-top: 2px;
   padding-bottom: 0px;
   margin-bottom: 2px;
+  height: 5px;
   color: $gray;
+  background-color: $gray;
 }
 

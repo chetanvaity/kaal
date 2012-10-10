@@ -4,25 +4,26 @@
   %br
   %br
   %br  
-  %div.hero-unit
-    %h1 #{PRODUCT_DISPLAY_NAME}
-    %h2 Timelines. Quick. Easy.
-    %p Timeline creation was never so easy.
-    %ul
-      %li
-        %p
-          Quickly  
-          %a{:href => new_timeline_path}create 
-          timelines of your interest and share.
-      %li
-        %p 
-          %a{:href => examples_path} Check out
-          timelines created by others.
-        
+  %div.mainmessage
+    %div.hero-unit.mainbox1.span5.border
+      %h1 #{PRODUCT_DISPLAY_NAME}
+      %h2 Timelines. Quick. Easy.
+    %div.span5.offset3.mainbox2.well.border
+      %h1 Timeline creation was never so easy.
+    %div.span5.offset6.mainbox3.well.border
+      %h2
+        %a{:href => new_timeline_path}Create 
+        timelines of your interest and share.
+      %h2
+        %a{:href => examples_path} Check out
+        timelines created by others.
+    %div.span3.featured_title
+      %h3 Featured Timelines
+  %hr.onhomepage
   %div.row
-    %div.span12
+    %div.span12.featured
       - if @featuted_timelines == nil
         %h1 Please set featured timelines in database.
       - else
         = render :partial => "tl_small_block", :locals => {:selected_timelines => @featuted_timelines}
-    %a{:href => examples_path, :style => "float: right"} More...
+  
