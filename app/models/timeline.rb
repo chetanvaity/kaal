@@ -23,14 +23,19 @@ class Timeline < ActiveRecord::Base
     :message => '^URL (%{value}) is invalid'
   }, :allow_blank => true
   
-  
+  # For SEO friendly URLs
+  # http://www.jroller.com/obie/entry/seo_optimization_of_urls_in
+  def to_param
+    "#{id}-#{title.parameterize}"
+  end
+
   #
-    # search integration
-    #
-    searchable do
-      text :title, :default_boost => 2
-      text :tags, :boost => 1.5
-      text :desc
-    end
+  # search integration
+  #
+  searchable do
+    text :title, :default_boost => 2
+    text :tags, :boost => 1.5
+    text :desc
+  end
 
 end
