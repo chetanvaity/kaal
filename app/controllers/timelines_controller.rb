@@ -22,6 +22,7 @@ class TimelinesController < ApplicationController
     id = params[:id]
     init_core_tl_display_vars()
     get_timeline_data_for_display(id)
+    @local_page_title = @tlentry.title
     @tl_container_page_path = timeline_path(@tlentry)
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,

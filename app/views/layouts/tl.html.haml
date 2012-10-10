@@ -3,7 +3,10 @@
   %head
     %meta{:charset => "utf-8"}
     %meta{:description => "Time-lines on your finger-tips. Search data in chronological order and view it in the form of time-lines.", :keywords => "time-line, timeline, chronological, search"}
-    %title #{PRODUCT_DISPLAY_NAME} time-lines
+    -if !@local_page_title.nil? && @local_page_title != "" 
+      %title #{@local_page_title} | #{PRODUCT_DISPLAY_NAME} timelines
+    -else
+      %title #{PRODUCT_DISPLAY_NAME} timelines
     = stylesheet_link_tag 'application'
     = javascript_include_tag 'application'
     = csrf_meta_tags
