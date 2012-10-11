@@ -32,6 +32,9 @@
               = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines")
             -else
               = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines", :value => "#{@tlquery}")
+            = button_tag(:type => "submit", :class => "btn btn-primary") do
+              %i.icon-search.icon-white
+              /= p " Search"
         -if !signed_in?
           -if !@ext_signin_on_page.nil? && @ext_signin_on_page == true
           -else
