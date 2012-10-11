@@ -71,5 +71,19 @@ group :production do
   gem 'rack-google-analytics', :require => 'rack/google-analytics'
 end 
 
+
 # For Pagination
 gem 'kaminari'
+
+#
+# For AMol's vmplayer problem:
+# Acces to webpages from host machine was very very slow, not usable. Following link says that it is
+# a webrick issue and suggests to use 'thin' or 'mongrel'. Amol picked up 'thin' as 'mongrel'
+# did not install on his machine for unknown reasons.
+# http://superuser.com/questions/183375/ubuntu-in-virtualbox-webrick-web-server-very-slow-when-using-local-ip-address
+#
+# With 'thin', you need to say 'thin start' instead of 'rails server'.
+#
+group :test, :development do
+  gem 'thin'
+end
