@@ -161,19 +161,7 @@ class TimelinesController < ApplicationController
     end #end for    
   end
   
-  
-  def homepage
-    #GEt id of default timeline from DB. 
-    default_tl_id = @configvalues.get_value("default_tl_id")
-    init_core_tl_display_vars()
-    
-    if !default_tl_id.nil?
-      logger.debug("default timeline id is : " +  default_tl_id)
-      get_timeline_data_for_display(default_tl_id)
-    else
-      logger.info("default timeline id is NIL.")
-    end
-    
+  def newhomepage
     # Featured timelines
     @featuted_timelines = nil
     tlids_array = [] #empty array
@@ -194,57 +182,9 @@ class TimelinesController < ApplicationController
     if tlids_array.length() > 0
       @featuted_timelines = Timeline.find(tlids_array)
     end
-    
-    @tl_container_page_path = tlhome_path 
-    
-    if @fullscr == "false"        
-      render :template => "timelines/tlhome", :formats => [:html], :handlers => :haml,
-        :layout => "tl"
-    else
-      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
-                   :layout => "tl"
-    end  
-  end
-
-  
-def newhomepage
-    #GEt id of default timeline from DB. 
-    default_tl_id = @configvalues.get_value("default_tl_id")
-    init_core_tl_display_vars()
-    
-    if !default_tl_id.nil?
-      logger.debug("default timeline id is : " +  default_tl_id)
-      get_timeline_data_for_display(default_tl_id)
-    else
-      logger.info("default timeline id is NIL.")
-    end
-    
-    # Featured timelines
-    @featuted_timelines = nil
-    tlids_array = [] #empty array
-    tl_ids_str = @configvalues.get_value("featured_tl_ids")
-    if !tl_ids_str.nil?
-      tlids_str_array = tl_ids_str.split(",")
-      if tlids_str_array != nil
-        tlids_str_array.each { |tlid|
-          begin
-            tlids_array.push(Integer(tlid))
-          rescue
-          end
-          
-        }
-      end
-    end
-    
-    if tlids_array.length() > 0
-      @featuted_timelines = Timeline.find(tlids_array)
-    end
-    
-    if @fullscr == "false"        
-      render :template => "timelines/newtlhome", :formats => [:html], :handlers => :haml
-    else
-      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml
-    end  
+            
+    render :template => "timelines/newtlhome", :formats => [:html], :handlers => :haml
+      
   end
 
     
