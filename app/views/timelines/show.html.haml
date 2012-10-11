@@ -10,8 +10,8 @@
     -else
       %i.icon-arrow-up
   -if !current_user.nil? && @tlentry.owner_id == current_user.id
-    %span.offset4
-      %a{:href => edit_timeline_path(@tlentry), :style => "padding-right: 15px", :title => "Edit timeline", :rel => "tooltip"}
+    %span.offset9
+      %a{:href => edit_timeline_path(@tlentry), :style => "float: right;", :title => "Edit timeline", :rel => "tooltip"}
         %i.icon-edit
         Edit
       %i.icon-remove
