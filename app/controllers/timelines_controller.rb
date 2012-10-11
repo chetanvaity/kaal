@@ -23,6 +23,9 @@ class TimelinesController < ApplicationController
     init_core_tl_display_vars()
     get_timeline_data_for_display(id)
     @local_page_title = @tlentry.title
+    @complete_page_url = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
+    logger.debug("Complete page path: " + @complete_page_url)
+    
     @tl_container_page_path = timeline_path(@tlentry)
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,

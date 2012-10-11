@@ -1,3 +1,29 @@
+/
+/ This div is needed for FB like button
+/
+%div{:id => "fb-root"}
+%script{:type => "text/javascript"}
+  window.fbAsyncInit = function() {
+  FB.init({
+  status     : true, // check login status
+  cookie     : true, // enable cookies to allow the server to access the session
+  xfbml      : true  // parse XFBML
+  });
+
+  // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+  var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement('script'); js.id = id; js.async = true;
+  js.src = "http://connect.facebook.net/en_US/all.js";
+  ref.parentNode.insertBefore(js, ref);
+  }(document));     
+/
+/ -----------------------------------------------------------------------------
+
 
 %div
   %h3.float
@@ -16,6 +42,8 @@
         Edit
       %i.icon-remove
       = link_to "Delete", timeline_path(@tlentry), :title => "Delete timeline", :rel => "tooltip", :method=> :delete, :confirm => 'Are you sure you want to delete this event?'
+
+
 %br
 %div.collapse.in{:id => "tlsummary"}
   %div.well.fixed_height_tlsummary  
@@ -46,9 +74,18 @@
       -@tlentry.tags.split(/,/).each do |each_tag|
         %a{:href => "#{tlnsearch_path}?tlquery=#{each_tag}"}
           %span.label.label-info #{each_tag} 
-      
-      
 
+/
+/FB-Like button
+/      
+-if !@events_size.nil? && @events_size > 0
+  /
+  / To show in middle
+  /%div{:style => "padding-left: 320px;", :class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
+  /
+  / To show left aligned
+  %div{:class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
+  
 = render 'timelines/timeline_core'
 
 /Let's collapse this section by default if all ements in side it are not available.
@@ -57,8 +94,11 @@
     $(function ()  
     { 
     $("#tlsummary").collapse('hide');  
+    }       
+    );
     
-    });     
+        
+    
       
   
                
