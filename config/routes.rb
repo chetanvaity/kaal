@@ -26,7 +26,7 @@ Kaal::Application.routes.draw do
   #tlsearch_path in our code. Later we can change actual route from 'tl' to something else.
   #And there, we do not need to change our code to adjust the calling function.
   # SO ...keep 'tlsearch' as it is even if you change actual route.
-  match 'tl' => 'events#query2', :as=> :tlsearch
+  match 'sandbox' => 'events#query2', :as=> :tlsearch
   match 'search_events' => 'events#search'
   match 'ac_search' => 'tags#ac_search'
 
