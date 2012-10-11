@@ -240,13 +240,10 @@ def newhomepage
       @featuted_timelines = Timeline.find(tlids_array)
     end
     
-    
     if @fullscr == "false"        
-      render :template => "timelines/newtlhome", :formats => [:html], :handlers => :haml,
-        :layout => "tl"
+      render :template => "timelines/newtlhome", :formats => [:html], :handlers => :haml
     else
-      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
-                   :layout => "tl"
+      render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml
     end  
   end
 
