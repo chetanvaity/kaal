@@ -5,20 +5,24 @@
   %br
   %br  
   %div.mainmessage
-    %div.hero-unit.mainbox1.span5.border
+    %div.hero-unit.mainbox1.span3.border
       %h1 #{PRODUCT_DISPLAY_NAME}
-      %h2 Timelines. Quick. Easy.
-    %div.span5.offset3.mainbox2.well.border
-      %h1 Timeline creation was never so easy.
-    %div.span5.offset6.mainbox3.well.border
+      %h2 #{PRODUCT_TAG_LINE}
+    %div.span3.mainbox2.well.border
+      %h2
+        %a{:href => showcase_path} Check out
+        timelines created by others.
       %h2
         %a{:href => new_timeline_path}Create 
         timelines of your interest and share.
       %h2
-        %a{:href => showcase_path} Check out
-        timelines created by others.
+        Visit our 
+        %a{:href => faq_path}FAQ 
+        for any additional help.
+      
     %div.span3.featured_title
       %h3 Featured Timelines
+      
   %hr.onhomepage
   %div.row
     %div.span12.featured
