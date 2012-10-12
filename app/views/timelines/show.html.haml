@@ -75,18 +75,30 @@
         %a{:href => "#{tlnsearch_path}?tlquery=#{each_tag}"}
           %span.label.label-info #{each_tag} 
 
+= render 'timelines/timeline_core'
+
 /
-/FB-Like button/G-plus buttons
+/ Social items :-)
 /      
 -if !@events_size.nil? && @events_size > 0
+  %br
+  %br
+  /
+  /FB-Like button/G-plus buttons
+  /
   /
   %div{:style => "padding-bottom: 5px;"}
     %div{:class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
-    %div{:class => "g-plusone", "data-href" => "#{@complete_page_url}", "data-annotation" => "inline", "data-width" => "300"}
+    %div{:class => "g-plusone", "data-href" => "#{@complete_page_url}", "data-annotation" => "inline", "data-width" => "300", "data-size" => "medium"}
+  /
+  / Render facebook comment block
+  /
+  %div{:class => "fb-comments", "data-href" => "#{@complete_page_url}", "data-num-posts" => "5", "data-width" => "770"}
   
-  
-= render 'timelines/timeline_core'
 
+/
+/ ======================================================================================
+/
 /Let's collapse this section by default if all ements in side it are not available.
 -if @tlentry.imgurl == "" && @tlentry.desc == "" && @tlentry.tags == ""
   %script{:type => "text/javascript"}
