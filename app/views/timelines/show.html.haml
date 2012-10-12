@@ -76,15 +76,14 @@
           %span.label.label-info #{each_tag} 
 
 /
-/FB-Like button
+/FB-Like button/G-plus buttons
 /      
 -if !@events_size.nil? && @events_size > 0
   /
-  / To show in middle
-  /%div{:style => "padding-left: 320px;", :class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
-  /
-  / To show left aligned
-  %div{:class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
+  %div{:style => "padding-bottom: 5px;"}
+    %div{:class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
+    %div{:class => "g-plusone", "data-href" => "#{@complete_page_url}", "data-annotation" => "inline", "data-width" => "300"}
+  
   
 = render 'timelines/timeline_core'
 
@@ -96,6 +95,19 @@
     $("#tlsummary").collapse('hide');  
     }       
     );
+
+/
+/ Script for Google plus button
+/    
+%script{:type => "text/javascript"}
+  $(function() 
+  {
+  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+  po.src = 'https://apis.google.com/js/plusone.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  }
+  )();
+
     
         
     
