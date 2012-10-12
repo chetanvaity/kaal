@@ -1,5 +1,6 @@
 Kaal::Application.routes.draw do
   resources :tl_images
+  resources :configvalues
 
   get "activity_log/index"
 

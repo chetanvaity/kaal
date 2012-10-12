@@ -24,5 +24,15 @@ class ApplicationController < ActionController::Base
       logger.warn("record_activity(): #{controller_name}-#{action_name}-#{params}: #{e}")
     end
   end
+
+  # Used by controllers to restrict access only to admin
+  def require_admin
+    if (not current_user.nil?) and (current_user.isadmin)
+      # Its admin. Cool.
+    else
+      flash[:warning] = "You must be admin to access this page"
+      redirect_to :root
+    end
+  end
   
 end

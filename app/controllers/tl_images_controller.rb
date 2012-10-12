@@ -96,15 +96,4 @@ class TlImagesController < ApplicationController
       file.write(uploaded_io.read)
     end
   end
-
-  private
-  def require_admin
-    if (not current_user.nil?) and (current_user.isadmin)
-      # Its admin. Cool.
-    else
-      flash[:warning] = "You must be admin to access tl images"
-      redirect_to :root
-    end
-  end
-
 end

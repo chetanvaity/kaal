@@ -1,0 +1,23 @@
+%div.page-header
+  %h1 Config Values
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ParamName
+      %th ParamValue
+      %th
+      %th
+      %th
+  %tbody
+    - @configvalues.each do |cv|
+      %tr
+        %td= cv.paramname
+        %td= cv.paramvalue
+        %td= link_to 'Show', cv
+        %td= link_to 'Edit', edit_configvalue_path(cv)
+        %td= link_to 'Destroy', cv, confirm: 'Are you sure?', method: :delete
+
+%br
+
+= link_to 'New ConfigValue', new_configvalue_path

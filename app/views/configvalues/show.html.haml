@@ -1,0 +1,11 @@
+%p#notice= notice
+%p
+  %b Param Name:
+  = @configvalue.paramname
+%p
+  %b Param Value:
+  = @configvalue.paramvalue
+
+= link_to 'Edit', edit_configvalue_path(@configvalue)
+
+= link_to 'Back', configvalues_path

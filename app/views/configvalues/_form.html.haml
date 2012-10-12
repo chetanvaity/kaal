@@ -1,0 +1,19 @@
+= form_for(@configvalue) do |f|
+  - if @configvalue.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@configvalue.errors.count, "error")
+        prohibited this confiog value from being saved:
+      %ul
+        - @configvalue.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = f.label :paramname
+    %br
+    = f.text_field :paramname
+  .field
+    = f.label :paramvalue
+    %br
+    = f.text_field :paramvalue
+  .actions
+    = f.submit

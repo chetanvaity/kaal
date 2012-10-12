@@ -1,6 +1,6 @@
 # encoding: UTF-8
 require 'util.rb'
-require 'configvalues.rb'
+require 'configcache.rb'
 
 class TimelinesController < ApplicationController
   
@@ -10,7 +10,7 @@ class TimelinesController < ApplicationController
   def initialize(*params)
     super(*params)
     @util = Util.instance
-    @configvalues = Configvalues.instance
+    @configcache = ConfigCache.instance
   end
     
   def index
@@ -134,7 +134,7 @@ class TimelinesController < ApplicationController
       #
       # each example row value in db will be in form title,id1.id2,id2   etc.
       #
-      example_row_values_str = @configvalues.get_value("example_row_#{i}")
+      example_row_values_str = @configcache.get_value("example_row_#{i}")
       if !example_row_values_str.nil?
         row_values_str_array = example_row_values_str.split(",")
         if row_values_str_array != nil
@@ -168,7 +168,7 @@ class TimelinesController < ApplicationController
     # Featured timelines
     @featuted_timelines = nil
     tlids_array = [] #empty array
-    tl_ids_str = @configvalues.get_value("featured_tl_ids")
+    tl_ids_str = @configcache.get_value("featured_tl_ids")
     if !tl_ids_str.nil?
       tlids_str_array = tl_ids_str.split(",")
       if tlids_str_array != nil
