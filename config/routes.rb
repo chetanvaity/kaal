@@ -1,10 +1,19 @@
 Kaal::Application.routes.draw do
+  root :to => 'timelines#newhomepage'
+
+  resources :timelines
+  match 'tlhome' => 'timelines#homepage', :as=> :tlhome
+  match 'tlnsearch' => 'timelines#search', :as=> :tlnsearch
+  match 'showcase' => 'timelines#showcase'
+  match 'newtlhome' => 'timelines#newhomepage', :as=> :newtlhome
+
+  match 'credits' => 'static#credits'
+  match 'about' => 'static#about_us'
+  match 'faq' => 'static#faq'
+
+  resources :events
   resources :tl_images
   resources :configvalues
-
-  get "activity_log/index"
-
-  get "users/new"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -17,10 +26,7 @@ Kaal::Application.routes.draw do
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
-  root :to => 'timelines#newhomepage'
-
   # Sample resource route (maps HTTP verbs to controller actions automatically):
-  resources :events
 
   #This is our search function
   #Note: Here we have given 'tlsearch' as alias, so that we can use 
@@ -30,10 +36,6 @@ Kaal::Application.routes.draw do
   match 'sandbox' => 'events#query2', :as=> :tlsearch
   match 'search_events' => 'events#search'
   match 'ac_search' => 'tags#ac_search'
-
-  match 'credits' => 'static#credits'
-  match 'about' => 'static#about_us'
-  match 'faq' => 'static#faq'
   
   match '/auth/:service/callback' => 'sessions#create' 
   match '/auth/failure' => 'sessions#failure'
@@ -45,17 +47,14 @@ Kaal::Application.routes.draw do
   # This page is used only during redirection.
   match '/extlogin', to: 'sessions#external_sign_in', :as => :extlogin
 
+  get "users/new"
+
   match '/my'=> 'users#mycontent'
 
+  get "activity_log/index"
   resources :activity_log do
     get 'page/:page', :action => :index, :on => :collection
   end
-
-  resources :timelines
-  match 'tlhome' => 'timelines#homepage', :as=> :tlhome
-  match 'tlnsearch' => 'timelines#search', :as=> :tlnsearch
-  match 'showcase' => 'timelines#showcase'
-  match 'newtlhome' => 'timelines#newhomepage', :as=> :newtlhome
 
   # Sample resource route with options:
   #   resources :products do
