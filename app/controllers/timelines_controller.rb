@@ -5,7 +5,7 @@ require 'configcache.rb'
 class TimelinesController < ApplicationController
   
   before_filter :signing_is_must, only: [:new, :edit, :update]
-  before_filter :require_admin, only: [:timelines_quickview]
+  before_filter :require_admin, only: [:timelines_quickview, :browse]
 
   # Constructor
   def initialize(*params)
@@ -207,6 +207,10 @@ class TimelinesController < ApplicationController
     end
     
     render :template => "timelines/timelines_quickview", :formats => [:html], :handlers => :haml 
+  end
+  
+  def browse
+    @timelines_list_for_a_page = Timeline.order("created_at DESC").page(params[:page]).per(24)
   end
 
     
