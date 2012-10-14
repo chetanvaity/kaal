@@ -6,6 +6,7 @@ Kaal::Application.routes.draw do
   match 'tlnsearch' => 'timelines#search', :as=> :tlnsearch
   match 'showcase' => 'timelines#showcase'
   match 'newtlhome' => 'timelines#newhomepage', :as=> :newtlhome
+  match 'timelinesqview' => 'timelines#timelines_quickview'
 
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'

@@ -1,0 +1,35 @@
+%div
+  %h3 Total #{@total_timelines} timelines present on the server.
+  
+%br  
+%div
+  %h3 Author List
+  %table{:class => "table table-bordered table-striped"}
+    %thead
+      %tr
+        %th Author Id
+        %th Author name
+        %th Author email
+        %th Auth Provider 
+        %th Total number of timelines
+        
+    %tbody
+      -if @total_timelines > 0 && !@timelines_authors_summary.nil?
+        - @timelines_authors_summary.each do |each_author_summary|
+          %tr
+            %td
+              = each_author_summary.his_id
+            -if @authors_details[each_author_summary.his_id].nil?
+              %td
+              %td
+              %td
+            -else
+              %td
+                = @authors_details[each_author_summary.his_id].name
+              %td
+                = @authors_details[each_author_summary.his_id].email
+              %td
+                = @authors_details[each_author_summary.his_id].authprovider
+            %td
+              = each_author_summary.his_count
+            

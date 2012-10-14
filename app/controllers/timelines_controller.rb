@@ -190,6 +190,23 @@ class TimelinesController < ApplicationController
     render :template => "timelines/newtlhome", :formats => [:html], :handlers => :haml
       
   end
+  
+  def timelines_quickview
+    @total_timelines = Timeline.count()
+    @timelines_authors_summary = Timeline.select("owner_id as his_id, count(*) as his_count").group("owner_id").order("his_count DESC")
+    @authors_details = Hash.new
+    
+    @timelines_authors_summary.each do |each_author_summary|
+      user_entry = nil
+      begin
+        user_entry = User.find(each_author_summary.his_id)
+      rescue
+      end
+      @authors_details[each_author_summary.his_id] = user_entry
+    end
+    
+    render :template => "timelines/timelines_quickview", :formats => [:html], :handlers => :haml 
+  end
 
     
   # ========================= private functions =================================
