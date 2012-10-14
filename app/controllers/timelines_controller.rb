@@ -5,6 +5,7 @@ require 'configcache.rb'
 class TimelinesController < ApplicationController
   
   before_filter :signing_is_must, only: [:new, :edit, :update]
+  before_filter :require_admin, only: [:timelines_quickview]
 
   # Constructor
   def initialize(*params)
