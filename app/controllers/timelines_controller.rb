@@ -162,6 +162,7 @@ class TimelinesController < ApplicationController
         end #end if
       end
     end #end for    
+    @local_page_title = "Showcase"
   end
   
   def newhomepage
