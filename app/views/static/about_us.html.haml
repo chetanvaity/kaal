@@ -3,18 +3,20 @@
 %p
   %i.icon-ok
   #{PRODUCT_DISPLAY_NAME} 
-  lets you generate timelines quickly. Enter search terms and date range (optional) to get relevant events on a timeline.
+  is a place where you can easily create timelines and then share them with your friends. Do you want to create a timeline for your history project? Or do you want to display your company's progress through the years? This is the place for it!
 %p
   %i.icon-ok
-  Play with the timeline to get information about the events. 
-%p
-  %i.icon-ok
-  Embed #{PRODUCT_DISPLAY_NAME} timelines on external websites using the html embed code.
+  It already has hundreds of thousands of events - seeded from Wikipedia. You can use these to create a timeline of your choice. You can, of course, add new events as well, while creating your timeline.
 %p
   %i.icon-ok
   Visit the
-  %a{:href => "/"}homepage
-  to get a first-hand experience.
+  %a{:href => showcase_path }showcase
+  to see a few selected timelines.
+%p
+  %i.icon-ok
+  Excited? Login and get your hands
+  %a{:href => new_timeline_path}dirty.
+
 %br
 -if !request.xhr?
   / ******************
