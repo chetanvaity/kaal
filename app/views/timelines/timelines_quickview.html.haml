@@ -1,19 +1,28 @@
-%div
-  %h3 
-    Total #{@total_timelines} timelines present on the server. 
-    %a{:href => browse_path}Browse them.
+%div.page-header
+  %h1 Dashboard
+
+%div.well
+  %ul
+    %li
+      Timelines: #{@total_timelines}
+    %li
+      Users: #{@total_users}
+    %li
+      Events: #{@total_events}
+    %li
+      Event Tags: #{@total_tags}
   
 %br  
 %div
-  %h3 Author List
-  %table{:class => "table table-bordered table-striped"}
+  %h3 Top Timeline creators
+  %table.table.table-bordered.table-striped
     %thead
       %tr
         %th Author Id
         %th Author name
         %th Author email
         %th Auth Provider 
-        %th Total number of timelines
+        %th #timelines
         
     %tbody
       -if @total_timelines > 0 && !@timelines_authors_summary.nil?

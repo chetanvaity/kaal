@@ -192,8 +192,12 @@ class TimelinesController < ApplicationController
       
   end
   
+  # This is now a dashboard
   def timelines_quickview
     @total_timelines = Timeline.count()
+    @total_users = User.count()
+    @total_events = Event.count()
+    @total_tags = Tag.count()
     @timelines_authors_summary = Timeline.select("owner_id as his_id, count(*) as his_count").group("owner_id").order("his_count DESC")
     @authors_details = Hash.new
     
