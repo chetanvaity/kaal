@@ -1,28 +1,7 @@
+%div.page-header
+  %h1 Browse Timelines
 
-= page_entries_info(@timelines_list_for_a_page).html_safe
-%br
-%br
-
-= paginate(@timelines_list_for_a_page)
-
-%table{:class => "table table-bordered table-striped"}
-  %thead
-    %tr
-      %th Timeline
-      %th Date of creation
-  %tbody
-    -@timelines_list_for_a_page.each do |each_tl|
-      %tr
-        %td 
-          %a{:href => timeline_path(each_tl)}
-            #{each_tl.title}
-        %td
-          = each_tl.created_at       
-
-/
-/ AMOL: Instead of dumb table, we can also use the tl_blocks. But we need to display creation-date in it.
-/
-/= render :partial => "tl_small_block", :locals => {:selected_timelines => @timelines_list_for_a_page}
-/
-          
-= paginate(@timelines_list_for_a_page)           
+= paginate(@timelines)
+- @timelines.each_slice(4).to_a.each do |row|
+  = render :partial => "timelines/tl_small_block", :locals => {:selected_timelines => row}
+= page_entries_info(@timelines).html_safe

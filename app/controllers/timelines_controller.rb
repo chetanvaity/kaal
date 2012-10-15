@@ -210,9 +210,8 @@ class TimelinesController < ApplicationController
   end
   
   def browse
-    @timelines_list_for_a_page = Timeline.order("created_at DESC").page(params[:page]).per(24)
+    @timelines = Timeline.order("created_at DESC").page(params[:page]).per(24)
   end
-
     
   # ========================= private functions =================================
   private
