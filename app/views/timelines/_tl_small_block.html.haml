@@ -17,6 +17,9 @@
             %h4 #{truncate(each_tl.title, :length=> 25, :ommission => "...")}
             %p.packed
               %small #{truncate(each_tl.desc, :length=> 70, :ommission => "...")}
-            %p.packed
-              %small
-                %strong #{owner_name}
+            %div            
+              %p.packed.pull-left
+                %small
+                  %strong #{truncate(owner_name, :length => 20, :ommission => "...")}
+              %p.packed.pull-right
+                %small #{each_tl.created_at.strftime("%d %b, %Y")}

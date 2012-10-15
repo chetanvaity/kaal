@@ -3,6 +3,7 @@ db/test.sqlite3
 db/production.sqlite3
 db/dumps/
 public/assets/
+public/uploads/
 log/
 tmp/
 tmpjson/
