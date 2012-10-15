@@ -7,13 +7,14 @@
       %ul
         - @tl_image.errors.full_messages.each do |msg|
           %li= msg
-  .field
+  %div.field
     = f.label :title
     %br
-    = f.text_field :title
-  .field
+    = f.text_field :title, :placeholder => "My super default image"
+  %div.field
     = f.label :fname
     %br
     = f.file_field :fname
-  .actions
-    = f.submit
+  = button_tag(:type => "submit", :class => "btn btn-primary") do
+    %i.icon-ok.icon-white
+    = p " Create"
