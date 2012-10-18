@@ -43,6 +43,7 @@ namespace :deploy do
   task :symlink_shared do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs /data/solr/data #{release_path}/solr/data"
+    run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
   end
 
   desc "Create tmpjson directory"
