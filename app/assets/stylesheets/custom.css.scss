@@ -457,6 +457,10 @@ hr.onhomepage {
   background-color: $gray;
 }
 
+.page-header h1 {
+  margin-bottom: 0px;
+}
+
 // ********* To show the listview properly on all browsers *********
 
 td.list_view_title_column {
@@ -483,3 +487,6 @@ td.list_view_buttons_column {
   width: 11%;
 }
 //********************** listview style end **********************
+
+
+
