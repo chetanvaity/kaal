@@ -10,3 +10,5 @@
             = event.title
           %div.muted
             = event.date_str
+
+= page_entries_info(@search.hits, :entry_name => "event").html_safe
