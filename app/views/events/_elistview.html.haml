@@ -7,33 +7,33 @@
 
 
 / List view table
-%table{:class => "table table-bordered table-striped"}
+%table{:class => "table table-bordered table-striped tl_listview_table"}
   %thead
     %tr
-      %th Title
-      %th Date
-      %th Source
-      %th Description
-      %th URL
+      %th.list_view_title_column Title
+      %th.list_view_date_column Date
+      %th.list_view_source_column Source
+      %th.list_view_desc_column Description
+      %th.list_view_url_column URL
       -if signed_in?
-        %th
+        %th.list_view_buttons_column
   %tbody
     - @fetchedevents.each do |eachevent|
       %tr
-        %td 
+        %td.list_view_title_column
           = eachevent.title
-        %td
+        %td.list_view_date_column
           = Date.jd(eachevent.jd).strftime("%B %d, %Y")
-        %td 
+        %td.list_view_source_column
           = eachevent.source
-        %td 
+        %td.list_view_desc_column
           = eachevent.desc
-        %td
+        %td.list_view_url_column
           -if !eachevent.url.nil?
             %a{:href => "#{eachevent.url}", :target => "new"} 
               = eachevent.url
         -if signed_in?
-          %td{:style => "width: 9%"}
+          %td.list_view_buttons_column
             /%div{:class => "event"}
             /  %div{:class => "details"}
             /    %i.icon-edit
