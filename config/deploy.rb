@@ -52,7 +52,14 @@ namespace :deploy do
 
   desc "Create a dummy empty timeline.css to get rid of spurious error from within timeline-embed.js"
   task :create_dummy_timeline_css do
-    run "touch #{release_path}/public/assets/timeline.css"
+    run "#{try_sudo} touch #{release_path}/public/assets/timeline.css"
+  end
+
+  namespace :gems do
+    desc "Install gems"
+    task :install, :roles => :app do
+      run "cd #{current_release} && #{try_sudo} rake gems:install"
+    end
   end
 
   namespace :web do
