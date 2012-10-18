@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121010162007) do
+ActiveRecord::Schema.define(:version => 20121018135234) do
 
   create_table "activity_logs", :force => true do |t|
     t.integer  "user_id"
@@ -46,11 +46,13 @@ ActiveRecord::Schema.define(:version => 20121010162007) do
     t.string  "source",      :limit => 10
     t.text    "desc"
     t.string  "url"
-    t.integer "ownerid"
     t.integer "wiki_id"
+    t.integer "ownerid"
     t.text    "extra_words"
     t.string  "imgurl"
   end
+
+  add_index "events", ["ownerid"], :name => "index_events_on_ownerid"
 
   create_table "tags", :force => true do |t|
     t.integer "event_id",               :null => false
@@ -71,6 +73,8 @@ ActiveRecord::Schema.define(:version => 20121010162007) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "timelines", ["owner_id"], :name => "index_timelines_on_owner_id"
 
   create_table "tl_images", :force => true do |t|
     t.string   "title"
