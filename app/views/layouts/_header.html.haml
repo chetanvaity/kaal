@@ -29,9 +29,9 @@
         %li
           = form_tag(tlnsearch_path, :class => "navbar-search pull-right", :action => "get") do
             -if @tlquery == ""
-              = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines")
+              = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search timelines")
             -else
-              = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search ready timelines", :value => "#{@tlquery}")
+              = text_field_tag('tlquery', nil, :class => "search-query span4", :placeholder => "Search timelines", :value => "#{@tlquery}")
             = button_tag(:type => "submit", :class => "btn btn-primary") do
               %i.icon-search.icon-white
               /= p " Search"
