@@ -53,9 +53,13 @@
     %div.tabbable
       %ul.nav.nav-tabs
         %li.active
-          %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"} Existing events
+          %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"}
+            %i.icon-search
+            Search
         %li
-          %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"} New event
+          %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"}
+            %i.icon-plus
+            New event
 
       %div.tab-content
         %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}

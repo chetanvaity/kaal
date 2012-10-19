@@ -30,18 +30,18 @@
     %strong #{truncate(@tlentry.title, :length=> 75, :ommission => "...")}
   %br
   %a{:id => "tlsummaryanchor", :href => "#", "data-toggle" => "collapse", "data-target" => "#tlsummary"}
-    Details..
     -if @tlentry.imgurl == "" && @tlentry.desc == "" && @tlentry.tags == ""
-      %i.icon-arrow-down
+      %i.icon-chevron-down
     -else
-      %i.icon-arrow-up
+      %i.icon-chevron-right
+    Details...
   -if !current_user.nil? && ((current_user.isadmin) || (@tlentry.owner_id == current_user.id))
     %span.offset9
       %a{:href => edit_timeline_path(@tlentry), :style => "float: right;", :title => "Edit timeline", :rel => "tooltip"}
         %i.icon-edit
         Edit
       %i.icon-remove
-      = link_to "Delete", timeline_path(@tlentry), :title => "Delete timeline", :rel => "tooltip", :method=> :delete, :confirm => 'Are you sure you want to delete this event?'
+      = link_to "Delete", timeline_path(@tlentry), :title => "Delete timeline", :rel => "tooltip", :method=> :delete, :confirm => 'Are you sure you want to delete this timeline?'
 
 
 %br
