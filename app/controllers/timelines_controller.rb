@@ -28,6 +28,21 @@ class TimelinesController < ApplicationController
     logger.debug("Complete page path: " + @complete_page_url)
     
     @tl_container_page_path = timeline_path(@tlentry)
+    if signed_in?
+      if !current_user.nil?
+        # remember query key in session. We'll need if user edits/delets event
+        #session[:qkey] = query_key
+        
+        # Remember listviewurl , we need it in edit func.
+        if @viewstyle == 'list'
+          tmp_list_url = generate_list_view_url(nil,@tlid, @fromdate, @todate, @fullscr== 'true'?true:false, @events_on_a_page, @tl_container_page_path)
+          session[:listviewurl] = tmp_list_url
+        end
+      end
+    end
+    
+    
+    
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
               :layout => "tl"
@@ -225,7 +240,7 @@ class TimelinesController < ApplicationController
       if signed_in?
         if !current_user.nil?
           #session.delete(:qkey)
-          #session.delete(:listviewurl)
+          session.delete(:listviewurl)
         end
       end
           
