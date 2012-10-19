@@ -284,8 +284,7 @@ div#hpsentence.well {
     font-size: 18px;
   }
 }
-
-
+  
 /* Wanted some changes for link color and hover behavior for text inside thumbnail div */
 div.thumbnail {
 
@@ -299,6 +298,25 @@ div.thumbnail {
     text-decoration: none;
     color: #000; 
   } 
+  
+  div.caption {
+    position: relative;
+    height: 65px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    
+    /* ---- we waqnt to display author and date always at the end of the block ------ */
+    .tl_block_bottom_row 
+    {
+      position: absolute;
+      bottom: 0;
+      #ownername_display
+      {
+        width: 120px;
+      }
+    }
+  }
+  
 
   /* ****** timeline search result block related *****/   
   a.tlsearchblock {
