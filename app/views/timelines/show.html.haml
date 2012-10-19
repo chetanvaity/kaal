@@ -26,7 +26,7 @@
 
 
 %div
-  %h3.float
+  %h3.float{:itemprop => "name"}
     %strong #{truncate(@tlentry.title, :length=> 75, :ommission => "...")}
   %br
   %a{:id => "tlsummaryanchor", :href => "#", "data-toggle" => "collapse", "data-target" => "#tlsummary"}
@@ -51,14 +51,14 @@
     / Display image
     /
     -if @tlentry.imgurl != ""
-      %img{ :class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => ""}
+      %img{:class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => "", :itemprop => "image"}
     -else
-      %img{ :class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => ""}
+      %img{:class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => "", :itemprop => "image"}
     /
     / Display description
     /
     -if @tlentry.desc != ""
-      %p.search_result_tldesc
+      %p.search_result_tldesc{:itemprop => "description"}
         = truncate(@tlentry.desc, :length=> 280, :ommission => "...")
     /
     / Display owner name
