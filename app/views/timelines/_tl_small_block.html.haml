@@ -16,9 +16,9 @@
           %div.caption
             %h4 #{truncate(each_tl.title, :length=> 25, :ommission => "...")}
             %p.packed
-              %small #{truncate(each_tl.desc, :length=> 70, :ommission => "...")}
-            %div            
-              %p.packed.pull-left
+              %small #{truncate(each_tl.desc, :length=> 67, :ommission => "...")}
+            %div.tl_block_bottom_row
+              %p.packed.pull-left{:id => "ownername_display"}
                 %small
                   %strong #{truncate(owner_name, :length => 20, :ommission => "...")}
               %p.packed.pull-right
