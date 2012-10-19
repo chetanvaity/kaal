@@ -193,9 +193,6 @@ body #modal-contact {
 }
 */
 
-.popover-content {
-  background-color: $grayLighter;
-}
 
 /* 
  * AMOL: Customized btn-primary clor and lable-info color to match black/gray-ish look-n-feel.
@@ -515,8 +512,16 @@ td.list_view_buttons_column {
 //********************** listview style end **********************
 
 
+// --------------START: Styling for the popover shon on timeline blocks -----------
 p.popover_desc {
   font-size: 12px;
 }
 
+.popover-content {
+  background-color: #fff;
+}
 
+.popover-title { 
+display: none; 
+}
+// --------------END : Styling for the popover shon on timeline blocks -----------
