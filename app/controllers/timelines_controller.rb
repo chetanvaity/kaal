@@ -300,13 +300,11 @@ class TimelinesController < ApplicationController
       end
       
       logger.debug("Length of Integer array of event ids: " + id_array.length().to_s)
-      if id_array.length() > 0
-        @fetchedevents = get_events_from_id_array(id_array)
+      @fetchedevents = get_events_from_id_array(id_array)
+
+      if not @fetchedevents.nil?
         @fetchedevents.each { |each_event| each_event.importance = 3 }
         @fetchedevents.sort!{ |a,b| a.jd <=> b.jd }
-      end
-        
-      if not @fetchedevents.nil?
         @events_size = @fetchedevents.size
         logger.info("Number of fetched events: #{@fetchedevents.size}")
         query_key = @util.get_query_key(nil, nil, "#{given_tl_id}", "default")
@@ -346,23 +344,21 @@ class TimelinesController < ApplicationController
     def get_events_from_id_array(id_arr)
       return [] if id_arr.empty?
         
-      events = []
+      elist = []
       begin
-        events = Event.find(id_arr)
+        elist = Event.find(id_arr)
       rescue ActiveRecord::RecordNotFound => e
         logger.warn(e.message)
         logger.info("Getting events one by one")
-        begin
-          events = id_arr.map do |id|
-            begin
-              Event.find(id)
-            rescue ActiveRecord::RecordNotFound
-              # Ignore
-            end
+          elist = id_arr.map do |id|
+          begin
+            Event.find(id)
+          rescue ActiveRecord::RecordNotFound
+            # Ignore
           end
         end
       end
-      return events.compact!
+      return elist.compact
     end
 
 end
