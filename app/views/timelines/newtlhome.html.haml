@@ -24,4 +24,4 @@
       - if @featuted_timelines == nil
         %h1 Please set featured timelines in database.
       - else
-        = render :partial => "tl_small_block", :locals => {:selected_timelines => @featuted_timelines}
+        = render :partial => "tl_small_block", :locals => {:selected_timelines => @featuted_timelines, :div_id_prefix => 1}

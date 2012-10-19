@@ -1,14 +1,41 @@
 /
+/ Popover example. 
+/ These are hidden divs ..one per each tiomeline -block. The yget invoked based on their IDs.
+/
+- local_div_count = 0
+- selected_timelines.each do |each_tl|
+  - local_div_count = local_div_count + 1
+  - owner_name = User.find(each_tl.owner_id).name
+  %div{:id => "div-#{div_id_prefix}-#{local_div_count}", :style => "display: none"}
+    %div
+      %b 
+        #{truncate(each_tl.title, :length=> 65, :ommission => "...")}
+      %br
+      %b By:
+      #{truncate("#{owner_name}", :length=> 30, :ommission => "...")} 
+      %br  
+      %p.popover_desc
+        #{truncate(each_tl.desc, :length=> 300, :ommission => "...")}
+/---------------------------------------------------------------------------------------------------
+
+/
 / This block shows given timelines one after another, in a nicer block form.
 / It does not decide how many blocks in one row, etc. That has to be done by somebody outside.
 / In general maximum 4 blocks fit in one row with our selected sizes.
 /
 %ul.thumbnails
+  - local_div_count = 0
   - selected_timelines.each do |each_tl|
+    - local_div_count = local_div_count + 1
     - owner_name = User.find(each_tl.owner_id).name
+    - placement_string = ""
+    -if local_div_count % 4 == 0
+      - placement_string = "left"
+    -else
+      - placement_string = "right"
     %li.span3
       %div.thumbnail
-        %a.thumbnail.tlimageblock{:href => "#{timeline_path(each_tl)}"}
+        %a.thumbnail.tlimageblock{:id => "#{div_id_prefix}-#{local_div_count}", :href => "#{timeline_path(each_tl)}", :rel => "popover", "data-title" => "","data-placement" => "#{placement_string}"}
           -if each_tl.imgurl == ""
             %img{ :class => "tl_fixed_block_imgthumb thumnailgrid", :src => "/assets/default_tlimg.png"}
           -else
@@ -23,3 +50,13 @@
                   %strong #{truncate(owner_name, :length => 20, :ommission => "...")}
               %p.packed.pull-right
                 %small #{each_tl.created_at.strftime("%d %b, %Y")}
+                
+%script{:type => "text/javascript"}
+  $(function ()  
+  {
+ 
+  //$('.tlimageblock').popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner homepage-class"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>', placement: 'right', html : true, content: function() { return $('#div-' + this.id).html();}  });
+  
+  $('.tlimageblock').popover({template: '<div class="popover"><div class="arrow"></div><div class="popover-inner homepage-class"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>', html : true, content: function() { return $('#div-' + this.id).html();}  });
+  
+  });                 

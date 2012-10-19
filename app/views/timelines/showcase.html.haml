@@ -6,7 +6,9 @@
       %h1 Please set example timelines in database.
     - else
       %br
+      - row_count = 0
       - @example_rows.each do |each_row|
+        - row_count = row_count + 1
         - title_to_use = each_row[:title]
         - selected_tl_entries = each_row[:tl_entries]
         -if title_to_use.nil? || title_to_use.empty? || selected_tl_entries.nil? || selected_tl_entries.length() == 0
@@ -14,5 +16,5 @@
         -else
           %h3 #{title_to_use}:
           %br
-          = render :partial => "tl_small_block", :locals => {:selected_timelines => selected_tl_entries}
+          = render :partial => "tl_small_block", :locals => {:selected_timelines => selected_tl_entries, :div_id_prefix => "#{row_count}"}
                     
