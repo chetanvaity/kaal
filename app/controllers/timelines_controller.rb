@@ -41,8 +41,6 @@ class TimelinesController < ApplicationController
       end
     end
     
-    
-    
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
               :layout => "tl"
@@ -296,57 +294,75 @@ class TimelinesController < ApplicationController
       @tlid = @tlentry.id
       
       event_id_str = @tlentry.events
-      idstr_array = event_id_str.split(",")
       id_array = [] #empty array
-      if idstr_array != nil
-        idstr_array.each { |eventid|
-          tmp_str = eventid.strip
-          if !tmp_str.empty?
-            begin
-              id_array.push(Integer(tmp_str))
-            rescue
-            end
-          end 
-        }
-        logger.debug("Length of Integer array of event ids: " + id_array.length().to_s)
-        if id_array.length() > 0
-          @fetchedevents = Event.find(id_array)
-          @fetchedevents.each { |each_event| each_event.importance = 3 }
-          @fetchedevents.sort!{ |a,b| a.jd <=> b.jd }
-        end
-        
-        if !@fetchedevents.nil?
-          @events_size = @fetchedevents.size
-          logger.info("Number of fetched events: #{@fetchedevents.size}")
-          query_key = @util.get_query_key(nil, nil, "#{given_tl_id}", "default")
-          @json_resource_path = "/tmpjson/#{query_key}.json"
-          
-          if @viewstyle == "tl"
-            #This is for timeline display
-            json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-            @util.make_json(@fetchedevents, json_fname, @tlentry.title, nil, nil)
-          else
-            #This is for tabular display
-            # @fetchedevents should be used by the view for display purpose
-            #logger.info("Size of @fetchedevents is #{@events_size}")
-          end
-        else
-          logger.info("Could not fetch events from DB.")
-        end
-        
-        
+      if not event_id_str.nil?
+        id_array = event_id_str.split(",").map { |s| s.to_i }
       end
       
+      logger.debug("Length of Integer array of event ids: " + id_array.length().to_s)
+      if id_array.length() > 0
+        @fetchedevents = get_events_from_id_array(id_array)
+        @fetchedevents.each { |each_event| each_event.importance = 3 }
+        @fetchedevents.sort!{ |a,b| a.jd <=> b.jd }
+      end
+        
+      if not @fetchedevents.nil?
+        @events_size = @fetchedevents.size
+        logger.info("Number of fetched events: #{@fetchedevents.size}")
+        query_key = @util.get_query_key(nil, nil, "#{given_tl_id}", "default")
+        @json_resource_path = "/tmpjson/#{query_key}.json"
+        
+        if @viewstyle == "tl"
+          #This is for timeline display
+          json_fname = "#{Rails.root}/public/#{@json_resource_path}"
+          @util.make_json(@fetchedevents, json_fname, @tlentry.title, nil, nil)
+        else
+          #This is for tabular display
+          # @fetchedevents should be used by the view for display purpose
+          #logger.info("Size of @fetchedevents is #{@events_size}")
+        end
+      else
+        logger.info("Could not fetch events from DB.")
+      end
     end
   
     # Setup variables needed for editing timeline in the view
     # Used in create(), edit() and update() above
     def setup_vars_for_edit(tl)
-      event_ids = tl.events.split(",").map { |s| s.to_i }
-      @events = event_ids.map { |id| Event.find(id) }
+      if tl.events.nil?
+        event_ids = []
+      else
+        event_ids = tl.events.split(",").map { |s| s.to_i }
+      end
+      @events = get_events_from_id_array(event_ids)
       @timeline_tags_json = "[" +
         tl.tags.split(",").map {|t| "{id: 1, name: \"#{t.strip}\" }" }.join(",") +
         "]"   
+    end
+
+    # Given an array of event ids, query the DB to get events
+    # First try to get all events in the array at once.
+    # If it fails, get them one by one and then remove nils
+    def get_events_from_id_array(id_arr)
+      return [] if id_arr.empty?
+        
+      events = []
+      begin
+        events = Event.find(id_arr)
+      rescue ActiveRecord::RecordNotFound => e
+        logger.warn(e.message)
+        logger.info("Getting events one by one")
+        begin
+          events = id_arr.map do |id|
+            begin
+              Event.find(id)
+            rescue ActiveRecord::RecordNotFound
+              # Ignore
+            end
+          end
+        end
+      end
+      return events.compact!
     end
 
 end
