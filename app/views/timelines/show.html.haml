@@ -46,34 +46,36 @@
 
 %br
 %div.collapse.in{:id => "tlsummary"}
-  %div.well.fixed_height_tlsummary  
-    /
-    / Display image
-    /
-    -if @tlentry.imgurl != ""
-      %img{:class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => "", :itemprop => "image"}
-    -else
-      %img{:class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => "", :itemprop => "image"}
-    /
-    / Display description
-    /
-    -if @tlentry.desc != ""
-      %p.search_result_tldesc{:itemprop => "description"}
-        = truncate(@tlentry.desc, :length=> 280, :ommission => "...")
-    /
-    / Display owner name
-    /
-    -owner_name = User.find(@tlentry.owner_id).name
-    %p.search_result_tlauthor
-      #{owner_name}
-    /
-    / Display tags
-    /            
-    %strong.small Tags:
-    -if @tlentry.tags != ""
-      -@tlentry.tags.split(/,/).each do |each_tag|
-        %a{:href => "#{tlnsearch_path}?tlquery=#{each_tag}"}
-          %span.label.label-info #{each_tag} 
+  %div.well.fixed_height_tlsummary
+    %div.span2.tlpg_img_div  
+      /
+      / Display image
+      /
+      -if @tlentry.imgurl != ""
+        %img{:class => "tlpgimg", :src => "#{@tlentry.imgurl}", :alt => "", :itemprop => "image"}
+      -else
+        %img{:class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => "", :itemprop => "image"}
+    %div.span9
+      /
+      / Display description
+      /
+      -if @tlentry.desc != ""
+        %p.search_result_tldesc{:itemprop => "description"}
+          = truncate(@tlentry.desc, :length=> 250, :ommission => "...")
+      /
+      / Display owner name
+      /
+      -owner_name = User.find(@tlentry.owner_id).name
+      %p.search_result_tlauthor
+        #{owner_name}
+      /
+      / Display tags
+      /            
+      %strong.small Tags:
+      -if @tlentry.tags != ""
+        -@tlentry.tags.split(/,/).each do |each_tag|
+          %a{:href => "#{tlnsearch_path}?tlquery=#{each_tag}"}
+            %span.label.label-info #{each_tag} 
 
 = render 'timelines/timeline_core'
 

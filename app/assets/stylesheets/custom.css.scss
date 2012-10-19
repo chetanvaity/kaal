@@ -242,19 +242,20 @@ img.tl_fixed_block_imgthumb {
 
 
 img.tlpgimg {
-  float: left;
-  max-width: 160px;
-  height: 120px;
-  padding-left: 20px;
-  padding-right: 10px;
+  max-width: 140px;
+  max-height: 105px;
+  display: block;   
+  margin-left: auto;   
+  margin-right: auto;
 }
 
 img.tl_searchresults_imgthumb {
   max-width: 140px;
-  height: 105px;
-  float: left;
+  max-height: 105px;
+  display: block;   
+  margin-left: auto;   
+  margin-right: auto;
 }
-
 
 /* ========== To adjust lower menubar : height color and other styling  START ================ */
 div#lowermenubar.well {
@@ -323,7 +324,7 @@ div.thumbnail {
     color: $grayDark;
     background-color: $grayLighter;
     height: 105px;
-    border: none
+    border: none;
   }
   
   .tlsearchblock:hover { 
@@ -347,7 +348,14 @@ p.search_result_tlauthor {
 div.fixed_height_tlsummary {
   min-height: 110px;
   padding-top: 7px;
+  padding-left: 0px;
+  
+  div.tlpg_img_div {
+    margin-left: 10px;
+    padding-left: 0px;
+  }
 }
+
 
 div.border {
   -webkit-box-sizing: border-box;
