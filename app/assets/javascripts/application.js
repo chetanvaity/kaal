@@ -37,7 +37,7 @@ $(document).ready(function(e) {
      */
     $("#tlsummary").on('show hide', function(e) 
     { 
-      $('#tlsummaryanchor').find('i').toggleClass('icon-arrow-down icon-arrow-up', 200); 
+      $('#tlsummaryanchor').find('i').toggleClass('icon-chevron-down icon-chevron-right', 200); 
     });
     
     

@@ -3,7 +3,9 @@
     = form_for(@timeline, :html => {:id => "timeline-form"}) do |tf|
       = tf.error_messages
       %div.span4.pull-left
-        %h4{:style => "margin-bottom: 10px"} Timeline summary
+        %h4{:style => "margin-bottom: 10px"}
+          %i.icon-time
+          Timeline summary
         %div.well
           = label :timeline, :title, 'Title'
           = text_field :timeline, :title, :class => "span3"
@@ -18,7 +20,9 @@
           = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
 
       %div.span3{:title => "Events listed here will be added to the timeline", :rel => "tooltip"}
-        %h4{:style => "margin-bottom: 10px"} Events in this timeline
+        %h4{:style => "margin-bottom: 10px"}
+          %i.icon-list
+          Events in this timeline
         %div.well
           %div.row
             %div.span1.pull-left
@@ -53,9 +57,13 @@
     %div.tabbable
       %ul.nav.nav-tabs
         %li.active
-          %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"} Existing events
+          %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"}
+            %i.icon-search
+            Search
         %li
-          %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"} New event
+          %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"}
+            %i.icon-plus
+            New event
 
       %div.tab-content
         %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
