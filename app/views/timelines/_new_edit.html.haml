@@ -3,7 +3,9 @@
     = form_for(@timeline, :html => {:id => "timeline-form"}) do |tf|
       = tf.error_messages
       %div.span4.pull-left
-        %h4{:style => "margin-bottom: 10px"} Timeline summary
+        %h4{:style => "margin-bottom: 10px"}
+          %i.icon-time
+          Timeline summary
         %div.well
           = label :timeline, :title, 'Title'
           = text_field :timeline, :title, :class => "span3"
@@ -18,7 +20,9 @@
           = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
 
       %div.span3{:title => "Events listed here will be added to the timeline", :rel => "tooltip"}
-        %h4{:style => "margin-bottom: 10px"} Events in this timeline
+        %h4{:style => "margin-bottom: 10px"}
+          %i.icon-list
+          Events in this timeline
         %div.well
           %div.row
             %div.span1.pull-left
