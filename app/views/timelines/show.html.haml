@@ -26,7 +26,8 @@
 
 
 %div
-  %h3.float{:itemprop => "name"}
+  %span.hide{:itemprop => "name"} #{@tlentry.title} | #{PRODUCT_DISPLAY_NAME} timelines
+  %h3.float
     %strong #{truncate(@tlentry.title, :length=> 75, :ommission => "...")}
   %br
   %a{:id => "tlsummaryanchor", :href => "#", "data-toggle" => "collapse", "data-target" => "#tlsummary"}
