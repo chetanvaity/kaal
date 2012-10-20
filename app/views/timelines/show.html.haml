@@ -21,6 +21,10 @@
   js.src = "http://connect.facebook.net/en_US/all.js";
   ref.parentNode.insertBefore(js, ref);
   }(document));     
+
+  // For Tweet button
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
 /
 / -----------------------------------------------------------------------------
 
@@ -86,23 +90,22 @@
 -if !@events_size.nil? && @events_size > 0
   %br
   %br
-  /
-  /FB-Like button/G-plus buttons
-  /
-  /
-  %div{:style => "padding-bottom: 5px;"}
-    %div{:class => "fb-like", "data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "450",  "data-show-faces" => "true"}
-    %div{:class => "g-plusone", "data-href" => "#{@complete_page_url}", "data-annotation" => "inline", "data-width" => "300", "data-size" => "medium"}
-  /
-  / Render facebook comment block
-  /
+  // FB-Like button/G-plus button/Twitter button
+  %div.row{:style => "padding-bottom: 5px;"}
+    %div.span5.fb-like{"data-href" => "#{@complete_page_url}",  "data-send" => "false",  "data-width" => "380",  "data-show-faces" => "false"}
+    %div.span4
+      %div.g-plusone{"data-href" => "#{@complete_page_url}", "data-annotation" => "inline", "data-width" => "300", "data-size" => "medium"}
+    %div.span2
+      %a.twitter-share-button{:href => "https://twitter.com/share", ":data-via" => "Pollen_Grain"}Tweet
+
+  // Render facebook comment block
   %div{:class => "fb-comments", "data-href" => "#{@complete_page_url}", "data-num-posts" => "5", "data-width" => "770"}
-  
+
 
 /
 / ======================================================================================
 /
-/Let's collapse this section by default if all ements in side it are not available.
+/Let's collapse this section by default if all elements inside it are not available.
 -if @tlentry.imgurl == "" && @tlentry.desc == "" && @tlentry.tags == ""
   %script{:type => "text/javascript"}
     $(function ()  
