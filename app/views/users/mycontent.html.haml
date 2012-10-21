@@ -21,8 +21,10 @@
         %p You have not created any timelines
       - else
         = paginate(@timelines)
+        - row_count = 0
         - @timelines.each_slice(4).to_a.each do |row|
-          = render :partial => "timelines/tl_small_block", :locals => {:selected_timelines => row}
+          - row_count = row_count + 1
+          = render :partial => "timelines/tl_small_block", :locals => {:selected_timelines => row, :div_id_prefix => "#{row_count}"}
         = page_entries_info(@timelines).html_safe
     %div.tab-pane#tab2
       - if @events.empty?
