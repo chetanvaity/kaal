@@ -1,5 +1,4 @@
 class StaticController < ApplicationController
-  caches_page :credits, :about_us, :faq
 
   def credits
     @local_page_title = "Credits"
