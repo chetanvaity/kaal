@@ -97,7 +97,8 @@ module ApplicationHelper
     
     target_page_path = nil
     if !given_timeline_id.nil?
-      target_page_path = timeline_path(given_timeline_id)
+      tl_entry_to_use = Timeline.find(given_timeline_id)
+      target_page_path = timeline_path(tl_entry_to_use)
       return "#{request.protocol}#{request.host_with_port}#{target_page_path}"
     else
       target_page_path = tlsearch_path
@@ -118,7 +119,8 @@ module ApplicationHelper
     
     target_page_path = nil
     if !given_timeline_id.nil?
-      target_page_path = timeline_path(given_timeline_id)
+      tl_entry_to_use = Timeline.find(given_timeline_id)
+      target_page_path = timeline_path(tl_entry_to_use)
     else
       target_page_path = tlsearch_path
     end    
