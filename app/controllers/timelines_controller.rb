@@ -40,7 +40,8 @@ class TimelinesController < ApplicationController
         end
       end
     end
-    
+    record_activity("t=#{@tlentry.title}")
+
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
               :layout => "tl"
