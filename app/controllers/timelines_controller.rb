@@ -137,7 +137,8 @@ class TimelinesController < ApplicationController
     #  flash.now[:warning] =
     #   "Sorry! we don't know anything like ."
     #end
- 
+    record_activity("q=#{@tlquery}")
+
     render :template => "timelines/searchresults", :formats => [:html], :handlers => :haml
   end
   
