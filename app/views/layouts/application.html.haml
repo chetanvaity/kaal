@@ -14,6 +14,9 @@
       %meta{:property => "og:title", :content => "#{@tlentry.title} | #{PRODUCT_DISPLAY_NAME} timelines"}
       %meta{:property => "og:type", :content => "timeline"}
       %meta{:property => "og:description", :content => "#{@tlentry.desc}"}
+      %meta{:property => "og:image", :content => "#{@tlentry.imgurl}"}
+      %meta{:property => "og:site_name", :content => "#{PRODUCT_DISPLAY_NAME} timelines"}
+      %meta{:property => "og:url", :content => "#{@complete_page_url}"}
     
     = stylesheet_link_tag 'application'
     = javascript_include_tag 'application'
