@@ -1,25 +1,58 @@
 %div.container
-  %div.mainmessage
-    %div.hero-unit.mainbox1.span3.border
-      %h1 #{PRODUCT_DISPLAY_NAME}
-      %h2 #{PRODUCT_TAG_LINE}
-    %div.span3.mainbox2.well.border
-      %h2
-        %a{:href => showcase_path} Check out
-        timelines from the showcase
-      %h2
-        %a{:href => new_timeline_path} Create 
-        your own timelines and share
-      %h2
-        Visit our 
-        %a{:href => faq_path}FAQ 
-        for more info
+  /%div.mainmessage
+  /  /%div.hero-unit.mainbox1.span3.border
+  /  /  %h1 #{PRODUCT_DISPLAY_NAME}
+  /  /  %h2 #{PRODUCT_TAG_LINE}
+  /  /%div.span3.mainbox2.well.border
+  /  /  %h2
+  /  /    %a{:href => showcase_path} Check out
+  /  /    timelines from the showcase
+  /  /  %h2
+  /  /    %a{:href => new_timeline_path} Create 
+  /  /    your own timelines and share
+  /  /  %h2
+  /  /    Visit our 
+  /  /    %a{:href => faq_path}FAQ 
+  /  /    for more info
       
-    %div.span3.featured_title
-      %h3 Featured Timelines
-      
-  %hr.onhomepage
+  /  /%div.span3.featured_title
+  /  /  %h3 Featured Timelines
+  
+  %div
+    /%div.hpmessage
+    %div
+      %div.hpmessage.well.border
+        %h2
+          %b
+            #{PRODUCT_DISPLAY_NAME} 
+          enables easy creation and quick sharing of 
+          %b
+            timelines.
+      %div.offset3.actionmessages.well.border
+        %h2
+          %i.icon-ok.pull-left
+          &nbsp;&nbsp;Visit our 
+          %b
+            %a{:href => showcase_path} showcase
+          for sample timelines.
+        %h2
+          %i.icon-ok.pull-left
+          &nbsp;
+          %b
+            %a{:href => new_timeline_path} Create 
+          your own timelines and share.
+        %h2
+          %i.icon-ok.pull-left
+          &nbsp;&nbsp;Refer to the
+          %b  
+            %a{:href => faq_path}FAQ 
+          for more information.
+  
+  /%hr.onhomepage
+  
   %div.row
+    %div.span12.featured_title
+      %h3 Featured Timelines
     %div.span12.featured
       - if @featuted_timelines == nil
         %h1 Please set featured timelines in database.
