@@ -17,7 +17,7 @@
     - @activity_logs.each do |al|
       %tr
         %td= al.id
-        %td= al.created_at
+        %td= al.created_at.strftime("%b %d %Y, %l:%M %p")
         %td= al.user
         %td= al.controller
         %td= al.action
