@@ -547,6 +547,7 @@ div.hpmessage {
   margin-top: 0px;
   padding-bottom: 10px;
   //background-color: $grayDark;
+  padding-left: 0px;
   
   h2 {
     float: center;
@@ -556,27 +557,49 @@ div.hpmessage {
     padding-bottom: 0px;
     margin-bottom: 15px;
     font-size: 28px;
+    
   }
   
 }
 
 div.actionmessages {
   margin-top: 0px;
-  //padding-top: 25px;
-  //padding-left: 15px;
-  margin-left: 240px;
+  padding-left: 35px;
+  margin-left: 300px;
   height: 150px;
-  width: 470px;
-  //background-color: #fff;
+  width: 570px;
+  padding-top: 10px;
   
-  h2 {
+  h3 {
     float: left;
-    color: $gray;
-    //color: #000;
-    //color: #fff;
+    //color: #9B9B9B;
+    color: #AFAFAF;
     padding-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 15px;
+    font-size: 16px;
+    a {
+      color : #fff;
+    }
   }
+}
+
+div.hpmaindiv {
+  //background-color: #00000A;
+  background-color: $grayDarker;
+  height: 140px;
+}
+
+div.lhsmsg {
+  padding-top: 30px;
+  padding-left: 20px;
+  float: left;
+  width: 250px;
+  h1 {
+    color: #fff;
+  }
+}
+div.extrapoints {
+  padding-left: 70px;
 }
 // ---------- End: Main page display -------------------
