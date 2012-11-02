@@ -1,5 +1,5 @@
 /
-/ This is to display modal popup on demand. Used when clicked on 'edit' link in listview
+/ Login popup
 /
 %div.modal.hide#modal-signin
   %div.modal-header
@@ -9,8 +9,6 @@
     -if @ext_signin_on_page.nil?
       -clear_stored_location()
     = render "sessions/ext_login_ui"
-    
-
 / ===========================================================================================
 
 %header{:class => "navbar navbar-fixed-top"}

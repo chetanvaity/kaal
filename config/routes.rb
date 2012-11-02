@@ -12,6 +12,7 @@ Kaal::Application.routes.draw do
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'
   match 'faq' => 'static#faq'
+  match 'terms' => 'static#terms'
 
   resources :events
   resources :tl_images

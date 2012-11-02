@@ -171,7 +171,8 @@ footer ul li {
 
 /* Display adjustement for sign-in popup */
 body #modal-signin {
-  width: 460px;
+  width: 500px;
+  height: 230px;
   /* position: relative; */
   /* top: 400px;*/
 } 
@@ -545,10 +546,12 @@ div.hpmessage {
   margin-bottom: 0px;
   margin-top: 0px;
   padding-bottom: 10px;
+  //background-color: $grayDark;
   
   h2 {
     float: center;
     color: $gray;
+    //color: #fff;
     padding-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 15px;
@@ -564,10 +567,13 @@ div.actionmessages {
   margin-left: 240px;
   height: 150px;
   width: 470px;
+  //background-color: #fff;
   
   h2 {
     float: left;
     color: $gray;
+    //color: #000;
+    //color: #fff;
     padding-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 15px;

@@ -15,4 +15,8 @@ class StaticController < ApplicationController
     @local_page_title = "FAQ"
   end
   
+  def terms
+    @local_page_title = "Terms of use"
+  end
+  
 end
