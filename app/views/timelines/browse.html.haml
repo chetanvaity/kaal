@@ -2,9 +2,13 @@
   %h1 Browse Timelines
 
 = paginate(@timelines)
-
+= page_entries_info(@timelines).html_safe
+%br
+%br
 -row_count = 0
 - @timelines.each_slice(4).to_a.each do |row|
   -row_count = row_count + 1
   = render :partial => "timelines/tl_small_block", :locals => {:selected_timelines => row, :div_id_prefix =>"#{row_count}"}
+  
 = page_entries_info(@timelines).html_safe
+= paginate(@timelines)

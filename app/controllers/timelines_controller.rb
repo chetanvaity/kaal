@@ -5,7 +5,7 @@ require 'configcache.rb'
 class TimelinesController < ApplicationController
   
   before_filter :signing_is_must, only: [:new, :edit, :update]
-  before_filter :require_admin, only: [:timelines_quickview, :browse]
+  before_filter :require_admin, only: [:timelines_quickview]
 
   # Constructor
   def initialize(*params)
@@ -229,7 +229,18 @@ class TimelinesController < ApplicationController
   end
   
   def browse
-    @timelines = Timeline.order("created_at DESC").page(params[:page]).per(24)
+    #
+    # This is browsing for all people. So we want to show all only those timelines which 
+    # are non empty and Public.  This is without login.
+    # If logged in , then the empty or private timelines of that user should also be part of this query.
+    # - Empty timelines are handled.
+    # - private timelines  are TBD
+    # 
+    if(current_user.nil?)
+      @timelines = Timeline.where("events is not NULL and events != ''").order("created_at DESC").page(params[:page]).per(16)
+    else
+      @timelines = Timeline.where("(events is not NULL and events != '') or (owner_id = ?)", current_user.id).order("created_at DESC").page(params[:page]).per(16)
+    end
   end
     
   # ========================= private functions =================================
