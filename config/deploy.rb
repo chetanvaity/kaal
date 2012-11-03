@@ -56,6 +56,12 @@ namespace :deploy do
     run "#{try_sudo} touch #{release_path}/public/assets/timeline.css"
   end
 
+  desc "Create a link for the logrotate script"
+  task :create_logrotate_link do
+    run "#{try_sudo} rm -f /etc/logrotate.d/kaal.logrotate"
+    run "#{try_sudo} ln -nfs #{release_path}/script/kaal.logrotate /etc/logrotate.d/kaal.logrotate"
+  end
+
   namespace :gems do
     desc "Install gems"
     task :install, :roles => :app do
@@ -104,3 +110,5 @@ after 'deploy:symlink_shared', 'deploy:create_tmpjson'
 load "deploy/assets"
 after 'deploy:create_tmpjson', 'deploy:create_dummy_timeline_css'
 after 'deploy:create_dummy_timeline_css', 'deploy:chown'
+after 'deploy:chown', 'deploy:create_logrotate_link'
+

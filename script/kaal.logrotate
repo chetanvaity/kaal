@@ -1,0 +1,10 @@
+/var/www/pollengrain/shared/log/production.log {
+    weekly
+    missingok
+    rotate 10
+    compress
+    delaycompress
+    notifempty
+    create 644 www-data www-data
+    copytruncate
+}
