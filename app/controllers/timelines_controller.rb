@@ -235,11 +235,28 @@ class TimelinesController < ApplicationController
     # If logged in , then the empty or private timelines of that user should also be part of this query.
     # - Empty timelines are handled.
     # - private timelines  are TBD
-    # 
+    # ===> Let admin view all timelines for timebeing.
+    #
+    num_of_events_per_page = 16 
     if(current_user.nil?)
-      @timelines = Timeline.where("events is not NULL and events != ''").order("created_at DESC").page(params[:page]).per(16)
+      #
+      # Annonymous users can view only PUBLIC and nonempty timelines.
+      # PUBLIC condition is yet to be added.
+      #
+      @timelines = Timeline.where("events is not NULL and events != ''").order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
     else
-      @timelines = Timeline.where("(events is not NULL and events != '') or (owner_id = ?)", current_user.id).order("created_at DESC").page(params[:page]).per(16)
+      if current_user.isadmin
+        #
+        # Admin can view ALL timelines for timebeing
+        #
+        @timelines = Timeline.order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
+      else
+        #
+        # Looged in user can view ALL his timelines and other PUBLIC non-empty timelines.
+        # PUBLIC condition is yet to be added.
+        #
+        @timelines = Timeline.where("(events is not NULL and events != '') or (owner_id = ?)", current_user.id).order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
+      end  
     end
   end
     
