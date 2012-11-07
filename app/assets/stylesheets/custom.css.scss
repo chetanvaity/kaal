@@ -627,7 +627,19 @@ div.extrapoints {
 //
 label.eventlabel {
   display: inline;
-  margin-right: 10px;
+}
+
+.event_upper_help_icon{
+  float: right;
+}
+.event_upper_help_icon_url{
+  float: right;
+}
+.event_lower_help_icon{
+  float: right;
+}
+.help_icon_div {
+  padding-right: 100px;
 }
 
 //
