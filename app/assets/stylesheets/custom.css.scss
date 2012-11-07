@@ -603,3 +603,44 @@ div.extrapoints {
   padding-left: 70px;
 }
 // ---------- End: Main page display -------------------
+
+
+// -----------------------Start: Help icon and popover display -------------------
+
+//
+// Want to display this lable and next icon on the same line with some space
+//
+label.eventlabel {
+  display: inline;
+  margin-right: 10px;
+}
+
+//
+// Size for most of the help popover for new-event page.
+div.helppopover-inner {
+  width: 500px;
+  height: 355px;
+}
+
+//
+// Bigger size for URL related help for new-event page
+div.helppopover-inner-eventurl {
+  width: 500px;
+  height: 435px;
+}
+
+//
+// Fixed location for help popover for top 3 fields on new-event page.
+div.upperhelppopover {
+  top : 70px !important;
+  left: 310px !important;
+}
+
+
+//
+// Another fixed location for help popover for lower 2 fields on new-event page.
+div.lowerhelppopover {
+  top : 170px !important;
+  left: 310px !important;
+}
+// -----------------------End: Help icon and popover display -------------------

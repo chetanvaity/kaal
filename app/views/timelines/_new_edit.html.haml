@@ -1,3 +1,33 @@
+/
+/ Hidden help divs used on 'new-event' page.
+/
+%div{:id => "help_popup_event_title", :style => "display: none"}
+  %h3 This is how event title will get displayed
+  %br
+  %img{:src => "/assets/help-event-title.png"}
+
+%div{:id => "help_popup_event_date", :style => "display: none"}
+  %h3 This is how event date will get displayed
+  %br
+  %img{:src => "/assets/help-event-date.png"}
+
+%div{:id => "help_popup_event_url", :style => "display: none"}
+  %h3 This is how event url will get displayed
+  %br
+  %img{:src => "/assets/help-event-url.png"}
+  
+%div{:id => "help_popup_event_image", :style => "display: none"}
+  %h3 This is how event image will get displayed
+  %br
+  %img{:src => "/assets/help-event-image.png"}
+  
+%div{:id => "help_popup_event_desc", :style => "display: none"}
+  %h3 This is how event description will get displayed
+  %br
+  %img{:src => "/assets/help-event-desc.png"}
+  
+/===============================================
+
 %div.row.span12
   %div.row.span8.pull-left
     = form_for(@timeline, :html => {:id => "timeline-form"}) do |tf|
@@ -81,23 +111,33 @@
             %div#new_created_event          
             %div#eventErrorExplanation.errorExplanation.hide
             %div#eventSuccessMessage.alert.alert-success.hide
-
-            = label :event, :title, 'Title'
+            
+            %div
+              = label :event, :title, 'Title', :class => "eventlabel"
+              %i.icon-question-sign.event_upper_help_icon{:id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
 
-            = label :event, :date, 'Date'
+            %div
+              = label :event, :date, 'Date', :class => "eventlabel"
+              %i.icon-question-sign.event_upper_help_icon{:id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
 
             = label :event, :tags, 'Tags'
             = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
 
-            = label :event, :url, 'URL'
+            %div
+              = label :event, :url, 'URL', :class => "eventlabel"
+              %i.icon-question-sign.event_upper_help_icon_url{:id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
 
-            = label :event, :imgurl, 'Image'
+            %div
+              = label :event, :imgurl, 'Image', :class => "eventlabel"
+              %i.icon-question-sign.event_lower_help_icon{:id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 
-            = label :event, :desc, 'Description'
+            %div
+              = label :event, :desc, 'Description', :class => "eventlabel"
+              %i.icon-question-sign.event_lower_help_icon{:id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
 
             %div.pull-right
@@ -118,6 +158,7 @@
           });
         });
         
+        //--------------------------------------------------------------------------
         //
         // We want to warn people if they are about to leave this page.
         //
@@ -146,4 +187,17 @@
         {
           localWarnFlag = true;
         }
-    
+        //--------------------------------------------------------------------------
+        //
+        // To show help popover for various fields on 'create new event' page
+        //
+        $(function ()  
+        {
+          $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          
+          $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          
+          $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+        });
+        //--------------------------------------------------------------------------                 
+        
