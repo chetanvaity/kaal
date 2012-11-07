@@ -36,16 +36,16 @@ module ApplicationHelper
                                     
     
     #base_search_url = "#{tlsearch_path}?"
-    base_search_url = "#{tl_container_path}?"
+    prefix_to_use = "?"
+    
+    base_search_url = "#{tl_container_path}"
         
     url_to_return = base_search_url 
     
     # fullscreen param
     if (!is_fullscreen.nil? && is_fullscreen == true)
-      url_to_return += "fullscr=true"
-    else
-      #We already have default handling for this case. So let's not provide this in url.
-      #url_to_return += "fullscr=false"
+      url_to_return += prefix_to_use + "fullscr=true"
+      prefix_to_use = "&"
     end
     
     # timeline or list view??
@@ -53,33 +53,38 @@ module ApplicationHelper
       #We already have default handling for this case. So let's not provide this in url.
       #url_to_return += "&view=tl"
     else
-      url_to_return += "&view=list"
+      url_to_return += prefix_to_use + "view=list"
+      prefix_to_use = "&"
     end
     
     #tags
     if !given_tags.nil?
-      url_to_return += "&q=" + given_tags.to_s
+      url_to_return += prefix_to_use + "q=" + given_tags.to_s
+      prefix_to_use = "&"
     end
     
     
     #timeline id
-    if !given_timeline_id.nil?
-      url_to_return += "&tlid=" + given_timeline_id.to_s
-    end
+    #if !given_timeline_id.nil?
+    #  url_to_return += "&tlid=" + given_timeline_id.to_s
+    #end
     
     
     #from-to dates
     if !given_from_date.nil? &&  !given_from_date.blank?
-      url_to_return += "&from=" + given_from_date.to_s
+      url_to_return += prefix_to_use + "from=" + given_from_date.to_s
+      prefix_to_use = "&"
     end
     if !given_to_date.nil? && !given_to_date.blank?
-      url_to_return += "&to=" + given_to_date.to_s 
+      url_to_return += prefix_to_use + "to=" + given_to_date.to_s
+      prefix_to_use = "&" 
     end
     
     
     #events on page
     if (!events_on_page.nil? && events_on_page == "more")
-      url_to_return += "&pgevts=more"
+      url_to_return += prefix_to_use + "pgevts=more"
+      prefix_to_use = "&" 
     else
       #We already have default handling for this case. So let's not provide this in url.
       #url_to_return += "&pgevts=default"
