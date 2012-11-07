@@ -195,6 +195,7 @@ body #modal-contact {
 */
 
 
+
 /* 
  * AMOL: Customized btn-primary clor and lable-info color to match black/gray-ish look-n-feel.
  * Comment it if you don't like
@@ -227,10 +228,6 @@ body #modal-contact {
 
 .bold-text {
   font-weight: bold;
-}
-
-.popover-content {
-  background-color: $grayLighter;
 }
 
 img.tl_fixed_block_imgthumb {
@@ -537,14 +534,15 @@ p.popover_desc {
   font-size: 12px;
 }
 
-.popover-content {
-  background-color: #fff;
+.tl_block_popover_content {
+  background-color: $grayLighter;
 }
 
-.popover-title { 
-display: none; 
+.tl_block_popover_title { 
+  background-color: $gray;
+  color: #fff;
 }
-// --------------END : Styling for the popover shon on timeline blocks -----------
+// --------------END : Styling for the  shon on timeline blocks -----------
 
 
 // ---------- Start: Main page display -------------------
@@ -615,6 +613,14 @@ div.extrapoints {
 
 
 // -----------------------Start: Help icon and popover display -------------------
+
+.event_help_popover_title { 
+  display: none;
+}
+
+.event_help_popover_content {
+  background-color: #fff;
+}
 
 //
 // Want to display this lable and next icon on the same line with some space
