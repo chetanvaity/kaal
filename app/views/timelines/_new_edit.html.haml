@@ -48,7 +48,7 @@
             = p "Cancel"
           %span
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          = button_tag(:type => "submit", :class => "btn btn-primary") do
+          = button_tag(:type => "submit", :onclick => "return resetWarnFlag();" ,:class => "btn btn-primary") do
             %i.icon-ok.icon-white
             = p " Save"
 
@@ -117,4 +117,33 @@
             prePopulate: #{@timeline_tags_json}
           });
         });
+        
+        //
+        // We want to warn people if they are about to leave this page.
+        //
+        window.onbeforeunload = confirmExit;
+        // By default this flag is set so that warning popup is displayed while leaving this page.
+        localWarnFlag = true;
+        
+        function confirmExit()
+        {
+          if(localWarnFlag == true)
+            return "This page is asking you to confirm that you want to leave - data you have entered may not be saved.";
+          else
+            return;
+        }
+        
+        /*
+         * If this flag is reset , then the warning popup will not be shown while leaving the page.
+         */
+        function resetWarnFlag()
+        {
+          localWarnFlag = false;
+        }
+        
+        //Editing the flag to true value so that warning popup can be shown while leaving this page.
+        function setWarnFlag()
+        {
+          localWarnFlag = true;
+        }
     
