@@ -260,7 +260,16 @@ div#lowermenubar.well {
   min-height: 3px;
   padding: 0px;
   margin-bottom: 0px; 
-  background-color: $gray; 
+  background-color: $gray;
+  
+  // Adjusted link colors to make them abit more visibile on current background.
+  a {
+    color: #BABABA;
+  }
+  a:hover {
+    color: #fff;
+  } 
+  //
 }
 
 div#lowernavdiv {
