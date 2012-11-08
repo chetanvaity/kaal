@@ -41,13 +41,28 @@
       %i.icon-chevron-right
     Details...
   -if !current_user.nil? && ((current_user.isadmin) || (@tlentry.owner_id == current_user.id))
-    %span.offset9
-      %a{:href => edit_timeline_path(@tlentry), :style => "float: right;", :title => "Edit timeline", :rel => "tooltip"}
-        %i.icon-edit
-        Edit
-      %i.icon-remove
-      = link_to "Delete", timeline_path(@tlentry), :title => "Delete timeline", :rel => "tooltip", :method=> :delete, :confirm => 'Are you sure you want to delete this timeline?'
+    %div.offset4.row
+      %div#vis_private.span3{:title => "This timeline is visible only to you", :rel => "tooltip"}
+        %i.icon-eye-close
+        = p "Private"
+        = form_tag(change_visibility_timeline_path, :remote => true, :class => "form-inline") do
+          = hidden_field_tag "id", "#{@tlentry.id}"
+          = button_tag("Make Public", :type => "submit", :class => "btn btn-link")
 
+      %div#vis_public.span3{:title => "This timeline is public", :rel => "tooltip"}
+        %i.icon-eye-open
+        = p "Public"
+        = form_tag(change_visibility_timeline_path, :remote => true, :class => "form-inline") do
+          = hidden_field_tag "id", "#{@tlentry.id}"
+          = button_tag("Make Private", :type => "submit", :class => "btn btn-link")
+
+      %div.span1
+        %a{:href => edit_timeline_path(@tlentry), :title => "Edit timeline", :rel => "tooltip"}
+          %i.icon-edit
+          Edit
+      %div.span1    
+        %i.icon-remove
+        = link_to "Delete", timeline_path(@tlentry), :title => "Delete timeline", :rel => "tooltip", :method=> :delete, :confirm => 'Are you sure you want to delete this timeline?'
 
 %br
 %div.collapse.in{:id => "tlsummary"}
@@ -114,6 +129,19 @@
     }       
     );
 
+// Hide the appropriate visibility div
+- if @tlentry.visibility == VIS_PRIVATE
+  %script{:type => "text/javascript"}
+    $(function() {
+    $("#vis_public").addClass("hide");
+    });
+- else
+  %script{:type => "text/javascript"}
+    $(function() {
+    $("#vis_private").addClass("hide");
+    });
+
+
 /
 / Script for Google plus button
 /    
@@ -126,8 +154,7 @@
   }
   )();
 
-    
-        
+  
     
       
   

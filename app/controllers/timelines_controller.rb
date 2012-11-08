@@ -70,6 +70,11 @@ class TimelinesController < ApplicationController
       @timeline.imgurl = "/uploads/#{rand_image.fname}"
     end
 
+    # If no visibility, set it to private
+    if @timeline.visibility.nil?
+      @timeline.visibility = VIS_PRIVATE
+    end
+
     if @timeline.save
       record_activity("t=#{@timeline.title}")
       flash[:notice] =
@@ -99,6 +104,21 @@ class TimelinesController < ApplicationController
     else
       setup_vars_for_edit(@timeline)
       render :template => "timelines/edit", :formats => [:html], :handlers => :haml
+    end
+  end
+
+  # AJAX call to change timeline visibility
+  def change_visibility
+    @timeline = Timeline.find(params[:id])
+    if (@timeline.visibility == VIS_PRIVATE)
+      @timeline.visibility = VIS_PUBLIC
+    else
+      @timeline.visibility = VIS_PRIVATE
+    end
+    if @timeline.save()
+      record_activity("t=#{@timeline.title}")
+      render :template => "timelines/change_visibility", :formats => [:js], :handlers => :haml
+    else
     end
   end
 

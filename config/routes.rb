@@ -8,6 +8,7 @@ Kaal::Application.routes.draw do
   match 'newtlhome' => 'timelines#newhomepage', :as=> :newtlhome
   match 'timelinesqview' => 'timelines#timelines_quickview'
   match 'browse' => 'timelines#browse'
+  match 'change_visibility_timeline' => 'timelines#change_visibility'
 
   match 'credits' => 'static#credits'
   match 'about' => 'static#about_us'

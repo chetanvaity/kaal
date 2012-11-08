@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121018135234) do
+ActiveRecord::Schema.define(:version => 20121103110316) do
 
   create_table "activity_logs", :force => true do |t|
     t.integer  "user_id"
@@ -70,8 +70,9 @@ ActiveRecord::Schema.define(:version => 20121018135234) do
     t.string   "imgurl"
     t.string   "events"
     t.string   "tags"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.integer  "visibility", :default => 0
   end
 
   add_index "timelines", ["owner_id"], :name => "index_timelines_on_owner_id"
