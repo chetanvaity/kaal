@@ -12,7 +12,5 @@
     %div
       %strong Login with Facebook
 %div.span6
-  %strong.pull-left
-    * We assume that you have read 
-    %a{:href => terms_path} Terms of use
-    and agree with it. 
+  %span.pull-right.small-text
+    = link_to "Terms of use", terms_path, :target => "_blank"
