@@ -1,0 +1,12 @@
+- if @timeline.errors.any?
+  var errors = $("<ul />");
+  - @timeline.errors.full_messages.each do |error|
+    errors.append("<li>#{ j(error) }</li>");
+
+- else
+  - if @timeline.visibility == VIS_PRIVATE
+    $("#vis_private").removeClass("hide");
+    $("#vis_public").addClass("hide");
+  - else
+    $("#vis_public").removeClass("hide");
+    $("#vis_private").addClass("hide");
