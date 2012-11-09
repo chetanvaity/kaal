@@ -27,18 +27,18 @@
     
   %hr
   %div.row
-    -if @tlentry != nil
+    -if @timeline != nil
       %div.span1
         %img{:style => "float: left", :src => "/assets/black-star.png", :height => "50px", :width => "50px", :border => "2"}
       %div.span11
-        %img.tl_fixed_block_imgthumb{:style => "float: left; padding-right:10px;", :src => "#{@tlentry.imgurl}"}
-        %h3 #{truncate(@tlentry.title, :length=> 75, :ommission => "...")}
+        %img.tl_fixed_block_imgthumb{:style => "float: left; padding-right:10px;", :src => "#{@timeline.imgurl}"}
+        %h3 #{truncate(@timeline.title, :length=> 75, :ommission => "...")}
         %p
-          #{truncate(@tlentry.desc, :length=> 200, :ommission => "...")}
+          #{truncate(@timeline.desc, :length=> 200, :ommission => "...")}
     -else
       %h1 Please set default timeline in database.
       
-  -if @tlentry != nil   
+  -if @timeline != nil   
     %br       
     = render 'timelines/timeline_core'     
   
@@ -64,7 +64,7 @@
       /    %div.thumbnail
       /      /%a.thumbnail.tlimageblock{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
       /      %a.thumbnail.tlimageblock{ :href => "#"}
-      /        %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@tlentry.imgurl}"}
+      /        %img{ :style => "float:left", :class => "homepagethumb", :src => "#{@timeline.imgurl}"}
       /        %h3 Experience &nbsp test
       /        %p Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
        
@@ -75,12 +75,12 @@
   /  %div.row
   /    %div.span4
   /      %a{ :href => "#", :id => "tl1", :rel => "popover", "data-title" => "Timeline details"}
-  /        %img{ :style => "float:left",  :src => "#{@tlentry.imgurl}"}
+  /        %img{ :style => "float:left",  :src => "#{@timeline.imgurl}"}
   /        %div.content-heading
   /          %h3 Experience &nbsp test
   /          %p{ :style => "clear:both"} Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
   /    %div.span4
-  /      %img{ :style => "float:left",  :src => "#{@tlentry.imgurl}"}
+  /      %img{ :style => "float:left",  :src => "#{@timeline.imgurl}"}
   /      %div.content-heading
   /        %h3 Experience &nbsp test
   /        %p{ :style => "clear:both"} Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.                    
