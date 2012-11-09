@@ -5,8 +5,11 @@
 
 - else
   - if @timeline.visibility == VIS_PRIVATE
+    $("#vis_spinner").addClass("hide");
     $("#vis_private").removeClass("hide");
     $("#vis_public").addClass("hide");
+    
   - else
+    $("#vis_spinner").addClass("hide");
     $("#vis_public").removeClass("hide");
     $("#vis_private").addClass("hide");

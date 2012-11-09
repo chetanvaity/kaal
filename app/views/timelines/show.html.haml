@@ -49,14 +49,17 @@
             %i.icon-eye-close
             %span Private
             = hidden_field_tag "id", "#{@timeline.id}"
-            = button_tag("Make Public", :type => "submit", :class => "btn btn-link small-link", :title => "Click to make this timeline public", :rel => "tooltip")
+            = button_tag("Make Public", :type => "submit", :class => "btn btn-link small-link", :title => "Click to make this timeline public", :rel => "tooltip", :onclick => "$('#vis_private').addClass('hide'); $('#vis_spinner').removeClass('hide')")
 
         %div#vis_public.span2{:title => "This timeline is public", :rel => "tooltip"}
           = form_tag(change_visibility_timeline_path, :remote => true, :class => "form-inline pull-right", :style => "margin: 0px 0px 0px") do
             %i.icon-eye-open
             %span Public
             = hidden_field_tag "id", "#{@timeline.id}"
-            = button_tag("Make Private", :type => "submit", :class => "btn btn-link small-link", :title => "Click to make this timeline private", :rel => "tooltip")
+            = button_tag("Make Private", :type => "submit", :class => "btn btn-link small-link", :title => "Click to make this timeline private", :rel => "tooltip", :onclick => "$('#vis_public').addClass('hide'); $('#vis_spinner').removeClass('hide')")
+
+        %div#vis_spinner.span2.hide
+          = image_tag("spinner.gif", :size => "12x12", :class => "pull-right")
 
         %div.span1
           %a{:href => edit_timeline_path(@timeline), :title => "Edit timeline", :rel => "tooltip", :class => "pull-right"}
