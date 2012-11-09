@@ -6,6 +6,7 @@ class TimelinesController < ApplicationController
   
   before_filter :signing_is_must, only: [:new, :edit, :update]
   before_filter :require_admin, only: [:timelines_quickview]
+  load_and_authorize_resource :only => [:show, :new, :create, :edit, :update, :destroy, :change_visibility]
 
   # Constructor
   def initialize(*params)
@@ -14,20 +15,17 @@ class TimelinesController < ApplicationController
     @configcache = ConfigCache.instance
   end
     
-  def index
-    @timelines = Timeline.limit(10)
-  end
-
   # Display the timeline in its glory
   def show
+    logger.debug("CHETAN: In show(): timeline=#{@timeline.title}")
     id = params[:id]
     init_core_tl_display_vars()
     get_timeline_data_for_display(id)
-    @local_page_title = @tlentry.title
+    @local_page_title = @timeline.title
     @complete_page_url = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
     logger.debug("Complete page path: " + @complete_page_url)
     
-    @tl_container_page_path = timeline_path(@tlentry)
+    @tl_container_page_path = timeline_path(@timeline)
     if signed_in?
       if !current_user.nil?
         # remember query key in session. We'll need if user edits/delets event
@@ -40,7 +38,7 @@ class TimelinesController < ApplicationController
         end
       end
     end
-    record_activity("t=#{@tlentry.title}")
+    record_activity("t=#{@timeline.title}")
 
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
@@ -50,14 +48,14 @@ class TimelinesController < ApplicationController
 
   # Show new timeline page
   def new
-    @timeline = Timeline.new
+    # @timeline = Timeline.new (done in load_and_authorize_resource)
     @timeline_tags_json = "[]"
     render :template => "timelines/new", :formats => [:html], :handlers => :haml
   end
 
   # Save a new timeline
   def create
-    @timeline = Timeline.new(params[:timeline])
+    # @timeline = Timeline.new(params[:timeline]) (done in load_and_authorize_resource)
     
     if signed_in? and !current_user.nil?
       @timeline.owner_id = current_user.id
@@ -88,14 +86,14 @@ class TimelinesController < ApplicationController
 
   # Show edit timeline page
   def edit
-    @timeline = Timeline.find(params[:id])
+    # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
     setup_vars_for_edit(@timeline)
     render :template => "timelines/edit", :formats => [:html], :handlers => :haml
   end
 
   # Save the edited timeline
   def update
-    @timeline = Timeline.find(params[:id])
+    # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
     if @timeline.update_attributes(params[:timeline])
       record_activity("t=#{@timeline.title}")
       flash[:notice] =
@@ -109,7 +107,7 @@ class TimelinesController < ApplicationController
 
   # AJAX call to change timeline visibility
   def change_visibility
-    @timeline = Timeline.find(params[:id])
+    # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
     if (@timeline.visibility == VIS_PRIVATE)
       @timeline.visibility = VIS_PUBLIC
     else
@@ -124,7 +122,7 @@ class TimelinesController < ApplicationController
 
   # Delete the timeline
   def destroy
-    @timeline = Timeline.find(params[:id])
+    # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
     @timeline.destroy
     record_activity("t=#{@timeline.title}")
     flash[:notice] =
@@ -250,20 +248,17 @@ class TimelinesController < ApplicationController
   
   def browse
     #
-    # This is browsing for all people. So we want to show all only those timelines which 
-    # are non empty and Public.  This is without login.
-    # If logged in , then the empty or private timelines of that user should also be part of this query.
-    # - Empty timelines are handled.
-    # - private timelines  are TBD
-    # ===> Let admin view all timelines for timebeing.
+    # Without login, we want to show all only those timelines which 
+    # are non empty and Public.
+    # If logged in, then the empty or private timelines of that user should also be part of this query.
+    # Admin can view all timelines for timebeing.
     #
     num_of_events_per_page = 16 
     if(current_user.nil?)
       #
-      # Annonymous users can view only PUBLIC and nonempty timelines.
-      # PUBLIC condition is yet to be added.
+      # Anonymous users can view only PUBLIC and nonempty timelines.
       #
-      @timelines = Timeline.where("events is not NULL and events != ''").order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
+      @timelines = Timeline.where("events is not NULL and events != '' and visibility=#{VIS_PUBLIC}").order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
     else
       if current_user.isadmin
         #
@@ -272,11 +267,10 @@ class TimelinesController < ApplicationController
         @timelines = Timeline.order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
       else
         #
-        # Looged in user can view ALL his timelines and other PUBLIC non-empty timelines.
-        # PUBLIC condition is yet to be added.
+        # Logged in user can view ALL his timelines and other PUBLIC non-empty timelines.
         #
-        @timelines = Timeline.where("(events is not NULL and events != '') or (owner_id = ?)", current_user.id).order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
-      end  
+        @timelines = Timeline.where("(events is not NULL and events != '' and visibility=#{VIS_PUBLIC}) or (owner_id = ?)", current_user.id).order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
+      end
     end
   end
     
@@ -302,12 +296,11 @@ class TimelinesController < ApplicationController
       @total_search_size = 0
       @events_size = 0
       @json_resource_path = nil
-      @tlentry = nil
     end
     
     
     def get_timeline_data_for_display(given_tl_id)
-      
+      logger.debug("CHETAN: in get_timeline_data_for_display(): timeline=#{@timeline.title}")
       #------------------
       # We'll default to 'tl' view if not found.
       @viewstyle = params[:view]
@@ -340,10 +333,9 @@ class TimelinesController < ApplicationController
         @fullscr = "false"
       end
       #------------------
-      @tlentry = Timeline.find(given_tl_id)
-      @tlid = @tlentry.id
+      @tlid = @timeline.id
       
-      event_id_str = @tlentry.events
+      event_id_str = @timeline.events
       id_array = [] #empty array
       if not event_id_str.nil?
         id_array = event_id_str.split(",").map { |s| s.to_i }
@@ -363,7 +355,7 @@ class TimelinesController < ApplicationController
         if @viewstyle == "tl"
           #This is for timeline display
           json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-          @util.make_json(@fetchedevents, json_fname, @tlentry.title, nil, nil)
+          @util.make_json(@fetchedevents, json_fname, @timeline.title, nil, nil)
         else
           #This is for tabular display
           # @fetchedevents should be used by the view for display purpose

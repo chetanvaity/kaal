@@ -87,3 +87,6 @@ gem 'kaminari'
 group :test, :development do
   gem 'thin'
 end
+
+# For easy authorization
+gem 'cancan'

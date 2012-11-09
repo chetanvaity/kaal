@@ -34,5 +34,11 @@ class ApplicationController < ActionController::Base
       redirect_to :root
     end
   end
+
+  # Catch authorization exceptions
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:warning] = exception.message
+    redirect_to :root
+  end
   
 end
