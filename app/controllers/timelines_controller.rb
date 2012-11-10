@@ -67,10 +67,8 @@ class TimelinesController < ApplicationController
       @timeline.imgurl = "/uploads/#{rand_image.fname}"
     end
 
-    # If no visibility, set it to private
-    if @timeline.visibility.nil?
-      @timeline.visibility = VIS_PRIVATE
-    end
+    # By default, set it to private visibility
+    @timeline.visibility = VIS_PRIVATE
 
     if @timeline.save
       record_activity("t=#{@timeline.title}")
