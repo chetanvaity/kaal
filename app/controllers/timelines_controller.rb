@@ -17,7 +17,6 @@ class TimelinesController < ApplicationController
     
   # Display the timeline in its glory
   def show
-    logger.debug("CHETAN: In show(): timeline=#{@timeline.title}")
     id = params[:id]
     init_core_tl_display_vars()
     get_timeline_data_for_display(id)
@@ -146,7 +145,7 @@ class TimelinesController < ApplicationController
     
     @tlsearch_results = []
     @search.each_hit_with_result do |hit, tl_entry|
-      @tlsearch_results.push(tl_entry)
+      @tlsearch_results.push(tl_entry) if can? :read, tl_entry
     end
     logger.debug("Number of search results: " + @tlsearch_results.length().to_s + " page-num=" + params[:page].to_s)
     @tlsearch_results_length = @tlsearch_results.length()
@@ -300,7 +299,6 @@ class TimelinesController < ApplicationController
     
     
     def get_timeline_data_for_display(given_tl_id)
-      logger.debug("CHETAN: in get_timeline_data_for_display(): timeline=#{@timeline.title}")
       #------------------
       # We'll default to 'tl' view if not found.
       @viewstyle = params[:view]
