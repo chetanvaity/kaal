@@ -666,7 +666,8 @@ div.helppopover-inner-eventurl {
 // Fixed location for help popover for top 3 fields on new-event page.
 div.upperhelppopover {
   top : 70px !important;
-  left: 310px !important;
+  //left: 310px !important;
+  position: fixed;
 }
 
 
@@ -674,7 +675,8 @@ div.upperhelppopover {
 // Another fixed location for help popover for lower 2 fields on new-event page.
 div.lowerhelppopover {
   top : 170px !important;
-  left: 310px !important;
+  //left: 310px !important;
+  position: fixed;
 }
 // -----------------------End: Help icon and popover display -------------------
 

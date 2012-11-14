@@ -193,11 +193,15 @@
         //
         $(function ()  
         {
-          $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          // With arrow pointer
+          //$('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
           
-          $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          //All without arrow pointers
+          $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
           
-          $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          
+          $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
         });
         //--------------------------------------------------------------------------                 
         
