@@ -58,17 +58,17 @@
         %div.well
           %div.help_icon_div
             = label :timeline, :title, 'Title',:class => "eventlabel"
-            %i.icon-question-sign.tl_upper_help_icon{:id => "tl_title", :rel => "popover", "data-title" => "","data-placement" => "right"}
+            %img.tl_upper_help_icon{:src => "/assets/q2.png", :id => "tl_title", :rel => "popover", "data-title" => "", "data-placement" => "right"}
           = text_field :timeline, :title, :class => "span3"
 
           %div.help_icon_div
             = label :timeline, :desc, 'Description',:class => "eventlabel"
-            %i.icon-question-sign.tl_upper_help_icon{:id => "tl_desc", :rel => "popover", "data-title" => "","data-placement" => "right"}
+            %img.tl_upper_help_icon{:src => "/assets/q2.png", :id => "tl_desc", :rel => "popover", "data-title" => "","data-placement" => "right"}
           = text_area :timeline, :desc, :class => "span3", :size => "80x4", :placeholder => "Describe the timeline here."
 
           %div.help_icon_div
             = label :timeline, :imgurl, 'Image Link',:class => "eventlabel"
-            %i.icon-question-sign.tl_lower_help_icon{:id => "tl_image", :rel => "popover", "data-title" => "","data-placement" => "right"}
+            %img.tl_lower_help_icon{:src => "/assets/q2.png", :id => "tl_image", :rel => "popover", "data-title" => "","data-placement" => "right"}
           = text_field :timeline, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 
           = label :timeline, :tags, 'Tags'
@@ -139,12 +139,12 @@
             
             %div.help_icon_div
               = label :event, :title, 'Title', :class => "eventlabel"
-              %i.icon-question-sign.event_upper_help_icon{:id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "left"}
+              %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
 
             %div.help_icon_div
               = label :event, :date, 'Date', :class => "eventlabel"
-              %i.icon-question-sign.event_upper_help_icon{:id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "left"}
+              %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
 
             = label :event, :tags, 'Tags'
@@ -152,17 +152,17 @@
 
             %div.help_icon_div
               = label :event, :url, 'URL', :class => "eventlabel"
-              %i.icon-question-sign.event_upper_help_icon_url{:id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "left"}
+              %img.event_upper_help_icon_url{:src => "/assets/q2.png", :id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
 
             %div.help_icon_div
               = label :event, :imgurl, 'Image Link', :class => "eventlabel"
-              %i.icon-question-sign.event_lower_help_icon{:id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
+              %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 
             %div.help_icon_div
               = label :event, :desc, 'Description', :class => "eventlabel"
-              %i.icon-question-sign.event_lower_help_icon{:id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "left"}
+              %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
 
             %div.pull-right

@@ -636,16 +636,25 @@ label.eventlabel {
 }
 
 .event_upper_help_icon{
-  float: right;
+  //float: right;
+  height: 8px;
+  width: 8x;
+  padding-bottom: 6px;
 }
 .event_upper_help_icon_url{
-  float: right;
+  //float: right;
+  height: 8px;
+  width: 8x;
+  padding-bottom: 6px;
 }
 .event_lower_help_icon{
-  float: right;
+  //float: right;
+  height: 8px;
+  width: 8x;
+  padding-bottom: 6px;
 }
 .help_icon_div {
-  padding-right: 100px;
+ // padding-right: 100px;
 }
 
 
@@ -690,10 +699,16 @@ div.lowerhelppopover {
 //---------------- About timeline help ----------------
 
 .tl_upper_help_icon {
-  float: right;
+  //float: right;
+  height: 8px;
+  width: 8x;
+  padding-bottom: 6px;
 }
 .tl_lower_help_icon {
-  float: right;
+  //float: right;
+  height: 8px;
+  width: 8x;
+  padding-bottom: 6px;
 }
 //
 // Size for help popover for new-timeline page.
