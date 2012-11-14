@@ -67,7 +67,7 @@
           = text_area :timeline, :desc, :class => "span3", :size => "80x4", :placeholder => "Describe the timeline here."
 
           %div.help_icon_div
-            = label :timeline, :imgurl, 'Image',:class => "eventlabel"
+            = label :timeline, :imgurl, 'Image Link',:class => "eventlabel"
             %i.icon-question-sign.tl_lower_help_icon{:id => "tl_image", :rel => "popover", "data-title" => "","data-placement" => "right"}
           = text_field :timeline, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 
@@ -156,7 +156,7 @@
             = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
 
             %div.help_icon_div
-              = label :event, :imgurl, 'Image', :class => "eventlabel"
+              = label :event, :imgurl, 'Image Link', :class => "eventlabel"
               %i.icon-question-sign.event_lower_help_icon{:id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
             = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 
