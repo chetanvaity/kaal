@@ -650,17 +650,24 @@ label.eventlabel {
 
 
 //
-// Size for most of the help popover for new-event page.
+// Size for upper help popover for new-event page.
 div.helppopover-inner {
   width: 500px;
-  height: 355px;
+  height: 338px;
 }
 
 //
 // Bigger size for URL related help for new-event page
 div.helppopover-inner-eventurl {
   width: 500px;
-  height: 435px;
+  height: 433px;
+}
+
+//
+// Size for lower help popover for new-event page.
+div.helppopover-lower-inner {
+  width: 500px;
+  height: 360px;
 }
 
 //
@@ -675,7 +682,7 @@ div.upperhelppopover {
 //
 // Another fixed location for help popover for lower 2 fields on new-event page.
 div.lowerhelppopover {
-  top : 170px !important;
+  top : 140px !important;
   //left: 310px !important;
   position: fixed;
 }
