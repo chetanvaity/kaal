@@ -648,6 +648,7 @@ label.eventlabel {
   padding-right: 100px;
 }
 
+
 //
 // Size for most of the help popover for new-event page.
 div.helppopover-inner {
@@ -663,7 +664,7 @@ div.helppopover-inner-eventurl {
 }
 
 //
-// Fixed location for help popover for top 3 fields on new-event page.
+// Fixed location for help popover for top 3 fields on new-event page. 
 div.upperhelppopover {
   top : 70px !important;
   //left: 310px !important;
@@ -676,6 +677,33 @@ div.upperhelppopover {
 div.lowerhelppopover {
   top : 170px !important;
   //left: 310px !important;
+  position: fixed;
+}
+
+//---------------- About timeline help ----------------
+
+.tl_upper_help_icon {
+  float: right;
+}
+.tl_lower_help_icon {
+  float: right;
+}
+//
+// Size for help popover for new-timeline page.
+div.helppopover-inner-tl {
+  width: 500px;
+  height: 245px;
+}
+
+//Fixed location for upper tl help popovers
+div.tl-upperhelppopover {
+  top : 70px !important;
+  position: fixed;
+}
+
+//Fixed location for lower tl help popovers
+div.tl-lowerhelppopover {
+  top : 170px !important;
   position: fixed;
 }
 // -----------------------End: Help icon and popover display -------------------

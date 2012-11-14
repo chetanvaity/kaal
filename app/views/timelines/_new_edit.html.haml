@@ -26,6 +26,25 @@
   %br
   %img{:src => "/assets/help-event-desc.png"}
   
+/
+/ Hidden help divs used on 'new-timeline' page.
+/
+%div{:id => "help_popup_tl_title", :style => "display: none"}
+  %h3 This is how timeline title will get displayed
+  %br
+  %img{:src => "/assets/help-tl-title.png"}
+
+%div{:id => "help_popup_tl_image", :style => "display: none"}
+  %h3 This is how timeline image will get displayed
+  %br
+  %img{:src => "/assets/help-tl-image.png"}
+
+%div{:id => "help_popup_tl_desc", :style => "display: none"}
+  %h3 This is how timeline description will get displayed
+  %br
+  %img{:src => "/assets/help-tl-desc.png"}
+    
+  
 /===============================================
 
 %div.row.span12
@@ -37,13 +56,19 @@
           %i.icon-time
           Timeline summary
         %div.well
-          = label :timeline, :title, 'Title'
+          %div.help_icon_div
+            = label :timeline, :title, 'Title',:class => "eventlabel"
+            %i.icon-question-sign.tl_upper_help_icon{:id => "tl_title", :rel => "popover", "data-title" => "","data-placement" => "right"}
           = text_field :timeline, :title, :class => "span3"
 
-          = label :timeline, :desc, 'Description'
+          %div.help_icon_div
+            = label :timeline, :desc, 'Description',:class => "eventlabel"
+            %i.icon-question-sign.tl_upper_help_icon{:id => "tl_desc", :rel => "popover", "data-title" => "","data-placement" => "right"}
           = text_area :timeline, :desc, :class => "span3", :size => "80x4", :placeholder => "Describe the timeline here."
 
-          = label :timeline, :imgurl, 'Image'
+          %div.help_icon_div
+            = label :timeline, :imgurl, 'Image',:class => "eventlabel"
+            %i.icon-question-sign.tl_lower_help_icon{:id => "tl_image", :rel => "popover", "data-title" => "","data-placement" => "right"}
           = text_field :timeline, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
 
           = label :timeline, :tags, 'Tags'
@@ -196,12 +221,19 @@
           // With arrow pointer
           //$('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
           
-          //All without arrow pointers
+          //All without arrow pointers......for 'new event related help'
           $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
           
           $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
           
           $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          
+          //
+          //
+          //For new 'timeline' related help
+          $('.tl_upper_help_icon').popover({template: '<div class="popover tl-upperhelppopover"><div class="popover-inner helppopover-inner-tl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          $('.tl_lower_help_icon').popover({template: '<div class="popover tl-lowerhelppopover"><div class="popover-inner helppopover-inner-tl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+          
         });
         //--------------------------------------------------------------------------                 
         
