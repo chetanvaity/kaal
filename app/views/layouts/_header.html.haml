@@ -56,8 +56,6 @@
               %b.caret
             %ul.dropdown-menu
               %li
-                = link_to "My Content", my_path
-              %li
                 = link_to "Sign out", signout_path, method: "delete"
         
   /
@@ -72,8 +70,17 @@
             %li
               %a.btn-large{:href => root_path}
                 %i.icon-home.icon-white
-                Home    
+                Home
+            %li
+              %a.btn-large{:href => showcase_path}
+                %i.icon-star.icon-white
+                Showcase
+            %li
+              %a.btn-large{:href => browse_path}
+                %i.icon-th.icon-white
+                Browse    
             -if signed_in?
+              %li.divider.divider-vertical{:id => "lowermenubar_divider"}
               - if current_user.isadmin
                 %li{:class => "dropdown"}
                   %a{:href => "#", :class => "dropdown-toggle", "data-toggle" => "dropdown"}
@@ -90,17 +97,15 @@
                     %li
                       = link_to "Timelines Summary", timelinesqview_path, method: "get"
               %li
+                %a.btn-large{:href => my_path}
+                  %i.icon-inbox.icon-white
+                  My content
+              
+              %li
                 %a.btn-large{:href => new_timeline_path}
                   %i.icon-pencil.icon-white
                   New timeline
-            %li
-              %a.btn-large{:href => showcase_path}
-                %i.icon-star.icon-white
-                Showcase
-            %li
-              %a.btn-large{:href => browse_path}
-                %i.icon-th.icon-white
-                Browse
+              %li.divider.divider-vertical{:id => "lowermenubar_divider"}
             %li
               %a.btn-large{:href => faq_path}
                 %i.icon-question-sign.icon-white
