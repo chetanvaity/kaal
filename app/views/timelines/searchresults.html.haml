@@ -16,7 +16,7 @@
   %li
     - @tlsearch_results.each do |each_tl|
       - owner_name = User.find(each_tl.owner_id).name
-      %div.thumbnail
+      %div.thumbnail{:class => ("alert alert-error" if each_tl.visibility == VIS_PRIVATE)}
         %a.thumbnail.tlsearchblock{:href => "#{timeline_path(each_tl)}"}
           %div.span2
             -if each_tl.imgurl == ""
@@ -24,7 +24,13 @@
             -else
               %img{:class => "tl_searchresults_imgthumb thumnailgrid", :src => "#{each_tl.imgurl}"}
           %div.span8
-            %h3 #{truncate(each_tl.title, :length=> 75, :ommission => "...")}
+            %h3
+              - if each_tl.visibility == VIS_PRIVATE
+                %i.icon-eye-close{:title => "This timeline is private", :rel => "tooltip"}
+                #{truncate(each_tl.title, :length=> 70, :ommission => "...")}
+              - else
+                #{truncate(each_tl.title, :length=> 75, :ommission => "...")}
+
             %br
             %p.search_result_tldesc
               #{truncate(each_tl.desc, :length=> 215, :ommission => "...")}

@@ -33,7 +33,7 @@
     -else
       - placement_string = "right"
     %li.span3
-      %div.thumbnail{:class => ('alert alert-error' if each_tl.visibility == VIS_PRIVATE)}
+      %div.thumbnail{:class => ("alert alert-error" if each_tl.visibility == VIS_PRIVATE)}
         -truncated_title_str = truncate(each_tl.title, :length=> 65, :ommission => "...")
         %a.thumbnail.tlimageblock{:id => "#{div_id_prefix}-#{local_div_count}", :href => "#{timeline_path(each_tl)}", :rel => "popover", "data-title" => "#{truncated_title_str}","data-placement" => "#{placement_string}"}
           -if each_tl.imgurl == ""
