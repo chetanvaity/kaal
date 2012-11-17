@@ -33,7 +33,7 @@
     -else
       - placement_string = "right"
     %li.span3
-      %div.thumbnail
+      %div.thumbnail{:class => ('alert alert-error' if each_tl.visibility == VIS_PRIVATE)}
         -truncated_title_str = truncate(each_tl.title, :length=> 65, :ommission => "...")
         %a.thumbnail.tlimageblock{:id => "#{div_id_prefix}-#{local_div_count}", :href => "#{timeline_path(each_tl)}", :rel => "popover", "data-title" => "#{truncated_title_str}","data-placement" => "#{placement_string}"}
           -if each_tl.imgurl == ""
@@ -41,7 +41,12 @@
           -else
             %img{:class => "tl_fixed_block_imgthumb thumnailgrid", :src => "#{each_tl.imgurl}"}
           %div.caption
-            %h4 #{truncate(each_tl.title, :length=> 25, :ommission => "...")}
+            %h4
+              - if each_tl.visibility == VIS_PRIVATE
+                %i.icon-eye-close{:title => "This timeline is private", :rel => "tooltip"}
+                #{truncate(each_tl.title, :length=> 20, :ommission => "...")}
+              - else
+                #{truncate(each_tl.title, :length=> 25, :ommission => "...")}
             %p.packed
               %small #{truncate(each_tl.desc, :length=> 67, :ommission => "...")}
             %div.tl_block_bottom_row
