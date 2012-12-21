@@ -23,4 +23,9 @@ class StaticController < ApplicationController
     @local_page_desc = "Our terms of use which expect fair usage of " + PRODUCT_DISPLAY_NAME + " timelines"
   end
   
+  # generate robot.txt
+  def robot_txt
+    @sitemap_url = "#{request.protocol}#{request.host_with_port}#{sitemap_xml_path}"
+    render :template => "static/robot", :formats => [:txt], :handlers => :haml
+  end
 end
