@@ -20,7 +20,14 @@ class TimelinesController < ApplicationController
     id = params[:id]
     init_core_tl_display_vars()
     get_timeline_data_for_display(id)
+    
     @local_page_title = @timeline.title
+    if @timeline.desc.present?
+      @local_page_desc = @timeline.desc
+    else
+      @local_page_desc = @timeline.title
+    end 
+    
     @complete_page_url = "#{request.protocol}#{request.host_with_port}#{request.fullpath}"
     logger.debug("Complete page path: " + @complete_page_url)
     
@@ -47,6 +54,9 @@ class TimelinesController < ApplicationController
 
   # Show new timeline page
   def new
+    @local_page_title = "Create new timeline"
+    @local_page_desc = "New timeline creation as per the need of the user"
+          
     # @timeline = Timeline.new (done in load_and_authorize_resource)
     @timeline_tags_json = "[]"
     render :template => "timelines/new", :formats => [:html], :handlers => :haml
@@ -128,6 +138,9 @@ class TimelinesController < ApplicationController
   end
 
   def search
+    @local_page_title = "Search results"
+    @local_page_desc = "Search " + PRODUCT_DISPLAY_NAME + " timelines"
+          
     @tlquery = params[:tlquery]
     logger.debug("Search got fired for tlquery=#{@tlquery}")
     
@@ -159,6 +172,9 @@ class TimelinesController < ApplicationController
   
   # Show some example timelines
   def showcase
+    @local_page_title = "Showcase"
+    @local_page_desc = "Display of selective " + PRODUCT_DISPLAY_NAME + " timelines"
+          
     @example_rows = []
     # We currently entertain max 4 values ...if present in DB
     for i in 1..4
@@ -193,10 +209,14 @@ class TimelinesController < ApplicationController
         end #end if
       end
     end #end for    
-    @local_page_title = "Showcase"
+    
   end
   
   def newhomepage
+    @local_page_title = ""
+    @local_page_desc = "Easy creation and sharing of timelines"
+    @local_page_keywords = "timeline, time-line, events, history, chronological, make a timeline, create a timeline, create timeline, making a timeline, online timeline maker, history timeline, timeline of history, history for kids, life timeline"
+      
     # Featured timelines
     @featuted_timelines = nil
     tlids_array = [] #empty array
@@ -244,6 +264,9 @@ class TimelinesController < ApplicationController
   end
   
   def browse
+    @local_page_title = "Browse"
+    @local_page_desc = "Browse " + PRODUCT_DISPLAY_NAME + " timelines"
+        
     #
     # Without login, we want to show all only those timelines which 
     # are non empty and Public.

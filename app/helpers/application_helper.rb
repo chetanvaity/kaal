@@ -1,5 +1,33 @@
 module ApplicationHelper
   
+  def set_page_title(giventitle = nil)
+    if giventitle.present?
+      content_for :title, giventitle + " | #{PRODUCT_DISPLAY_NAME} timelines"
+    else
+      #default
+      content_for :title, "#{PRODUCT_DISPLAY_NAME} timelines"
+    end
+  end
+  
+  def set_page_metadescription(givendesc = nil)
+      if givendesc.present?
+        content_for :meta_description, givendesc
+      else
+        #default
+        content_for :meta_description, "Timeline creation was never so easy."
+      end
+  end
+  
+  def set_page_metakeywords(givenkeywords = nil)
+    if givenkeywords.present?
+      content_for :meta_keywords, givenkeywords
+    else
+      #default
+      content_for :meta_keywords, ""
+    end
+  end
+    
+  # ----------------------------------------------------------------------
   
   # Quick helper for timeline view url
   def generate_timeline_view_url(given_tags, # search words

@@ -2,12 +2,22 @@
 %html
   %head
     %meta{:charset => "utf-8"}
-    %meta{:description => "Timelines. Quick. Easy. Create and Share timelines.", :keywords => "pollengrain, timeline, time-line, events, history, chronological, search"}
+    /%meta{:description => "Timelines. Quick. Easy. Create and Share timelines.", :keywords => "pollengrain, timeline, time-line, events, history, chronological, search"}
 
-    -if !@local_page_title.nil? && @local_page_title != "" 
-      %title #{@local_page_title} | #{PRODUCT_DISPLAY_NAME} timelines
-    -else
-      %title #{PRODUCT_DISPLAY_NAME} timelines
+    /
+    / Add title,desc to all pages
+    - title_to_use = "#{yield(:title)}"
+    - if !title_to_use.nil? && title_to_use != ""  
+      %title #{title_to_use}
+      
+    - desc_to_use = "#{yield(:meta_description)}"
+    - if !desc_to_use.nil? && desc_to_use != ""
+      %meta{ :name => "description", :content =>  "#{desc_to_use}" }
+    
+    - keyword_to_use = "#{yield(:meta_keywords)}"
+    - if !keyword_to_use.nil? && keyword_to_use != ""
+      %meta{ :name => "keywords", :content =>  "#{keyword_to_use}" }
+      
 
     // Add some meta tags for Facebook Share (only on timeline show page)    
     - if not @timeline.nil?
