@@ -14,6 +14,29 @@ class TimelinesController < ApplicationController
     @util = Util.instance
     @configcache = ConfigCache.instance
   end
+  
+  # Generate sitemap on the fly.
+  # This is not the best way to do it. But currently I want to keep it light weight and quick.
+  # Thsi will work till we have 50,000 urls in this file. ...long way to go. 
+  # Then we'll need to change the mechanism.
+  def sitemap
+    @tlsitemap_entries = []
+      #Get only published timelines
+    Timeline.find_each(:batch_size => 500, :conditions => ["visibility = ?", VIS_PUBLIC]) do |each_tl|
+      @tlsitemap_entries.push("#{request.protocol}#{request.host_with_port}#{timeline_path(each_tl)}")
+    end
+    
+    @homepage_entry = "#{request.protocol}#{request.host_with_port}"
+    
+    @other_sitemap_entries = []
+    # About, FAQ, Browse, Showcase
+    @other_sitemap_entries.push("#{request.protocol}#{request.host_with_port}#{about_path}")
+    @other_sitemap_entries.push("#{request.protocol}#{request.host_with_port}#{browse_path}")
+    @other_sitemap_entries.push("#{request.protocol}#{request.host_with_port}#{showcase_path}")
+    @other_sitemap_entries.push("#{request.protocol}#{request.host_with_port}#{faq_path}")
+    
+    render :template => "timelines/sitemap", :formats => [:xml], :handlers => :haml
+  end
     
   # Display the timeline in its glory
   def show

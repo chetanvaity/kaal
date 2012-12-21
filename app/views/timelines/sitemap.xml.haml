@@ -1,0 +1,25 @@
+!!! XML
+%urlset{:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9"}
+  /
+  / Homepage
+  /
+  %url
+    %loc #{@homepage_entry}
+    %changefreq weekly
+    %priority 1
+    
+  /
+  / Other important entries
+  - for every_entry in @other_sitemap_entries
+    %url
+      %loc #{every_entry}
+      %changefreq weekly
+      %priority 0.8
+  
+  /
+  / All public timelines    
+  - for each_tl_url in @tlsitemap_entries
+    %url
+      %loc #{each_tl_url}
+      %changefreq weekly
+      %priority 0.5

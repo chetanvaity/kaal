@@ -59,6 +59,9 @@ Kaal::Application.routes.draw do
   resources :activity_log do
     get 'page/:page', :action => :index, :on => :collection
   end
+  
+  #SEO stuff 
+  match '/sitemap.xml', to: 'timelines#sitemap'
 
   # Sample resource route with options:
   #   resources :products do
