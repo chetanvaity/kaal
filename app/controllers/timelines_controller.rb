@@ -196,7 +196,7 @@ class TimelinesController < ApplicationController
   # Show some example timelines
   def showcase
     @local_page_title = "Showcase"
-    @local_page_desc = "Display of selective " + PRODUCT_DISPLAY_NAME + " timelines"
+    @local_page_desc = "Display of a few selected " + PRODUCT_DISPLAY_NAME + " timelines"
           
     @example_rows = []
     # We currently entertain max 4 values ...if present in DB

@@ -2,10 +2,6 @@
 %html
   %head
     %meta{:charset => "utf-8"}
-    /%meta{:description => "Timelines. Quick. Easy. Create and Share timelines.", :keywords => "pollengrain, timeline, time-line, events, history, chronological, search"}
-
-    /
-    / Add title,desc to all pages
     - title_to_use = "#{yield(:title)}"
     - if !title_to_use.nil? && title_to_use != ""  
       %title #{title_to_use}
