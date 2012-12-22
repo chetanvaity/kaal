@@ -62,7 +62,6 @@ Kaal::Application.routes.draw do
   
   #SEO stuff 
   match '/sitemap_xml', to: 'timelines#sitemap'
-  match '/robot.txt', to: 'static#robot_txt'
 
   # Sample resource route with options:
   #   resources :products do
