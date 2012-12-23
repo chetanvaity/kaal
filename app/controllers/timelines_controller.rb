@@ -72,7 +72,16 @@ class TimelinesController < ApplicationController
     if @fullscr == "true"
       render :template => "timelines/tl-fullscr", :formats => [:html], :handlers => :haml,
               :layout => "tl"
-    end  
+    elsif @embeddedview == "true"
+      #
+      #Preview case is also covered here.
+      #
+      render :template => "events/tl", :formats => [:html], :handlers => :haml,
+          :layout => "tl"
+    else
+      # Normal timeline page rendering with default layout etc.
+      # ...
+    end
   end
 
   # Show new timeline page
@@ -335,6 +344,7 @@ class TimelinesController < ApplicationController
       @viewstyle = "tl"
       @fullscr = "false"
       @embeddedview = "false"
+      @tl_preview = "false"
       @events_on_a_page = "default"
       @total_search_size = 0
       @events_size = 0
@@ -361,6 +371,16 @@ class TimelinesController < ApplicationController
       if @fullscr != "false" && @fullscr != "true"
         @fullscr = "false"
       end
+      
+      #Additional stuff for timeline - preview
+      @tl_preview = params[:preview]
+      if @tl_preview.nil? || @tl_preview.blank? 
+        @tl_preview = "false"
+      end
+      if @tl_preview != "false" && @tl_preview != "true"
+        @tl_preview = "false"
+      end
+      
           
       # We'll default to 'non-embedded' view if not found.
       @embeddedview = params[:embview]
@@ -370,6 +390,11 @@ class TimelinesController < ApplicationController
       if @embeddedview != "false" && @embeddedview != "true"
         @embeddedview = "false"
       end
+      
+      if @tl_preview == "true"
+        @embeddedview = "true"
+      end
+            
       if @embeddedview == "true"
         @viewstyle = "tl"
         @fullscr = "false"

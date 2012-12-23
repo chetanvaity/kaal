@@ -181,10 +181,25 @@ module ApplicationHelper
     end
             
     url_to_return = '<iframe src="'
-    url_to_return += URI::encode(main_url) + '" frameborder="yes" scrolling="no" width="84%" height="500">Test</iframe>'
+    url_to_return += URI::encode(main_url) + '" frameborder="yes" scrolling="no" width="85%" height="530">Test</iframe>'
         
     return url_to_return
     
+  end
+
+  
+  # Keeping separate method for this.
+  # Later we can give some different treatment iof it is "preview"
+  #
+  def generate_complete_timeline_preview_url(given_timeline_id)
+    tl_entry_to_use = Timeline.find(given_timeline_id)
+    target_page_path = timeline_path(tl_entry_to_use)
+          
+    protocol_host_port = "#{request.protocol}#{request.host_with_port}"
+    main_url = "#{protocol_host_port}#{target_page_path}?preview=true"
+          
+    url_to_return = URI::encode(main_url)
+    return url_to_return
   end
   
 end

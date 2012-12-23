@@ -1,0 +1,14 @@
+/
+/ This is to display Preview modal popup
+/ 
+%div{:class => "modal hide", :id => "modal-tl-preview"}
+  %div{:class => "modal-header"}
+    %button{:type => "button", :class => "close", "data-dismiss" => "modal"}×
+    %strong Timeline preview
+  %div{:class => "modal-body"}
+    %iframe{:src => "#{generate_complete_timeline_preview_url(given_timeline_id)}", 
+        :frameborder => "yes", :scrolling => "no", :width => "93%", :height => "490"}Test 
+/ ====================================================================================================
+
+%div
+  %a.btn.btn-primary{:href => "#modal-tl-preview", "data-toggle" => "modal", :title => "Timeline preview", :rel => "tooltip"} Preview
