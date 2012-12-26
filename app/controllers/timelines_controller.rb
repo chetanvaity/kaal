@@ -422,7 +422,7 @@ class TimelinesController < ApplicationController
         if @viewstyle == "tl"
           #This is for timeline display
           json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-          @util.make_json(@fetchedevents, json_fname, @timeline.title, nil, nil)
+          @util.make_json(@fetchedevents, json_fname, @timeline.title, nil, nil, @timeline.imgurl)
         else
           #This is for tabular display
           # @fetchedevents should be used by the view for display purpose

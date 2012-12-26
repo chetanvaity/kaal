@@ -273,7 +273,7 @@ class Util
   #
   # USing given set of events and filename, create ouput jason
   #
-  def make_json(events, json_fname, query_str, from_jd, to_jd)
+  def make_json(events, json_fname, query_str, from_jd, to_jd, cover_img_url)
     # Make nice looking main frame for the timeline
     # Drop the tokens begining with '@'
     headline_str = query_str.split.delete_if {|t| t[0] == '@'}.join(' ')
@@ -284,11 +284,17 @@ class Util
       text = "Events from " + Date.jd(from_jd).strftime("%d %b %Y") + " - " +
         Date.jd(to_jd).strftime("%d %b %Y")
     end
+    
+    title_img_url = nil;
+    if !cover_img_url.nil? && !cover_img_url.blank?
+      title_img_url = URI::encode(cover_img_url)
+    end
 
     header_json = <<END
 {"timeline":
   {
   "headline":#{headline},
+  "headImgUrl":"#{title_img_url}",
   "type":"default",
   "startDate":"2011,9,1",
   "text":"#{text}",

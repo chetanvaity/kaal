@@ -5203,10 +5203,27 @@ if (typeof VMM.Slider != 'undefined') {
                     + '<img src="' + data.imgurl + '" width="60px" height="60px" title="Click to see bigger image" />'  
                     + '</a>';
 		    }
-		    
-		    //c.text += '<div id="gx"><a target="new" href="http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG"><img src="http://upload.wikimedia.org/wikipedia/commons/7/75/Kingshivajibhosle.JPG" width="60px" height="60px" alt="click to see bigger image" title="click to see bigger image" /></a></div>';
+		    else
+		    {
+		      
+		      //c.text += '<div id="gx"><a target="new" href=""><img src="http://4.bp.blogspot.com/-17kdYyRHeeM/Tde3dypmu1I/AAAAAAAAAAM/13qxr1TaDms/s1600/ShivajiMaharajWallpaper.jpg" width="150px" height="150px" alt="click to see bigger image" title="click to see bigger image" /></a></div>';
+		      
+		      /* AMOL - Add timeline cover image display */
+          if( data.headImgUrl != null && data.headImgUrl != "")
+          {
+            c.text += '<div>'
+                    + '<a  href="' + data.headImgUrl + '" rel="lightbox">'  
+                    + '<img src="'+ data.headImgUrl+ '" ' 
+                      + 'style="display:block; margin-left:auto; margin-right:auto; max-width:140px; max-height:105px;" '
+                      + 'title="Click to see bigger image" />'  
+                    + '</a></div>';
+          }
+          /* End AMOL */
+		    }
 			
-		    /* End AMOL */
+			  /* End AMOL */
+			  
+			  
 
 			/* DATE
 			================================================== */
@@ -6917,6 +6934,13 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 				_date.slug			= false;
 				_date.needs_slug	= false;
 				_date.fulldate		= _date.startdate.getTime();
+				
+				/* Amol Cover image URL */
+				if (data.headImgUrl != null && data.headImgUrl != "")
+				{
+				  _date.headImgUrl = data.headImgUrl; 
+				}
+				/* Amol end */
 				
 				if (config.embed) {
 					VMM.fireEvent(global, config.events.headline, _date.headline);

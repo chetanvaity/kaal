@@ -241,7 +241,7 @@ class EventsController < ApplicationController
       if @viewstyle == "tl"
         #This is for timeline display
         json_fname = "#{Rails.root}/public/#{@json_resource_path}"
-        @util.make_json(@fetchedevents, json_fname, @query, from_jd, to_jd)
+        @util.make_json(@fetchedevents, json_fname, @query, from_jd, to_jd, nil)
         @@q_keys.store(query_key, [@events_size,@total_search_size])
         logger.info("EventsController.query2() - json made: #{json_fname}")
       else
