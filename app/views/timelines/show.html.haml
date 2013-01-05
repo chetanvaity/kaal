@@ -76,15 +76,15 @@
 
 %div.collapse.in{:id => "tlsummary"}
   %div.well.fixed_height_tlsummary
-    %div.span2.tlpg_img_div  
-      /
-      / Display image
-      /
-      -if @timeline.imgurl != ""
-        %img{:class => "tlpgimg", :src => "#{@timeline.imgurl}", :alt => "", :itemprop => "image"}
-      -else
-        %img{:class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => "", :itemprop => "image"}
-    %div.span9
+    /%div.span2.tlpg_img_div  
+    /  /
+    /  / Display image
+    /  /
+    /  -if @timeline.imgurl != ""
+    /    %img{:class => "tlpgimg", :src => "#{@timeline.imgurl}", :alt => "", :itemprop => "image"}
+    /  -else
+    /    %img{:class => "tlpgimg", :src => "/assets/default_tlimg.png", :alt => "", :itemprop => "image"}
+    %div.span11
       /
       / Display description
       /
@@ -105,6 +105,7 @@
         -@timeline.tags.split(/,/).each do |each_tag|
           %a{:href => "#{tlnsearch_path}?tlquery=#{each_tag}"}
             %span.label.label-info #{each_tag} 
+
 
 = render 'timelines/timeline_core'
 
@@ -130,13 +131,13 @@
 / ======================================================================================
 /
 /Let's collapse this section by default if all elements inside it are not available.
--if @timeline.imgurl == "" && @timeline.desc == "" && @timeline.tags == ""
-  %script{:type => "text/javascript"}
-    $(function ()  
-    { 
-    $("#tlsummary").collapse('hide');  
-    }       
-    );
+/-if @timeline.imgurl == "" && @timeline.desc == "" && @timeline.tags == ""
+%script{:type => "text/javascript"}
+  $(function ()  
+  { 
+  $("#tlsummary").collapse('hide');  
+  }       
+  );
 
 // Hide the appropriate visibility div
 - if @timeline.visibility == VIS_PRIVATE
