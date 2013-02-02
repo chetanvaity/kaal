@@ -19,6 +19,12 @@ jQuery(function($) {
       
 });
 
+
+// A global variable to note if event list of teh timeline has been modified by the user
+// We will mark it dirty when an event is added or removed from the gathered event list
+// We will mark it clean after we have successfully saved the gathered event list to DB
+var tl_eventlist_dirty = false;
+
 // Copy div with given id to gathered_events div
 // Change the id of the new div to "gdiv_" + id
 // Remove the hide class - so that the "close" button becomes visible
@@ -45,6 +51,8 @@ copyEventDiv = function(id) {
     }, 1000, function() {
 	// Animation complete.
     });
+
+    tl_eventlist_dirty = true;
 };
 
 // Remove div with id = "gdiv_" + id
@@ -57,6 +65,8 @@ removeEventDiv = function(id) {
     old_value = g_ev_ids.attr("value");
     new_value = old_value.replace(id + ",", "");
     g_ev_ids.attr("value", new_value);
+
+    tl_eventlist_dirty = true;
 };
 
 // Remove all the divs with id = "gdiv_*"
@@ -64,6 +74,8 @@ removeEventDiv = function(id) {
 removeAllEventDivs = function() {
     $('div[id^="gdiv_"]').remove();
     g_ev_ids.attr("value", "");
+
+    tl_eventlist_dirty = true;
 };
 
 // Clear a token-input box

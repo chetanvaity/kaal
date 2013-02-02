@@ -47,6 +47,10 @@
   
 /===============================================
 
+%div.row
+  %div.span2.offset2.pull-left
+    %button{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
+
 %div.row.span12
   %div.tabbable
     %ul.nav.nav-tabs
@@ -195,6 +199,16 @@
           });
         });
         
+        // A funtion to save the gathered events list to this timeline
+        function saveGatheredEvents() {
+          var jqxhr = $.ajax({
+                          type: "POST",
+                          url: "/el_save",
+                          data: {id: #{@timeline.id}, event_list: $("#gathered_event_ids").attr("value")}
+                        }).done(function() { alert("done saving"); })
+                          .fail(function() { alert("failed saving"); });                        
+        }
+
         //--------------------------------------------------------------------------
         //
         // We want to warn people if they are about to leave this page.

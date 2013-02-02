@@ -6,7 +6,7 @@ class TimelinesController < ApplicationController
   
   before_filter :signing_is_must, only: [:new, :edit, :update]
   before_filter :require_admin, only: [:timelines_quickview]
-  load_and_authorize_resource :only => [:show, :new, :create, :edit, :update, :destroy, :change_visibility]
+  load_and_authorize_resource :only => [:show, :new, :create, :edit, :update, :destroy, :change_visibility, :el_save]
 
   # Constructor
   def initialize(*params)
@@ -323,6 +323,18 @@ class TimelinesController < ApplicationController
         #
         @timelines = Timeline.where("(events is not NULL and events != '' and visibility=#{VIS_PUBLIC}) or (owner_id = ?)", current_user.id).order("created_at DESC").page(params[:page]).per(num_of_events_per_page)
       end
+    end
+  end
+
+  # AJAX function to save gathered events from edit timeline page
+  def el_save
+    # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
+    event_list_str = params[:event_list]
+    @timeline.events = event_list_str
+    if @timeline.save()
+      render :template => "timelines/el_save", :formats => [:js], :handlers => :haml
+    else
+      # TBD: I guess we should do something here
     end
   end
     

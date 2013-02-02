@@ -40,6 +40,7 @@ Kaal::Application.routes.draw do
   match 'sandbox' => 'events#query2', :as=> :tlsearch
   match 'search_events' => 'events#search'
   match 'ac_search' => 'tags#ac_search'
+  match 'el_save' => 'timelines#el_save'
   
   match '/auth/:service/callback' => 'sessions#create' 
   match '/auth/failure' => 'sessions#failure'
