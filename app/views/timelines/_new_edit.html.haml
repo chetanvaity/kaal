@@ -49,6 +49,8 @@
 
 %div.row
   %div.span2.offset2.pull-left
+    %div#save_msg.hide
+      All events saved.
     %button{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
 
 %div.row.span12
@@ -199,15 +201,26 @@
           });
         });
         
-        // A funtion to save the gathered events list to this timeline
+        /* A function to save the gathered events list to this timeline
+         * Do the save only if tl_eventlist_dirty is 1
+         */
         function saveGatheredEvents() {
-          var jqxhr = $.ajax({
+          if (tl_eventlist_dirty == false) {
+            return;
+          } else {
+            var jqxhr = $.ajax({
                           type: "POST",
                           url: "/el_save",
                           data: {id: #{@timeline.id}, event_list: $("#gathered_event_ids").attr("value")}
-                        }).done(function() { alert("done saving"); })
-                          .fail(function() { alert("failed saving"); });                        
+                        }).done(function() { console.log("done saving"); tl_eventlist_dirty = false; $("#save_msg").removeClass("hide");})
+                          .fail(function() { console.log("failed saving"); });
+          };
         }
+
+        // Call saveGatheredEvents every 10 seconds
+        $(document).ready(function() {
+          setInterval(saveGatheredEvents, 10000);
+        });
 
         //--------------------------------------------------------------------------
         //
