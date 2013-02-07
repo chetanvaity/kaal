@@ -116,7 +116,8 @@ class TimelinesController < ApplicationController
       record_activity("t=#{@timeline.title}")
       flash[:notice] =
         "<strong>#{@timeline.title}</strong> was successfully created".html_safe
-      redirect_to timeline_path(@timeline)
+      #redirect_to timeline_path(@timeline)
+      redirect_to edit_timeline_path(@timeline)
     else
       setup_vars_for_edit(@timeline)
       render :template => "timelines/new", :formats => [:html], :handlers => :haml

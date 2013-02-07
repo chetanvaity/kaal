@@ -2,4 +2,4 @@
 -set_page_metadescription(@local_page_desc)
 
 %h2 Create new timeline
-= render :partial => "new_edit"
+= render :partial => "new_edit",:locals => {:cur_op => "new"}

@@ -54,6 +54,7 @@ copyEventDiv = function(id) {
 
     tl_eventlist_dirty = true;
     $("#save_msg").addClass("hide");
+    saveGatheredEvents();
 };
 
 // Remove div with id = "gdiv_" + id
@@ -69,6 +70,7 @@ removeEventDiv = function(id) {
 
     tl_eventlist_dirty = true;
     $("#save_msg").addClass("hide");
+    saveGatheredEvents();
 };
 
 // Remove all the divs with id = "gdiv_*"
@@ -79,6 +81,7 @@ removeAllEventDivs = function() {
 
     tl_eventlist_dirty = true;
     $("#save_msg").addClass("hide");
+    saveGatheredEvents();
 };
 
 // Clear a token-input box

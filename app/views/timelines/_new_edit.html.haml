@@ -1,4 +1,9 @@
 /
+/ To show busy indicator
+/
+= render :partial => "busy_indicator", :locals => {:given_message => "Saving changes ..."}
+
+/
 / Hidden help divs used on 'new-event' page.
 /
 %div{:id => "help_popup_event_title", :style => "display: none"}
@@ -51,19 +56,23 @@
   %div.span2.offset2.pull-left
     %div#save_msg.hide
       All events saved.
-    %button{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
+    /%button{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
 
 %div.row.span12
-  %div.tabbable
-    %ul.nav.nav-tabs
+  %div.tabbable.main_two_tabs
+    %ul.nav.nav-tabs.for_main_tabs
       %li.active
         %a{:href => "#tab-one", :"data-toggle" => "tab", :title => "Timeline summary", :rel => "tooltip"}
           %i.icon-time
           Timeline Summary
-      %li
-        %a{:href => "#tab-two", :"data-toggle" => "tab", :title => "Events for this timeline ", :rel => "tooltip"}
-          %i.icon-list
-          Events in the timeline
+      -if cur_op == "edit"    
+        %li
+          %a{:href => "#tab-two", :"data-toggle" => "tab", :title => "Events for this timeline ", :rel => "tooltip"}
+            %i.icon-list
+            Events in the timeline
+        %li
+          %div.span7.top_return_link_div
+            %a.pull-right{:href => "#{timeline_path(@timeline)}"} Done with changes? Return to timeline page
 
     %div.tab-content
       %div#tab-one.span8.tab-pane.active{:title => "Timeline summary", :rel => "tooltip"}
@@ -93,111 +102,121 @@
               = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
 
             %hr
-            %div.center
-              %a.btn{:href => root_path}
-                = p "Cancel"
-              %span
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              = button_tag(:type => "submit", :onclick => "return resetWarnFlag();" ,:class => "btn btn-primary") do
-                %i.icon-ok.icon-white
-                = p " Save"
-
-      %div#tab-two.row.span11.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
-        %div.span5
-          %div.span5.existingevents_heading_preview
-            %div.span3
-              %br
-              %h4{:style => "margin-bottom: 10px"}
-                %i.icon-list
-                Events in this timeline
-            %div.span1
-              %br
-              = render :partial => "timeline_preview", :locals => {:given_timeline_id => @timeline.id}
-          %div.well
-            %div.row
-              %br
-              %br
-              %div.span1.pull-left
-                = label_tag 'Events', nil, :class => "bold-text"
-              %div.span1.pull-right
-                %a.small-text{:href => "#", :onclick => "removeAllEventDivs()", :title => "Remove events listed here from the timeline", :rel => "tooltip"}
-                  Remove all
-            = hidden_field :timeline, :events, :id => "gathered_event_ids"
-            %div#gathered_events
-              - if @events
-                - @events.each do |event|
-                  %div{:id => "gdiv_#{event.id}"}
-                    %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
+            -if cur_op == "new"
+              %div.center
+                %a.btn{:href => root_path}
+                  = p "Cancel"
+                %span
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                = button_tag(:type => "submit", :onclick => "return resetWarnFlag();" ,:class => "btn btn-primary") do
+                  %i.icon-ok.icon-white
+                  = p " Save"
+      
+      /
+      / Remaining UI is applicable only when it is in EDIT mode
+      /          
+      -if cur_op == "edit"
+        %div#tab-two.row.span11.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
+          %div.span5
+            %div.span5.existingevents_heading_preview
+              %div.span3
+                %br
+                %h4{:style => "margin-bottom: 10px"}
+                  %i.icon-list
+                  Events in this timeline
+              %div.span1
+                %br
+                = render :partial => "timeline_preview", :locals => {:given_timeline_id => @timeline.id}
+            %div.well
+              %div.row
+                %br
+                %br
+                %div.span1.pull-left
+                  = label_tag 'Events', nil, :class => "bold-text"
+                %div.span1.pull-right
+                  %a.small-text{:href => "#", :onclick => "removeAllEventDivs()", :title => "Remove events listed here from the timeline", :rel => "tooltip"}
+                    Remove all
+              = hidden_field :timeline, :events, :id => "gathered_event_ids"
+              %div#gathered_events
+                - if @events
+                  - @events.each do |event|
+                    %div{:id => "gdiv_#{event.id}"}
+                      %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
+                      %div
+                        = event.title
+                      %div.muted
+                        = event.date_str
+              %hr
+              /%a.btn.btn-primary{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
+              %a{:href => "#{timeline_path(@timeline)}"} Done with changes? Return to timeline page
+              
+  
+          %div.span5
+            /%h2{:style => "margin-bottom: 10px"} &nbsp;
+            %div.tabbable
+              %ul.nav.nav-tabs
+                %li.active
+                  %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"}
+                    %i.icon-search
+                    Search existing events
+                %li
+                  %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"}
+                    %i.icon-plus
+                    Add new event
+  
+              %div.tab-content
+                %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
+                  = form_tag(search_events_path, :remote => true) do
                     %div
-                      = event.title
-                    %div.muted
-                      = event.date_str
+                      = text_field_tag('query', nil, :placeholder => 'Search for events',
+                      :class => "span2 search-query")
+                      = button_tag(:type => "submit", :class => "btn btn-primary") do
+                        %i.icon-search.icon-white
+                  %div#search_results.well
+  
+                %div#tab2.tab-pane{:title => "Enter details of a new event to be added to this timeline", :rel => "tooltip"}
+                  - @event = Event.new
+                  = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
+                    %div#new_created_event          
+                    %div#eventErrorExplanation.errorExplanation.hide
+                    %div#eventSuccessMessage.alert.alert-success.hide
+  
+                    %div.help_icon_div
+                      = label :event, :title, 'Title', :class => "eventlabel"
+                      %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "left"}
+                    = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
+  
+                    %div.help_icon_div
+                      = label :event, :date, 'Date', :class => "eventlabel"
+                      %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "left"}
+                    = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
+  
+                    = label :event, :tags, 'Tags'
+                    = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
+  
+                    %div.help_icon_div
+                      = label :event, :url, 'URL', :class => "eventlabel"
+                      %img.event_upper_help_icon_url{:src => "/assets/q2.png", :id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "left"}
+                    = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
+  
+                    %div.help_icon_div
+                      = label :event, :imgurl, 'Image Link', :class => "eventlabel"
+                      %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
+                    = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
+  
+                    %div.help_icon_div
+                      = label :event, :desc, 'Description', :class => "eventlabel"
+                      %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "left"}
+                    = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
+  
+                    %div.pull-right
+                      = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
+                        = p " Cancel"
+                      = button_tag(:type => "submit", :class => "btn btn-primary", :onClick => "$('#busy_indicator').show()") do
+                        %i.icon-arrow-left.icon-white
+                        = p " Add to timeline"
 
-        %div.span5
-          /%h2{:style => "margin-bottom: 10px"} &nbsp;
-          %div.tabbable
-            %ul.nav.nav-tabs
-              %li.active
-                %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"}
-                  %i.icon-search
-                  Search existing events
-              %li
-                %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"}
-                  %i.icon-plus
-                  Add new event
-
-            %div.tab-content
-              %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
-                = form_tag(search_events_path, :remote => true) do
-                  %div
-                    = text_field_tag('query', nil, :placeholder => 'Search for events',
-                    :class => "span2 search-query")
-                    = button_tag(:type => "submit", :class => "btn btn-primary") do
-                      %i.icon-search.icon-white
-                %div#search_results.well
-
-              %div#tab2.tab-pane{:title => "Enter details of a new event to be added to this timeline", :rel => "tooltip"}
-                - @event = Event.new
-                = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
-                  %div#new_created_event          
-                  %div#eventErrorExplanation.errorExplanation.hide
-                  %div#eventSuccessMessage.alert.alert-success.hide
-
-                  %div.help_icon_div
-                    = label :event, :title, 'Title', :class => "eventlabel"
-                    %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                  = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
-
-                  %div.help_icon_div
-                    = label :event, :date, 'Date', :class => "eventlabel"
-                    %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                  = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
-
-                  = label :event, :tags, 'Tags'
-                  = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
-
-                  %div.help_icon_div
-                    = label :event, :url, 'URL', :class => "eventlabel"
-                    %img.event_upper_help_icon_url{:src => "/assets/q2.png", :id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                  = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
-
-                  %div.help_icon_div
-                    = label :event, :imgurl, 'Image Link', :class => "eventlabel"
-                    %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                  = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
-
-                  %div.help_icon_div
-                    = label :event, :desc, 'Description', :class => "eventlabel"
-                    %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                  = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
-
-                  %div.pull-right
-                    = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
-                      = p " Cancel"
-                    = button_tag(:type => "submit", :class => "btn btn-primary") do
-                      %i.icon-arrow-left.icon-white
-                      = p " Add to timeline"
-
+    
 
       :javascript
         $(document).ready(function() {
@@ -216,19 +235,21 @@
           if (tl_eventlist_dirty == false) {
             return;
           } else {
+            $('#busy_indicator').show();
             var jqxhr = $.ajax({
                           type: "POST",
                           url: "/el_save",
                           data: {id: #{@timeline.id}, event_list: $("#gathered_event_ids").attr("value")}
-                        }).done(function() { console.log("done saving"); tl_eventlist_dirty = false; $("#save_msg").removeClass("hide");})
-                          .fail(function() { console.log("failed saving"); });
+                        }).done(function() { $('#busy_indicator').hide();console.log("done saving"); tl_eventlist_dirty = false; $("#save_msg").removeClass("hide");})
+                          .fail(function() { $('#busy_indicator').hide();console.log("failed saving"); });
           };
         }
 
+        // TEmp disabled by AMOL
         // Call saveGatheredEvents every 10 seconds
-        $(document).ready(function() {
-          setInterval(saveGatheredEvents, 10000);
-        });
+        //$(document).ready(function() {
+        //  setInterval(saveGatheredEvents, 10000);
+        //});
 
         //--------------------------------------------------------------------------
         //
@@ -283,4 +304,3 @@
           
         });
         //--------------------------------------------------------------------------                 
-        

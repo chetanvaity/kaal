@@ -1,2 +1,4 @@
-%h2 Edit timeline
-= render :partial => "new_edit"
+%h2.edittl_heading Edit timeline
+%p.center
+  Modify timeline summary, add/remove events to this timeline.
+= render :partial => "new_edit", :locals => {:cur_op => "edit"}
