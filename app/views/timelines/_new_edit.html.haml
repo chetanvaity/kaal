@@ -102,13 +102,21 @@
                 %i.icon-ok.icon-white
                 = p " Save"
 
-      %div#tab-two.row.span8.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
-        %div.span3
-          %h4{:style => "margin-bottom: 10px"}
-            %i.icon-list
-            Events in this timeline
+      %div#tab-two.row.span11.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
+        %div.span5
+          %div.span5.existingevents_heading_preview
+            %div.span3
+              %br
+              %h4{:style => "margin-bottom: 10px"}
+                %i.icon-list
+                Events in this timeline
+            %div.span1
+              %br
+              = render :partial => "timeline_preview", :locals => {:given_timeline_id => @timeline.id}
           %div.well
             %div.row
+              %br
+              %br
               %div.span1.pull-left
                 = label_tag 'Events', nil, :class => "bold-text"
               %div.span1.pull-right
@@ -125,18 +133,18 @@
                     %div.muted
                       = event.date_str
 
-        %div.span3
-          %h2{:style => "margin-bottom: 10px"} &nbsp;
+        %div.span5
+          /%h2{:style => "margin-bottom: 10px"} &nbsp;
           %div.tabbable
             %ul.nav.nav-tabs
               %li.active
                 %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events existing in pollengrain to add to this timeline", :rel => "tooltip"}
                   %i.icon-search
-                  Search
+                  Search existing events
               %li
                 %a{:href => "#tab2", :"data-toggle" => "tab", :title => "Add new events for this timeline ", :rel => "tooltip"}
                   %i.icon-plus
-                  New event
+                  Add new event
 
             %div.tab-content
               %div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
