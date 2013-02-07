@@ -90,3 +90,7 @@ end
 
 # For easy authorization
 gem 'cancan'
+
+#To display preview of timeline
+#https://rubygems.org/gems/prettyphoto-rails
+gem 'prettyphoto-rails'

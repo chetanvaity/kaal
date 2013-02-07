@@ -8,6 +8,7 @@
 //= require jquery_ujs
 //= require jquery.nested-fields
 //= require bootstrap
+//= require prettyphoto-rails
 //= require_tree .
 
 $(document).ready(function(e) {

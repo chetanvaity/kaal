@@ -132,6 +132,11 @@ GEM
       fattr
     polyglot (0.3.3)
     pr_geohash (1.0.0)
+    prettyphoto-rails (0.2.0)
+      jquery-rails
+      rails (>= 3.1)
+      sass-rails
+      uglifier
     progress_bar (0.4.0)
       highline (~> 1.6.1)
       options (~> 2.3.0)
@@ -228,6 +233,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   omniauth-openid
+  prettyphoto-rails
   progress_bar
   rack-google-analytics
   rails (= 3.2.10)
