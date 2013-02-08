@@ -136,12 +136,22 @@ class TimelinesController < ApplicationController
     # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
     if @timeline.update_attributes(params[:timeline])
       record_activity("t=#{@timeline.title}")
-      flash[:notice] =
+      flash[:now] =
         "<strong>#{@timeline.title}</strong> was successfully updated".html_safe
-      redirect_to timeline_path(@timeline)
+      
+      respond_to do |format|  
+        format.html { redirect_to timeline_path(@timeline) }
+        format.js { render :template => "timelines/updatedtlsummary", :formats => [:js],
+                :handlers => :haml}
+      end
     else
       setup_vars_for_edit(@timeline)
-      render :template => "timelines/edit", :formats => [:html], :handlers => :haml
+      
+      respond_to do |format|  
+        format.html { render :template => "timelines/edit", :formats => [:html], :handlers => :haml}
+        format.js { render :template => "timelines/updatedtlsummary", :formats => [:js],
+                :handlers => :haml}
+      end
     end
   end
 

@@ -8,8 +8,10 @@
   });
   function central() 
   {
+      //Approach-1
       var width = ($(window).width() - $('#busy_indicator').width()) / 2;
       var height = ($(window).height() - $('#busy_indicator').height()) / 2;
-
-      $('#busy_indicator').css({'position' : 'absolute' , 'left' : width + 'px', 'top' : height + 'px'});
+      //$('#busy_indicator').css({'position' : 'absolute' , 'left' : width + 'px', 'top' : height + 'px'});
+      $('#busy_indicator').css({'position' : 'fixed' , 'left' : width + 'px', 'top' : height + 'px'});
+  
   }  

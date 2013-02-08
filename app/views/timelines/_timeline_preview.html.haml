@@ -9,10 +9,10 @@
 /    %iframe{:src => "#{generate_complete_timeline_preview_url(given_timeline_id)}", 
 /        :frameborder => "yes", :scrolling => "no", :width => "93%", :height => "490"}Test 
 / ====================================================================================================
-
+/
 /%div
 /  %a.btn.btn-primary{:href => "#modal-tl-preview", "data-toggle" => "modal", :title => "Timeline preview", :rel => "tooltip"} Preview
-
+/
 /:javascript
 /  //DEstroy everything when modal gets hidden  
 /  $('#modal-tl-preview').on('hidden', function(){
@@ -21,6 +21,10 @@
 /    $(this).modal-body.html("test ...");
 /  });  
 
+
+/
+/ This implementation is based on 'prettyPhoto'. It reflects any changes in the timeline on every display.
+/
 %div
   %a.btn.btn-primary{:href =>"#{generate_complete_timeline_preview_url(given_timeline_id)}?iframe=true&width=93%&height=490", :rel => "prettyPhoto[iframe]", :title => "Timeline preview"} Preview
   /%a{:href =>"/assets/pg-logo-dev.png", :rel => "prettyPhoto", :title => "Timeline preview"} Preview

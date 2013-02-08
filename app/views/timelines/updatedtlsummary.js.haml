@@ -1,0 +1,19 @@
+var tf = $('#timeline-form');
+$('#busy_indicator').hide();
+
+- if @timeline.errors.any?
+  var errors = $("<ul />");
+  - @timeline.errors.full_messages.each do |error|
+    errors.append("<li>#{ j(error) }</li>");
+ 
+  tf.find("#tlsummaryErrors").html(errors);
+  tf.find("#tlsummaryErrors").removeClass("hide");
+  
+  tf.find("#tlsummarySuccessMessage").empty();
+  tf.find("#tlsummarySuccessMessage").addClass("hide");
+  
+-else
+  tf.find("#tlsummarySuccessMessage").html('<i class="icon-ok-sign"></i> Changes saved successfully.');
+  tf.find("#tlsummarySuccessMessage").removeClass("hide");
+  tf.find("#tlsummaryErrors").empty();
+  tf.find("#tlsummaryErrors").addClass("hide");

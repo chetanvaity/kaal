@@ -62,7 +62,7 @@
   %div.tabbable.main_two_tabs
     %ul.nav.nav-tabs.for_main_tabs
       %li.active
-        %a{:href => "#tab-one", :"data-toggle" => "tab", :title => "Timeline summary", :rel => "tooltip"}
+        %a{:href => "#tab-one", :"data-toggle" => "tab", :title => "Timeline summary", :rel => "tooltip" , :onClick => "cleanTLSummarySuccessMessage()"}
           %i.icon-time
           Timeline Summary
       -if cur_op == "edit"    
@@ -76,12 +76,20 @@
 
     %div.tab-content
       %div#tab-one.span8.tab-pane.active{:title => "Timeline summary", :rel => "tooltip"}
-        = form_for(@timeline, :html => {:id => "timeline-form"}) do |tf|
+        -if cur_op == "new"
+          -remoteValue = false
+        -else
+          -remoteValue = true
+        = form_for(@timeline, :remote => remoteValue,:html => {:id => "timeline-form"}) do |tf|
           = tf.error_messages
+          -if cur_op == "edit"
+            %div.errorExplanation.hide{:id => "tlsummaryErrors"}
+            %div.alert.alert-success.hide{:id => "tlsummarySuccessMessage"}
+          
           %div.span4.pull-left
-            %h4{:style => "margin-bottom: 10px"}
-              %i.icon-time
-              Timeline summary
+            /%h4{:style => "margin-bottom: 10px"}
+            /  %i.icon-time
+            /  Timeline summary
             %div.well
               %div.help_icon_div
                 = label :timeline, :title, 'Title',:class => "eventlabel"
@@ -100,9 +108,9 @@
 
               = label :timeline, :tags, 'Tags'
               = text_field :timeline, :tags, :class => "span3", :placeholder => "eg: shivaji, maratha, raigad"
-
-            %hr
+              
             -if cur_op == "new"
+              %hr
               %div.center
                 %a.btn{:href => root_path}
                   = p "Cancel"
@@ -111,6 +119,14 @@
                 = button_tag(:type => "submit", :onclick => "return resetWarnFlag();" ,:class => "btn btn-primary") do
                   %i.icon-ok.icon-white
                   = p " Save"
+          
+          -if cur_op == "edit"
+            %div.span6.pull-left
+              %hr
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              = button_tag(:type => "submit", :onClick => "$('#busy_indicator').show()" ,:class => "btn btn-primary") do
+                = p " Save changes"
+              %a.pull-right{:href => "#{timeline_path(@timeline)}"} Done with changes? Return to timeline page
       
       /
       / Remaining UI is applicable only when it is in EDIT mode
@@ -219,6 +235,11 @@
     
 
       :javascript
+        function cleanTLSummarySuccessMessage() {
+          $('#tlsummarySuccessMessage').empty();
+          $('#tlsummarySuccessMessage').addClass("hide");
+        }
+        
         $(document).ready(function() {
           $('#timeline_tags').tokenInput("/ac_search", {
             crossDomain: false,
