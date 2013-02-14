@@ -44,22 +44,20 @@
   %br
   %img{:src => "/assets/help-tl-desc.png"}
 
-
+/---------------------------------------------------
+   
 /
 / To show busy indicator
 /
-= render :partial => "busy_indicator", :locals => {:given_message => "Saving changes ..."}    
-  
-/===============================================
+= render :partial => "busy_indicator", :locals => {:given_message => "Saving changes ..."}
 
-%div.row
-  %div.span2.offset2.pull-left
-    %div#save_msg.hide
-      All events saved.
-    /%button{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
+/===============================================
 
 %div.row.span12
   %div.tabbable.main_two_tabs
+    /
+    / Top-level 2 tab links
+    /
     %ul.nav.nav-tabs.for_main_tabs
       %li.active
         -if cur_op == "new"
@@ -80,6 +78,9 @@
             %a.pull-right{:href => "#{timeline_path(@timeline)}"} Return to timeline page
 
     %div.tab-content
+      /
+      / ACTUAL TIMELINE SUMMARY tab
+      /
       /%div#tab-one.span8.tab-pane.active{:title => "Timeline summary", :rel => "tooltip"}
       %div#tab-one.span8.tab-pane.active
         -if cur_op == "new"
@@ -127,7 +128,7 @@
                   = p " Save"
           
           -if cur_op == "edit"
-            %div.span6.pull-left
+            %div.span6.pull-left{:id => "edit_mode_tl_summary_save_div"}
               %hr
               &nbsp;&nbsp;&nbsp;&nbsp;
               = button_tag(:type => "submit", :onClick => "$('#busy_indicator').show()" ,:class => "btn btn-primary") do
@@ -138,8 +139,17 @@
       / Remaining UI is applicable only when it is in EDIT mode
       /          
       -if cur_op == "edit"
+        /
+        / ACTUAL TIMELINE EVENTS tab
+        /
         /%div#tab-two.row.span11.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
-        %div#tab-two.row.span11.tab-pane
+        %div#tab-two.row.span11.tab-pane{:onClick => "$('#tl_events_saved_msg').hide()"}
+          %div.span10.alert.alert-success.center{:id => "tl_events_saved_msg"}
+            %strong
+              All events saved.
+          /
+          / EXISTING EVENTS tab-panel
+          /
           %div.span5
             %div.span5.existingevents_heading_preview
               %div.span3
@@ -170,7 +180,6 @@
                       %div.muted
                         = event.date_str
               %hr
-              /%a.btn.btn-primary{:title => "Save now", :onclick => "saveGatheredEvents();"}Save now
               %a.pull-right{:href => "#{timeline_path(@timeline)}"} Return to timeline page
               
   
@@ -188,8 +197,11 @@
                     Add new event
   
               %div.tab-content
+                /
+                / SEARCH EVENTS tab
+                /
                 /%div#tab1.tab-pane.active{:title => "Search to get events. Then click on events of your choice to add them to this timeline", :rel => "tooltip"}
-                %div#tab1.tab-pane.active
+                %div#tab1.tab-pane.active{:onClick => "$('#tl_events_saved_msg').hide()"}
                   %p.packed
                     %small
                       1. Search existing PollenGrain events.
@@ -206,10 +218,12 @@
                     %img.pull-left{ :src => "/assets/ajax-loader-black-white.gif",  :alt => "Loading"}
                     %h4 Getting search results ...
                   %div#search_results.well
-                    
-  
+                
+                / 
+                / ADD NEW EVENT tab    
+                /  
                 /%div#tab2.tab-pane{:title => "Enter details of a new event to be added to this timeline", :rel => "tooltip"}
-                %div#tab2.tab-pane{}
+                %div#tab2.tab-pane{:onClick => "$('#tl_events_saved_msg').hide()"}
                   - @event = Event.new
                   = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
                     %div#new_created_event          
@@ -252,24 +266,89 @@
                         %i.icon-arrow-left.icon-white
                         = p " Add to timeline"
 
-    
 
+/============================================================================
+:javascript
+  $(document).ready(function() {
+    $('#timeline_tags').tokenInput("/ac_search", {
+      crossDomain: false,
+      theme: "facebook",
+      hintText: "Type in a tag",
+      prePopulate: #{@timeline_tags_json}
+    });
+  });
+  
+  //--------------------------------------------------------------------------
+  //
+  // We want to warn people if they are about to leave this page.
+  //
+  window.onbeforeunload = confirmExit;
+  
+  // By default this flag is set so that warning popup is displayed while leaving this page.
+  localWarnFlag = true;
+  
+  function confirmExit()
+  {
+    if(localWarnFlag == true)
+      return "Please confirm that there are not any unsaved changes on this page to avoid any loss of data.";
+    else
+      return;
+  }
+  
+  /*
+   * If this flag is reset , then the warning popup will not be shown while leaving the page.
+   */
+  function resetWarnFlag()
+  {
+    localWarnFlag = false;
+  }
+  
+  //Editing the flag to true value so that warning popup can be shown while leaving this page.
+  function setWarnFlag()
+  {
+    localWarnFlag = true;
+  }
+  //--------------------------------------------------------------------------
+  //
+  // To show help popover for various fields on 'create new event' page
+  //
+  $(function ()  
+  {
+    // With arrow pointer
+    //$('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    //All without arrow pointers......for 'new event related help'
+    $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="popover-inner helppopover-lower-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    //
+    //
+    //For new 'timeline' related help
+    $('.tl_upper_help_icon').popover({template: '<div class="popover tl-upperhelppopover"><div class="popover-inner helppopover-inner-tl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    $('.tl_lower_help_icon').popover({template: '<div class="popover tl-lowerhelppopover"><div class="popover-inner helppopover-inner-tl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+  });
+  //--------------------------------------------------------------------------                 
+
+
+/
+/ Below javascript stuff largely used in only edit mode.
+/ Purposefully separated here. Some of them, if mixed in 'create new timeline' mode, causes problems
+/ and none of the popups work on that page. So please don't mix these in common code unless you verify behvaior 
+/ of both modes.
+/  
+-if cur_op == "edit"
   :javascript
     function cleanTLSummarySuccessMessage() {
       $('#tlsummarySuccessMessage').empty();
       $('#tlsummarySuccessMessage').addClass("hide");
     }
-    
-    $(document).ready(function() {
-      $('#timeline_tags').tokenInput("/ac_search", {
-        crossDomain: false,
-        theme: "facebook",
-        hintText: "Type in a tag",
-        prePopulate: #{@timeline_tags_json}
-      });
-    });
-    
+      
     function showSearchWaitIndicator() {
+      $('#tl_events_saved_msg').hide();
       $('#search_results').hide();
       $('#search_wait_indicator').show();
     }
@@ -286,72 +365,20 @@
         return;
       } else {
         $('#busy_indicator').show();
+        $("#tl_events_saved_msg").hide();
         var jqxhr = $.ajax({
                       type: "POST",
                       url: "/el_save",
                       data: {id: #{@timeline.id}, event_list: $("#gathered_event_ids").attr("value")}
-                    }).done(function() { $('#busy_indicator').hide();console.log("done saving"); tl_eventlist_dirty = false; $("#save_msg").removeClass("hide");})
+                    }).done(function() { $('#busy_indicator').hide();console.log("done saving"); tl_eventlist_dirty = false; $("#tl_events_saved_msg").show();})
                       .fail(function() { $('#busy_indicator').hide();console.log("failed saving"); });
       };
     }
-
+  
     // TEmp disabled by AMOL
     // Call saveGatheredEvents every 10 seconds
     //$(document).ready(function() {
     //  setInterval(saveGatheredEvents, 10000);
     //});
-
-    //--------------------------------------------------------------------------
-    //
-    // We want to warn people if they are about to leave this page.
-    //
-    window.onbeforeunload = confirmExit;
-    
-    // By default this flag is set so that warning popup is displayed while leaving this page.
-    localWarnFlag = true;
-    
-    function confirmExit()
-    {
-      if(localWarnFlag == true)
-        return "Please confirm that there are not any unsaved changes on this page to avoid any loss of data.";
-      else
-        return;
-    }
-    
-    /*
-     * If this flag is reset , then the warning popup will not be shown while leaving the page.
-     */
-    function resetWarnFlag()
-    {
-      localWarnFlag = false;
-    }
-    
-    //Editing the flag to true value so that warning popup can be shown while leaving this page.
-    function setWarnFlag()
-    {
-      localWarnFlag = true;
-    }
-    //--------------------------------------------------------------------------
-    //
-    // To show help popover for various fields on 'create new event' page
-    //
-    $(function ()  
-    {
-      // With arrow pointer
-      //$('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-      
-      //All without arrow pointers......for 'new event related help'
-      $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-      
-      $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-      
-      $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="popover-inner helppopover-lower-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-      
-      //
-      //
-      //For new 'timeline' related help
-      $('.tl_upper_help_icon').popover({template: '<div class="popover tl-upperhelppopover"><div class="popover-inner helppopover-inner-tl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-      $('.tl_lower_help_icon').popover({template: '<div class="popover tl-lowerhelppopover"><div class="popover-inner helppopover-inner-tl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-      
-    });
-    //--------------------------------------------------------------------------                 
+/----------------------------------------------------------------------------------------------------    
+  

@@ -8,6 +8,7 @@ var ef = $('#event-form');
   ef.find("#eventErrorExplanation").html(errors);
   ef.find("#eventErrorExplanation").removeClass("hide");
   $('#busy_indicator').hide();
+  $("#tl_events_saved_msg").hide();
 
 - else
   ef.find("#eventSuccessMessage").html('<i class="icon-ok-sign"></i> <strong>#{ j(@event.title) }</strong> saved.');
