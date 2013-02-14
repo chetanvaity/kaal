@@ -293,7 +293,7 @@ class EventsController < ApplicationController
       keywords query, :fields => [:title, :tags, :extra_words]
       paginate :page => params[:page], :per_page => 10
     end
-
+    
     @events = []
     @search.each_hit_with_result do |hit, event|
       event.score = hit.score

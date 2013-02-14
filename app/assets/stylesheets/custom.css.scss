@@ -801,4 +801,14 @@ div.top_return_link_div {
     color: #FFFFFF;
   }
 }
+
+#search_wait_indicator {
+  display: none;
+  //background-color: #0000FF;
+  //height: 80px;
+  h4 {
+    padding-top: 10px;
+    margin-left: 45px;
+  }
+}
 //------------------------------------------------------------------------------------------

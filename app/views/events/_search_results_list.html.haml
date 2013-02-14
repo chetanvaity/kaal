@@ -1,14 +1,21 @@
-= paginate @search.hits, :window => 0, :outer_window => 0, :remote => true, :theme => "concise" 
+/= paginate @search.hits, :window => 0, :outer_window => 0, :remote => true, :theme => "concise"
+= paginate @search.hits,:remote => true, :theme => "concise"
 
-%ul.nav.nav-list
-  - for event in @events do
-    %li
-      %a{:href => "#", :onclick => "copyEventDiv(#{event.id})"}
-        %div{:id => "#{event.id}"}
-          %button.close.hide{:onclick => "removeEventDiv(#{event.id})", :title => "Remove this event from the timeline", :rel => "tooltip"} &times;
-          %div
-            = event.title
-          %div.muted
-            = event.date_str
+-if @events.length == 0
+  0 results found.
+-else  
+  %ul.nav.nav-list
+    - for event in @events do
+      %li
+        %a{:href => "#", :onclick => "copyEventDiv(#{event.id})"}
+          %div{:id => "#{event.id}"}
+            %button.close.hide{:onclick => "removeEventDiv(#{event.id})", :title => "Remove this event from the timeline", :rel => "tooltip"} &times;
+            %div
+              = event.title
+            %div.muted
+              = event.date_str
 
-= page_entries_info(@search.hits, :entry_name => "event").html_safe
+/
+/ AMOL: This is line is causing some error, hence commented for timebeing. Chetan , please look in to it.
+/= page_entries_info(@search.hits, :entry_name => "event").html_safe
+
