@@ -59,17 +59,17 @@
     / Top-level 2 tab links
     /
     %ul.nav.nav-tabs.for_main_tabs
-      %li.active
-        -if cur_op == "new"
+      -if cur_op == "new"
+        %li.active
           %a{:href => "#tab-one", :"data-toggle" => "tab", :title => "Timeline summary"}
             %i.icon-time
             Timeline Summary
-        -else  
+      -else 
+        %li 
           %a{:href => "#tab-one", :"data-toggle" => "tab", :title => "Timeline summary", :rel => "tooltip" , :onClick => "cleanTLSummarySuccessMessage()"}
             %i.icon-time
             Timeline Summary
-      -if cur_op == "edit"    
-        %li
+        %li.active
           %a{:href => "#tab-two", :"data-toggle" => "tab", :title => "Events for this timeline ", :rel => "tooltip"}
             %i.icon-list
             Events in the timeline
@@ -82,7 +82,7 @@
       / ACTUAL TIMELINE SUMMARY tab
       /
       /%div#tab-one.span8.tab-pane.active{:title => "Timeline summary", :rel => "tooltip"}
-      %div#tab-one.span8.tab-pane.active
+      %div#tab-one{:class => (cur_op == "new")? "span8 tab-pane active" : "span8 tab-pane"}
         -if cur_op == "new"
           -remoteValue = false
         -else
@@ -143,7 +143,7 @@
         / ACTUAL TIMELINE EVENTS tab
         /
         /%div#tab-two.row.span11.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
-        %div#tab-two.row.span11.tab-pane{:onClick => "$('#tl_events_saved_msg').hide()"}
+        %div#tab-two.row.span11.tab-pane.active{:onClick => "$('#tl_events_saved_msg').hide()"}
           %div.span10.alert.alert-success.center{:id => "tl_events_saved_msg"}
             %strong
               All events saved.
