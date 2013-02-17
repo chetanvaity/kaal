@@ -1,5 +1,4 @@
-/= paginate @search.hits, :window => 0, :outer_window => 0, :remote => true, :theme => "concise"
-= paginate @search.hits,:remote => true, :theme => "concise"
+= paginate @search.hits, :window => 0, :outer_window => 0, :remote => true, :theme => "concise"
 
 -if @events.length == 0
   0 results found.
@@ -15,7 +14,5 @@
             %div.muted
               = event.date_str
 
-/
-/ AMOL: This is line is causing some error, hence commented for timebeing. Chetan , please look in to it.
-/= page_entries_info(@search.hits, :entry_name => "event").html_safe
+= page_entries_info2(@search.hits, {:collection_name => "event"})
 
