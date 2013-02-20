@@ -794,7 +794,8 @@ div.top_return_link_div {
 
 #busy_indicator {
   display: none;
-  background-color: #0000FF;
+  //background-color: #0000FF;
+  background-color: $grayDarker;
   width: 200px;
   height: 80px;  
   h4 {
