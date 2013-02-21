@@ -171,14 +171,15 @@
                     Remove all
               = hidden_field :timeline, :events, :id => "gathered_event_ids"
               %div#gathered_events
-                - if @events
-                  - @events.each do |event|
-                    %div{:id => "gdiv_#{event.id}"}
-                      %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
-                      %div
-                        = event.title
-                      %div.muted
-                        = event.date_str
+                /- if @events
+                /  - @events.each do |event|
+                /    %div{:id => "gdiv_#{event.id}"}
+                /      %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
+                /      %div
+                /        = event.title
+                /      %div.muted
+                /        = event.date_str
+                = render :partial => "timelines/refresh_gathered_events",:locals => {:events => @events}
               %hr
               %a.pull-right{:href => "#{timeline_path(@timeline)}"} Return to timeline page
               
@@ -359,8 +360,13 @@
     
     /* A function to save the gathered events list to this timeline
      * Do the save only if tl_eventlist_dirty is 1
+     *
+     * 'evt_op' can have folloiwng values at present.
+     *   - add_evt: new event to be added
+     *   - rm_evt: one event to be removed
+     *   - rm_all_evt: all events to be removed
      */
-    function saveGatheredEvents() {
+    function saveGatheredEvents(evt_op) {
       if (tl_eventlist_dirty == false) {
         return;
       } else {
@@ -369,7 +375,7 @@
         var jqxhr = $.ajax({
                       type: "POST",
                       url: "/el_save",
-                      data: {id: #{@timeline.id}, event_list: $("#gathered_event_ids").attr("value")}
+                      data: {id: #{@timeline.id}, event_list: $("#gathered_event_ids").attr("value"), cur_op: evt_op}
                     }).done(function() { $('#busy_indicator').hide();console.log("done saving"); tl_eventlist_dirty = false; $("#tl_events_saved_msg").show();})
                       .fail(function() { $('#busy_indicator').hide();console.log("failed saving"); });
       };

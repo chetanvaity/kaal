@@ -339,10 +339,28 @@ class TimelinesController < ApplicationController
 
   # AJAX function to save gathered events from edit timeline page
   def el_save
+    @cur_tl_op = params[:cur_op]
     # @timeline = Timeline.find(params[:id]) (done in load_and_authorize_resource)
     event_list_str = params[:event_list]
     @timeline.events = event_list_str
     if @timeline.save()
+      ##
+      ## Get events in time-sorted order if this is event-addition to timeline
+      ##
+      if !@cur_tl_op.nil? && @cur_tl_op == "add_evt"
+        event_id_str = @timeline.events
+        id_array = [] #empty array
+        if not event_id_str.nil?
+          id_array = event_id_str.split(",").map { |s| s.to_i }
+          @fetchedevents = get_events_from_id_array(id_array)
+          if !@fetchedevents.nil? && @fetchedevents.length > 0
+            #@fetchedevents.each { |each_event| each_event.importance = 3 }
+            @fetchedevents.sort!{ |a,b| a.jd <=> b.jd }
+          end
+        end
+      end
+      ##
+      
       render :template => "timelines/el_save", :formats => [:js], :handlers => :haml
     else
       # TBD: I guess we should do something here
@@ -465,6 +483,10 @@ class TimelinesController < ApplicationController
         event_ids = tl.events.split(",").map { |s| s.to_i }
       end
       @events = get_events_from_id_array(event_ids)
+      if !@events.nil? && @events.length > 0
+        @events.sort!{ |a,b| a.jd <=> b.jd }
+      end
+      
       @timeline_tags_json = "[" +
         tl.tags.split(",").map {|t| "{id: 1, name: \"#{t.strip}\" }" }.join(",") +
         "]"   

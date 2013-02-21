@@ -1,0 +1,11 @@
+/
+/ Render given set of events as 'gathered events'
+/
+- if events
+  - events.each do |event|
+    %div{:id => "gdiv_#{event.id}"}
+      %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
+      %div
+        = event.title
+      %div.muted
+        = event.date_str
