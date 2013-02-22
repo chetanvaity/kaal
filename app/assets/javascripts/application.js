@@ -43,11 +43,4 @@ $(document).ready(function(e) {
     
     
     
-
-    $('#event_tags_str').tokenInput("/ac_search", {
-	crossDomain: false,
-	theme: "facebook",
-	hintText: "Type in a tag"
-    });
-    
 });

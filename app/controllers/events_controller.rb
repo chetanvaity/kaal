@@ -28,6 +28,7 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    @event_tags_json = "[]"
     render :template => "events/new", :formats => [:html], :handlers => :haml
   end
 
@@ -71,6 +72,11 @@ class EventsController < ApplicationController
       @timeline = Timeline.find(tlid)
     end
        
+    # To prepopulate the Tags field (tokenInput JS)
+    @event_tags_json = "[" +
+      @event.tags.map {|t| "{id: 1, name: \"#{t.name}\" }"}.join(",") + 
+      "]"
+
     # to take care of ajax request ..if any
     respond_to do |format|
       format.html { render :layout => ! request.xhr? }
