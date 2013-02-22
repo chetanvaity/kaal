@@ -1,32 +1,4 @@
 /
-/ Hidden help divs used on 'new-event' page.
-/
-%div{:id => "help_popup_event_title", :style => "display: none"}
-  %h3 This is how event title will get displayed
-  %br
-  %img{:src => "/assets/help-event-title.png"}
-
-%div{:id => "help_popup_event_date", :style => "display: none"}
-  %h3 This is how event date will get displayed
-  %br
-  %img{:src => "/assets/help-event-date.png"}
-
-%div{:id => "help_popup_event_url", :style => "display: none"}
-  %h3 This is how event url will get displayed
-  %br
-  %img{:src => "/assets/help-event-url.png"}
-  
-%div{:id => "help_popup_event_image", :style => "display: none"}
-  %h3 This is how event image will get displayed
-  %br
-  %img{:src => "/assets/help-event-image.png"}
-  
-%div{:id => "help_popup_event_desc", :style => "display: none"}
-  %h3 This is how event description will get displayed
-  %br
-  %img{:src => "/assets/help-event-desc.png"}
-  
-/
 / Hidden help divs used on 'new-timeline' page.
 /
 %div{:id => "help_popup_tl_title", :style => "display: none"}
@@ -143,14 +115,14 @@
         / ACTUAL TIMELINE EVENTS tab
         /
         /%div#tab-two.row.span11.tab-pane{:title => "Events for this timeline", :rel => "tooltip"}
-        %div#tab-two.row.span11.tab-pane.active{:onClick => "$('#tl_events_saved_msg').hide()"}
+        %div#tab-two.row.span12.tab-pane.active{:onClick => "$('#tl_events_saved_msg').hide()"}
           %div.span10.alert.alert-success.center{:id => "tl_events_saved_msg"}
             %strong
               All events saved.
           /
           / EXISTING EVENTS tab-panel
           /
-          %div.span5
+          %div.span5{:id => "existing_events_container"}
             %div.span5.existingevents_heading_preview
               %div.span3
                 %br
@@ -171,23 +143,15 @@
                     Remove all
               = hidden_field :timeline, :events, :id => "gathered_event_ids"
               %div#gathered_events
-                /- if @events
-                /  - @events.each do |event|
-                /    %div{:id => "gdiv_#{event.id}"}
-                /      %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
-                /      %div
-                /        = event.title
-                /      %div.muted
-                /        = event.date_str
-                = render :partial => "timelines/refresh_gathered_events",:locals => {:events => @events}
+                = render :partial => "timelines/refresh_gathered_events",:locals => {:events => @events, :tl_obj => @timeline}
               %hr
               %a.pull-right{:href => "#{timeline_path(@timeline)}"} Return to timeline page
               
   
-          %div.span5
+          %div.span6
             /%h2{:style => "margin-bottom: 10px"} &nbsp;
             %div.tabbable
-              %ul.nav.nav-tabs
+              %ul.nav.nav-tabs{:id => "internal-tabs-navbar"}
                 %li.active
                   %a{:href => "#tab1", :"data-toggle" => "tab", :title => "Search events present in PollenGrain", :rel => "tooltip"}
                     %i.icon-search
@@ -226,47 +190,7 @@
                 /%div#tab2.tab-pane{:title => "Enter details of a new event to be added to this timeline", :rel => "tooltip"}
                 %div#tab2.tab-pane{:onClick => "$('#tl_events_saved_msg').hide()"}
                   - @event = Event.new
-                  = form_for(@event, :url => events_path, :method => :post, :remote => true, :html => {:id => "event-form"}) do |ef|
-                    %div#new_created_event          
-                    %div#eventErrorExplanation.errorExplanation.hide
-                    %div#eventSuccessMessage.alert.alert-success.hide
-  
-                    %div.help_icon_div
-                      = label :event, :title, 'Title', :class => "eventlabel"
-                      %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                    = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
-  
-                    %div.help_icon_div
-                      = label :event, :date, 'Date', :class => "eventlabel"
-                      %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                    = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
-  
-                    = label :event, :tags, 'Tags'
-                    = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
-  
-                    %div.help_icon_div
-                      = label :event, :url, 'URL', :class => "eventlabel"
-                      %img.event_upper_help_icon_url{:src => "/assets/q2.png", :id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                    = text_field :event, :url, :class => "span3", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
-  
-                    %div.help_icon_div
-                      = label :event, :imgurl, 'Image Link', :class => "eventlabel"
-                      %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                    = text_field :event, :imgurl, :class => "span3", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
-  
-                    %div.help_icon_div
-                      = label :event, :desc, 'Description', :class => "eventlabel"
-                      %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "left"}
-                    = text_area :event, :desc, :class => "span3", :size => "40x4", :placeholder => "Describe the event here."
-  
-                    %div.pull-left
-                      = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
-                        = p " Cancel"
-                      &nbsp;&nbsp;  
-                      = button_tag(:type => "submit", :class => "btn btn-primary", :onClick => "$('#busy_indicator').show()") do
-                        %i.icon-arrow-left.icon-white
-                        = p " Add to timeline"
-
+                  = render :partial => "events/new_edit_event_newlogic", :locals => {:event_obj => @event, :mode => "new_evt", :tl_obj => nil}
 
 /============================================================================
 :javascript
@@ -315,16 +239,6 @@
   //
   $(function ()  
   {
-    // With arrow pointer
-    //$('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-    
-    //All without arrow pointers......for 'new event related help'
-    $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-    
-    $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-    
-    $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="popover-inner helppopover-lower-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
-    
     //
     //
     //For new 'timeline' related help
@@ -386,5 +300,6 @@
     //$(document).ready(function() {
     //  setInterval(saveGatheredEvents, 10000);
     //});
+    
 /----------------------------------------------------------------------------------------------------    
   

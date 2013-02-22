@@ -1,0 +1,144 @@
+/
+/ Hidden help divs used on 'new-event' page.
+/
+%div{:id => "help_popup_event_title", :style => "display: none"}
+  %h3 This is how event title will get displayed
+  %br
+  %img{:src => "/assets/help-event-title.png"}
+
+%div{:id => "help_popup_event_date", :style => "display: none"}
+  %h3 This is how event date will get displayed
+  %br
+  %img{:src => "/assets/help-event-date.png"}
+
+%div{:id => "help_popup_event_url", :style => "display: none"}
+  %h3 This is how event url will get displayed
+  %br
+  %img{:src => "/assets/help-event-url.png"}
+  
+%div{:id => "help_popup_event_image", :style => "display: none"}
+  %h3 This is how event image will get displayed
+  %br
+  %img{:src => "/assets/help-event-image.png"}
+  
+%div{:id => "help_popup_event_desc", :style => "display: none"}
+  %h3 This is how event description will get displayed
+  %br
+  %img{:src => "/assets/help-event-desc.png"}
+
+/
+/ ===============================================================================
+/
+-remoteValue = false
+-cancel_url = ""
+-help_popup_position = "right"
+
+-if !mode.nil? && mode == "new_evt"
+  -remoteValue = true
+  -help_popup_position = "left"
+-else  
+  /
+  / IF tl_obj is valid, means we have come from 'edit timeline' page, and hence needs to go back there.
+  /
+  -if tl_obj.nil?  
+    -cancel_url = "#{my_path}"
+  -else
+    -cancel_url = "#{edit_timeline_path(tl_obj)}"
+
+= form_for(event_obj, :remote => remoteValue, :html => {:id => "event-form"}) do |ef|
+  /
+  / These divs are used during ajax based from posting and operation ..to show status.
+  /
+  %div#new_created_event          
+  %div#eventErrorExplanation.errorExplanation.hide
+  %div#eventSuccessMessage.alert.alert-success.hide
+  
+  /
+  / This placeholder will be used by normal 
+  /
+  = ef.error_messages
+  
+  /
+  / This field will differentiate between 2 'edit event' cases.
+  / - If this tl_obj is set properly then it is edit-event from 'edit-timeline' page.
+  / - Otherwise it is individual 'edit-event'. 
+  /
+  -if !tl_obj.nil?
+    = hidden_field_tag 'tlid_if_present', "#{tl_obj.id}"
+
+  %div.help_icon_div
+    = label :event, :title, 'Title', :class => "eventlabel"
+    %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_title", :rel => "popover", "data-title" => "","data-placement" => "#{help_popup_position}"}
+  = text_field :event, :title, :class => "span3", :placeholder => "Be short (eg: Shivaji born)"
+    
+  %div.help_icon_div
+    = label :event, :date, 'Date', :class => "eventlabel"
+    %img.event_upper_help_icon{:src => "/assets/q2.png", :id => "event_date", :rel => "popover", "data-title" => "","data-placement" => "#{help_popup_position}"}
+  = text_field :event, :date_str, :class => "span2", :placeholder => "eg: 19 Feb 1630"
+  %br
+  %span.help-block (More examples: August 1947, 1005 AD, 320 BCE, etc.)
+  %br
+  %br
+
+  %div.help_icon_div
+    = label :event, :url, 'URL', :class => "eventlabel"
+    %img.event_upper_help_icon_url{:src => "/assets/q2.png", :id => "event_url", :rel => "popover", "data-title" => "","data-placement" => "#{help_popup_position}"}
+  = text_field :event, :url, :class => "span4", :default => "http://", :placeholder => "eg: http://en.wikipedia.org/wiki/Shivaji"
+  %br
+  %span.help-block (A link to webpage/video/image which gives more information about this event)
+  %br
+  %br
+
+  %div.help_icon_div
+    = label :event, :imgurl, 'Image Link', :class => "eventlabel"
+    %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_image", :rel => "popover", "data-title" => "","data-placement" => "#{help_popup_position}"}
+  = text_field :event, :imgurl, :class => "span4", :default => "http://", :placeholder => "eg: http://upload.wikimedia.org/Shivaji.jpg"
+  %br
+  %span.help-block (A link to a supportive image, will get displayed as a thumbnail)
+  %br
+  %br
+
+  %div.help_icon_div
+    = label :event, :desc, 'Description', :class => "eventlabel"
+    %img.event_lower_help_icon{:src => "/assets/q2.png", :id => "event_desc", :rel => "popover", "data-title" => "","data-placement" => "#{help_popup_position}"}
+  = text_area :event, :desc, :class => "span4", :size => "40x4", :placeholder => "Describe the event here."
+    
+  = label :event, :tags, 'Tags'
+  = text_field :event, :tags_str, :class => "span3", :placeholder => "eg: shivaji, maratha"
+  %br
+  
+  %div.pull-left.well
+    -if mode == "new_evt"
+      = button_tag(:type => "reset", :class => "btn", :onclick => 'clearTags("event_tags_str")') do
+        = p " Cancel"
+      &nbsp;&nbsp;  
+      = button_tag(:type => "submit", :class => "btn btn-primary", :onClick => "$('#busy_indicator').show()") do
+        %i.icon-arrow-left.icon-white
+        = p " Add to timeline"
+    -else
+      %a.btn{:href => "#{cancel_url}"}
+        = p "Cancel"
+      /= button_tag(:type => "reset", :class => "btn", :onclick => "#{cancel_url}") do
+      /  = p " Cancel"
+      &nbsp;&nbsp;  
+      = button_tag(:type => "submit", :class => "btn btn-primary", :onClick => "$('#busy_indicator').show()") do
+        = p " Save"
+      
+/======================================================================
+:javascript
+  //
+  // To show help popover for various fields on 'create new event' page
+  //
+  $(function ()  
+  {
+    // With arrow pointer
+    //$('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="arrow"></div><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    //All without arrow pointers......for 'new event related help'
+    $('.event_upper_help_icon').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    $('.event_upper_help_icon_url').popover({template: '<div class="popover upperhelppopover"><div class="popover-inner helppopover-inner-eventurl"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+    
+    $('.event_lower_help_icon').popover({template: '<div class="popover lowerhelppopover"><div class="popover-inner helppopover-lower-inner"><h3 class="popover-title event_help_popover_title"></h3><div class="popover-content event_help_popover_content"><p></p></div></div></div>', html : true, content: function() { return $('#help_popup_' + this.id).html();}  });
+  });
+        

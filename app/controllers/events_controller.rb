@@ -62,13 +62,21 @@ class EventsController < ApplicationController
     if (@editfromlistview.nil?) || (@editfromlistview != 'true')
       @editfromlistview = 'false'
     end
+    
+    #
+    # IF there is any timeline reference then read that too.
+    #
+    tlid = params[:tlid]
+    if !tlid.nil? && tlid != ""
+      @timeline = Timeline.find(tlid)
+    end
        
     # to take care of ajax request ..if any
     respond_to do |format|
       format.html { render :layout => ! request.xhr? }
     end
   end
-
+  
   def update
     @event = Event.find params[:id]
     #This parameter will be available on this form only when edit has attempted from listview.
@@ -76,7 +84,12 @@ class EventsController < ApplicationController
       
     if @event.update_attributes(params[:event])
       record_activity("t=#{@event.title}")
+      
       if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
+        #
+        # AMOL: This is old logic, not yet removed
+        #
+        
         #This is edit from list view. 
         #Let's show success notification and let's show the refreshed listview page
         flash[:notice] =
@@ -92,10 +105,18 @@ class EventsController < ApplicationController
           redirect_to root_url
         end
       else
-        #Normal edit success case
-        flash[:notice] =
-          "<strong>#{@event.title}</strong> was successfully updated".html_safe
-        redirect_to event_path(@event)
+        #
+        # AMOL : new logic to redirect properly.
+        #
+        tlid_local = params[:tlid_if_present]
+        if !tlid_local.nil?
+          redirect_to edit_timeline_path(tlid_local)
+        else
+          #Normal edit success case
+          flash[:notice] =
+            "<strong>#{@event.title}</strong> was successfully updated".html_safe
+          redirect_to event_path(@event)
+        end
       end
     else
       #if (!@editfromlistview.nil?) && (@editfromlistview == 'true')

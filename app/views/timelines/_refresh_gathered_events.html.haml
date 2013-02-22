@@ -7,5 +7,10 @@
       %button.close{:onclick => "removeEventDiv(#{event.id})"} &times;
       %div
         = event.title
+        %a{:href => "#{edit_event_path(event.id)}?tlid=#{tl_obj.id}"} [Edit]
+        
       %div.muted
         = event.date_str
+        
+
+           

@@ -3,4 +3,4 @@ tl_eventlist_dirty = false;
 /IF currrent operation is not about one or more event removal, then refresh gathered events completely.
  
 -if @cur_tl_op.nil? || ( @cur_tl_op != "rm_evt" && @cur_tl_op != "rm_all_evt")
-  $('#gathered_events').html('#{j(render(:partial => "timelines/refresh_gathered_events",:locals => {:events => @fetchedevents}))}');
+  $('#gathered_events').html('#{j(render(:partial => "timelines/refresh_gathered_events",:locals => {:events => @fetchedevents, :tl_obj => @timeline}))}');

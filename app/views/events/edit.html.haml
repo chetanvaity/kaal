@@ -1,10 +1,14 @@
--if (!request.xhr?)
-  %h2 Edit Event
+/-if (!request.xhr?)
+/  %h2 Edit Event
+/
+/= form_for(@event, :html => {:class => "well"}) do |f|
+/  -if (!request.xhr?)
+/    = render :partial => "new_edit", :locals => {:f => f, :stdintendedview => "edit"}
+/  -else
+/    = render :partial => "new_edit", :locals => {:f => f}
+/
 
-= form_for(@event, :html => {:class => "well"}) do |f|
-  -if (!request.xhr?)
-    = render :partial => "new_edit", :locals => {:f => f, :stdintendedview => "edit"}
-  -else
-    = render :partial => "new_edit", :locals => {:f => f}
+%h2 Edit Event
+= render :partial => "events/new_edit_event_newlogic", :locals => {:event_obj => @event, :tl_obj => @timeline, :mode => nil}
   
   
