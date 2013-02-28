@@ -41,7 +41,7 @@
   / IF tl_obj is valid, means we have come from 'edit timeline' page, and hence needs to go back there.
   /
   -if tl_obj.nil?  
-    -cancel_url = "#{my_path}"
+    -cancel_url = "#{myevents_path}"
   -else
     -cancel_url = "#{edit_timeline_path(tl_obj)}"
 

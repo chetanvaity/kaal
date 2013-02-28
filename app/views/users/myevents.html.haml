@@ -1,0 +1,41 @@
+/
+/ This code shows all 'my events'
+/
+
+
+-set_page_title(@local_page_title)
+-set_page_metadescription(@local_page_desc)
+
+%div.span12.row
+  %div.span7.pull-left
+    %h2 My Content
+  %div.span2.pull-right
+    %a.btn.btn-primary{:href => new_timeline_path}
+      %i.icon-pencil.icon-white
+      = p "New Timeline"
+
+%ul.nav.nav-tabs.no-bottom-margin
+  %li
+    %a{:href => my_path} Timelines
+  %li.active
+    %a{:href => myevents_path} Events
+    
+%div
+  - if @events.empty?
+    %p You have not created any events
+  - else
+    = paginate(@events, :param_name => "event_paginate_param")
+    %table#events.table.table-striped
+      %thead
+        %tr
+          %th Title
+          %th Date
+          /%th Edit
+      %tbody
+        - @events.each do |event|
+          %tr
+            %td
+              %a{:href => event_path(event)} #{event.title}
+            %td= Date.jd(event.jd).strftime("%B %d, %Y")
+            /%td= link_to 'Edit...', edit_event_path(event)
+    = page_entries_info(@events).html_safe

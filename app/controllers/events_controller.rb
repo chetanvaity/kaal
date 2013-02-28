@@ -151,7 +151,7 @@ class EventsController < ApplicationController
       redirect_to (:back)
     else
       # delete from normal page
-      redirect_to root_path
+      redirect_to myevents_path
     end
   end
 

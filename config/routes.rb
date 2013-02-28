@@ -55,6 +55,7 @@ Kaal::Application.routes.draw do
   get "users/new"
 
   match '/my'=> 'users#mycontent'
+  match '/myevents'=> 'users#myevents'
 
   get "activity_log/index"
   resources :activity_log do

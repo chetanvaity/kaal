@@ -1,3 +1,7 @@
+/
+/ This code shows all 'my timelines'
+/
+
 -set_page_title(@local_page_title)
 -set_page_metadescription(@local_page_desc)
 
@@ -9,38 +13,20 @@
       %i.icon-pencil.icon-white
       = p "New Timeline"
 
-%div.tabbable
-  %ul.nav.nav-tabs
-    %li.active
-      %a{:href => "#tab1", :"data-toggle" => "tab"} Timelines
-    %li
-      %a{:href => "#tab2", :"data-toggle" => "tab"} Events
-  %div.tab-content
-    %div.tab-pane.active#tab1
-      - if @timelines.empty?
-        %p You have not created any timelines
-      - else
-        = paginate(@timelines)
-        - row_count = 0
-        - @timelines.each_slice(4).to_a.each do |row|
-          - row_count = row_count + 1
-          = render :partial => "timelines/tl_small_block", :locals => {:selected_timelines => row, :div_id_prefix => "#{row_count}"}
-        = page_entries_info(@timelines).html_safe
-    %div.tab-pane#tab2
-      - if @events.empty?
-        %p You have not created any events
-      - else
-        = paginate(@events)
-        %table#events.table.table-striped
-          %thead
-            %tr
-              %th Title
-              %th Date
-              %th Edit
-          %tbody
-            - @events.each do |event|
-              %tr
-                %td= event.title
-                %td= Date.jd(event.jd).strftime("%B %d, %Y")
-                %td= link_to 'Edit...', edit_event_path(event)
-        = page_entries_info(@events).html_safe
+%ul.nav.nav-tabs.no-bottom-margin
+  %li.active
+    %a{:href => my_path} Timelines
+  %li
+    %a{:href => myevents_path} Events
+    
+  
+%div
+  - if @timelines.empty?
+    %p You have not created any timelines
+  - else
+    = paginate(@timelines, :param_name => "tl_paginate_param")
+    - row_count = 0
+    - @timelines.each_slice(4).to_a.each do |row|
+      - row_count = row_count + 1
+      = render :partial => "timelines/tl_small_block", :locals => {:selected_timelines => row, :div_id_prefix => "#{row_count}"}
+    = page_entries_info(@timelines).html_safe
