@@ -514,28 +514,30 @@ strong.onhomepage {
 // ********* To show the listview properly on all browsers *********
 
 td.list_view_title_column {
-  width: 11%;
+  width: 30%;
 }
 
-td.list_view_source_column {
-  width: 9%;
-}
 td.list_view_date_column {
-  width: 9%;
+  width: 10%;
 }
 td.list_view_desc_column{
-  width: 30%;
+  width: 40%;
+  font-size: 12px;
   word-break: break-all;
   word-wrap:break-word;
 }
 td.list_view_url_column {
-  width: 30%;
+  width: 10%;
   word-break: break-all;
   word-wrap:break-word;
 }
-td.list_view_buttons_column {
-  width: 11%;
+
+td.list_view_imagelink_column {
+  width: 10%;
+  word-break: break-all;
+  word-wrap:break-word;
 }
+
 //********************** listview style end **********************
 
 

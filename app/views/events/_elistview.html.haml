@@ -12,11 +12,9 @@
     %tr
       %th.list_view_title_column Title
       %th.list_view_date_column Date
-      %th.list_view_source_column Source
       %th.list_view_desc_column Description
       %th.list_view_url_column URL
-      -if signed_in?
-        %th.list_view_buttons_column
+      %th.list_view_imagelink_column Image
   %tbody
     - @fetchedevents.each do |eachevent|
       %tr
@@ -24,26 +22,24 @@
           = eachevent.title
         %td.list_view_date_column
           = Date.jd(eachevent.jd).strftime("%B %d, %Y")
-        %td.list_view_source_column
-          = eachevent.source
         %td.list_view_desc_column
-          = eachevent.desc
+          /= eachevent.desc
+          = simple_format(h eachevent.desc)
         %td.list_view_url_column
-          -if !eachevent.url.nil?
-            %a{:href => "#{eachevent.url}", :target => "new"} 
-              = eachevent.url
-        -if signed_in?
-          %td.list_view_buttons_column
-            /%div{:class => "event"}
-            /  %div{:class => "details"}
-            /    %i.icon-edit
-            /    = link_to "Edit", edit_event_path(eachevent), :remote => true, "data-type" => :html
-            %i.icon-edit
-            = link_to "Edit", "#{edit_event_path(eachevent)}?editfromlistview=true" 
-            -if !current_user.nil?
-              -if (current_user.isadmin) || (current_user.id == eachevent.ownerid)
-                %div
-                  %i.icon-remove
-                  = link_to "Delete", "/events/#{eachevent.id}?fromlistview=true", :method=> :delete, :confirm => 'Are you sure you want to delete this event?'
+          -if !eachevent.url.nil? && eachevent.url != "" 
+            %a{:href => "#{eachevent.url}", :target => "new"} URL
+        %td.list_view_imagelink_column
+          -if !eachevent.imgurl.nil? && eachevent.imgurl != "" 
+            %a{:href => "#{eachevent.imgurl}", :target => "new"} Image 
+
+        /-if signed_in?
+        /  %td.list_view_buttons_column
+        /    %i.icon-edit
+        /    = link_to "Edit", "#{edit_event_path(eachevent)}?editfromlistview=true" 
+        /    -if !current_user.nil?
+        /      -if (current_user.isadmin) || (current_user.id == eachevent.ownerid)
+        /        %div
+        /          %i.icon-remove
+        /          = link_to "Delete", "/events/#{eachevent.id}?fromlistview=true", :method=> :delete, :confirm => 'Are you sure you want to delete this event?'
                   
             

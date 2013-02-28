@@ -38,7 +38,9 @@
   %a.btn.btn-primary.pull-left{:href => edit_event_path(@event)}
     %i.icon-white.icon-edit
     = p " Edit"
-  = button_to "Delete", event_path(@event), :method=> :delete, :confirm => 'Are you sure you want to delete this event?', :class => "btn btn-danger pull-left"
-  /= link_to 'Back to event list', events_path, :class => "pull-right"
+  -if !current_user.nil?
+    -if (current_user.isadmin) || (current_user.id == @event.ownerid)  
+      = button_to "Delete", event_path(@event), :method=> :delete, :confirm => 'Are you sure you want to delete this event?', :class => "btn btn-danger pull-left"
+  
   = link_to 'Back to my events', myevents_path, :class => "pull-right"
 
