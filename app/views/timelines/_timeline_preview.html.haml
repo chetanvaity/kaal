@@ -27,10 +27,55 @@
 /
 %div
   %a.btn.btn-primary{:href =>"#{generate_complete_timeline_preview_url(given_timeline_id)}?iframe=true&width=93%&height=490", :rel => "prettyPhoto[iframe]", :title => "Timeline preview"} Preview
-  /%a{:href =>"/assets/pg-logo-dev.png", :rel => "prettyPhoto", :title => "Timeline preview"} Preview
   
 :javascript
   $(document).ready(function(){
-    $("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
+    //$("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
+    //---------------------------------------------
+    //
+    // AMOL: Wanted to get title and close button at the top of window.
+    // Hence needed to add this markup. Otherwise it was not needed.
+    //
+    $("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false,
+            markup: '<div class="pp_pic_holder"> \
+                        <div class="ppt">&nbsp;</div> \
+                        <div class="pp_top"> \
+                            <div class="pp_left"></div> \
+                            <div class="pp_middle"></div> \
+                            <div class="pp_right"></div> \
+                        </div> \
+                        <div class="pp_content_container"> \
+                            <div class="pp_left"> \
+                            <div class="pp_right"> \
+                                <div class="pp_content"> \
+                                    <div class="pp_loaderIcon"></div> \
+                                    <div class="pp_fade"> \
+                                        <a href="#" class="pp_expand" title="Expand the image">Expand</a> \
+                                        <div class="pp_hoverContainer"> \
+                                            <a class="pp_next" href="#">next</a> \
+                                            <a class="pp_previous" href="#">previous</a> \
+                                        </div> \
+                                        <div class="pp_details"> \
+                                            <p class="pp_description"></p> \
+                                            {pp_social} \
+                                            <a class="pp_close" href="#">Close</a> \
+                                        </div> \
+                                        </br> \
+                                        </br> \
+                                        <div id="pp_full_res"></div> \
+                                    </div> \
+                                </div> \
+                            </div> \
+                            </div> \
+                        </div> \
+                        <div class="pp_bottom"> \
+                            <div class="pp_left"></div> \
+                            <div class="pp_middle"></div> \
+                            <div class="pp_right"></div> \
+                        </div> \
+                    </div> \
+                    <div class="pp_overlay"></div>'
+      });                    
+    //---------------------------------------
   });  
      
