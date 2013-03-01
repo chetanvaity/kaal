@@ -1,5 +1,6 @@
 var ef = $('#event-form');
 
+
 - if @event.errors.any?
   var errors = $("<ul />");
   - @event.errors.full_messages.each do |error|
@@ -9,7 +10,11 @@ var ef = $('#event-form');
   ef.find("#eventErrorExplanation").removeClass("hide");
   $('#busy_indicator').hide();
   $("#tl_events_saved_msg").hide();
-
+  /
+  / Scroll to the top of page, so that the user can see the error message.
+  /
+  $(document).scrollTop(0);
+  
 - else
   ef.find("#eventSuccessMessage").html('<i class="icon-ok-sign"></i> <strong>#{ j(@event.title) }</strong> saved.');
   ef.find("#eventSuccessMessage").removeClass("hide");
