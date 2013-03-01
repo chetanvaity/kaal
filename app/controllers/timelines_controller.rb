@@ -487,6 +487,11 @@ class TimelinesController < ApplicationController
         @events.sort!{ |a,b| a.jd <=> b.jd }
       end
       
+      #This is needed for proper UI rendering in case somebody 
+      #goes to 'add new event to timeline' section.
+      @event_tags_json = "[]"
+      
+      
       @timeline_tags_json = "[" +
         tl.tags.split(",").map {|t| "{id: 1, name: \"#{t.strip}\" }" }.join(",") +
         "]"   
