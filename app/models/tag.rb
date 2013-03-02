@@ -7,7 +7,8 @@ class Tag < ActiveRecord::Base
     :minimum => 2
   }
 
-  before_save :normalize_tag_name
+  # Don't normalize tags!
+  # before_save :normalize_tag_name
 
   protected
   def normalize_tag_name

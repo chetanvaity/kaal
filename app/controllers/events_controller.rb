@@ -87,8 +87,8 @@ class EventsController < ApplicationController
     @event = Event.find params[:id]
     #This parameter will be available on this form only when edit has attempted from listview.
     @editfromlistview = params[:editfromlistview]
-      
-    if @event.update_attributes(params[:event])
+
+    if @event.tags.delete_all and @event.update_attributes(params[:event])
       record_activity("t=#{@event.title}")
       
       if (!@editfromlistview.nil?) && (@editfromlistview == 'true')
