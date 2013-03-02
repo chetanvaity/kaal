@@ -1,5 +1,6 @@
 set :application, "kaal"
 
+set :rails_env, "production"
 set :scm, :git
 set :repository,  "git@github.com:chetanvaity/kaal.git"
 set :branch, "master"
@@ -10,6 +11,8 @@ set :copy_exclude, [".git", "spec"]
 set :user, "ubuntu"
 ssh_options[:forward_agent] = true
 ssh_options[:keys] = %w(/home/chetanv/timeline.pem) 
+
+set :normalize_asset_timestamps, false
 
 role :web, "pollengra.in"                          # Your HTTP server, Apache/etc
 role :app, "pollengra.in"                          # This may be the same as your `Web` server
@@ -69,6 +72,10 @@ namespace :deploy do
     end
   end
 
+  namespace :assets do
+    task :update_asset_mtimes do ; end
+  end
+
   namespace :web do
     desc <<-DESC
       Present a maintenance page to visitors. Disables your application's web \
@@ -99,7 +106,22 @@ namespace :deploy do
     end
   end
 
+
+
 end
+
+
+namespace :bundle do
+
+  desc "run bundle install and ensure all gem requirements are met"
+  task :install do
+    run "cd #{current_path} && bundle install  --without=test --no-update-sources"
+  end
+
+end
+
+
+before "deploy:restart", "bundle:install"
 
 # The order here is important
 # The load "deploy/assets" line adds an "after" hook to deploy:update_code
