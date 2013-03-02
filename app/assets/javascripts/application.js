@@ -41,6 +41,12 @@ $(document).ready(function(e) {
       $('#tlsummaryanchor').find('i').toggleClass('icon-chevron-down icon-chevron-right', 200); 
     });
     
-    
+    /*
+     * Amol:
+     * We don't want our ajax responses to get cached. IE does that aggressively.
+     * And this produces wrong results on IE. Rest browsers (Chrome, FF) are good guys.
+     * So to take care of IE, and in general too, disabling caching od ajax responses.
+     */   
+    jQuery.ajaxSetup({ cache: false });  
     
 });
